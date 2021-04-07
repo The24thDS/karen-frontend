@@ -10,6 +10,16 @@ export const fetchModels = async () => {
   }
 };
 
+export const fetchModel = async (id) => {
+  const res = await fetch(`${API_URL}/models/${id}`);
+  if (res.ok) {
+    const data = await res.json();
+    return data;
+  } else {
+    return new Error('Server did not return OK');
+  }
+};
+
 export const uploadModel = async (data) => {
   const res = await fetch(`${API_URL}/models`, {
     headers: {
@@ -17,6 +27,22 @@ export const uploadModel = async (data) => {
     },
     method: 'POST',
     body: data,
+  });
+  if (res.ok) {
+    const data = await res.json();
+    return data;
+  } else {
+    return new Error('Server did not return OK');
+  }
+};
+
+export const searchModels = async (data) => {
+  const res = await fetch(`${API_URL}/models/search`, {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+    },
   });
   if (res.ok) {
     const data = await res.json();

@@ -15,3 +15,8 @@ export const selectModelsError = createSelector(
   getModelsContainer,
   (container) => container.get('error')
 );
+
+export const selectModelsSearchTerm = createSelector(
+  getModelsContainer,
+  (container) => container.get('searchTerm')
+);

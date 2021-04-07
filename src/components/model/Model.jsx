@@ -1,47 +1,47 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import ImageGallery from 'react-image-gallery';
 import { useParams } from 'react-router';
-import STLViewer from 'stl-viewer';
-import TvUnit from '../../tv_unit.stl';
+import { getImagePath } from '../../utils/general';
+import { useModel } from './custom-hooks';
+import './model.css';
 
-// TODO: refactor this using redux and sagas
 const Model = () => {
   const { id } = useParams();
-  const [state, setState] = useState({});
+  const model = useModel(id);
 
-  useEffect(() => {
-    const fetchModel = async () => {
-      const url = `http://localhost:3001/models/${id}`;
-      const res = await fetch(url);
-      if (res.ok) {
-        const data = await res.json();
-
-        setState(data);
-      }
-    };
-    fetchModel();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const galleryItems =
+    model.images?.map((image) => ({
+      original: getImagePath(image),
+    })) ?? [];
 
   return (
-    <>
-      <h1>{state.name}</h1>
-      {state.file?.length && (
-        <>
-          <STLViewer
-            model={TvUnit}
-            width={400}
-            height={400}
-            modelColor="#B92C2C"
-            backgroundColor="#EAEAEA"
-            rotate={true}
-            orbitControls={true}
-          />
-        </>
-      )}
-      {state.tags?.length && (
-        <p>{state.tags.map(({ name }) => name).join(', ')}</p>
-      )}
-    </>
+    <div className="grid grid-cols-2 gap-10 mt-10 mx-20">
+      <div>
+        <ImageGallery items={galleryItems} lazyLoad={true} />
+      </div>
+      <div>
+        <h1 className="font-bold text-gray-800 text-2xl">{model.name}</h1>
+        <div className="description my-3 py-3 border border-l-0 border-r-0">
+          {model.description
+            ?.split('\r\n')
+            .filter((s) => s !== '')
+            .map((sentence, idx) => (
+              <p key={idx} className="text-gray-900 text-sm my-1">
+                {sentence}
+              </p>
+            ))}
+        </div>
+        <h3>Tags</h3>
+        {model.tags?.map(({ name }) => (
+          <span
+            key={name}
+            className="p-1 m-1 rounded border font-semibold text-gray-400 inline-block"
+          >
+            {name}
+          </span>
+        ))}
+      </div>
+    </div>
   );
 };
 

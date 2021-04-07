@@ -36,14 +36,16 @@ function ModelForm() {
     try {
       data.tags = data.tags.map((tag) => tag.value);
       const formData = jsonToFormData(data);
-      const { id } = await uploadModel(formData);
+      const resData = await uploadModel(formData);
+      console.log(resData);
       setFormStatus({
         ...formStatus,
         loading: false,
-        modelId: id,
+        modelId: resData.id,
         done: true,
       });
       setTimeout(() => {
+        console.log(formStatus);
         setFormStatus({
           ...formStatus,
           redirect: true,
@@ -102,7 +104,7 @@ function ModelForm() {
         id="models"
         name="models"
         label="3D files"
-        accept=".stl"
+        accept=".stl, .fbx, .obj, .mtl"
         register={register}
         multiple
         errors={errors.models}
