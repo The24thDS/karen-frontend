@@ -1,21 +1,37 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { tw, css } from 'twind/css';
+import { bindActionCreators } from 'redux';
 
 import {
   selectCurrentUserData,
   selectUserLoggedIn,
 } from '../../state/selectors/users.selectors';
+import { logout } from '../../state/actions/users.actions';
 
 import NavLink from './NavLink';
 import BrandLink from './BrandLink';
 import SearchInput from '../search/SearchInput';
-import { tw, css } from 'twind/css';
+import { useHistory } from 'react-router-dom';
 
 const searchInputContainer = css({
   minWidth: '450px',
 });
 
-const Nav = ({ showBrand, showSearch, isLoggedIn, currentUserData }) => {
+const Nav = ({
+  showBrand,
+  showSearch,
+  isLoggedIn,
+  currentUserData,
+  logout,
+}) => {
+  const history = useHistory();
+  const logUserOut = () => {
+    sessionStorage.removeItem('json-wt');
+    logout();
+    history.push('/login');
+  };
+
   const renderBrandLink = () =>
     showBrand === true ? <BrandLink to="/">KAREN</BrandLink> : '';
   const renderAllModelsLink = () => <NavLink to="/models">All Models</NavLink>;
@@ -34,7 +50,13 @@ const Nav = ({ showBrand, showSearch, isLoggedIn, currentUserData }) => {
       ''
     );
   const renderLogoutLink = () =>
-    isLoggedIn === true ? <NavLink to="/logout">Logout</NavLink> : '';
+    isLoggedIn === true ? (
+      <NavLink onClick={logUserOut} to="/login">
+        Logout
+      </NavLink>
+    ) : (
+      ''
+    );
   const renderRegisterLink = () =>
     isLoggedIn === false ? <NavLink to="/register">Register</NavLink> : '';
   const renderLoginLink = () =>
@@ -51,7 +73,7 @@ const Nav = ({ showBrand, showSearch, isLoggedIn, currentUserData }) => {
       <ul className="flex">
         {renderLoginLink()}
         {renderRegisterLink()}
-        {isLoggedIn && <p>Hello, {currentUserData.email.split('@')[0]}</p>}
+        {isLoggedIn && <li>Hello, {currentUserData.email.split('@')[0]}</li>}
         {renderLogoutLink()}
       </ul>
     </nav>
@@ -65,4 +87,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(Nav);
+const mapDispatchToProps = (dispatch) => ({
+  ...bindActionCreators({ logout }, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Nav);

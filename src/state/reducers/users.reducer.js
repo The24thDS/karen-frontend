@@ -3,6 +3,7 @@ import {
   USER_LOGIN,
   USER_LOGIN_FAILURE,
   USER_LOGIN_SUCCESS,
+  USER_LOGOUT,
 } from '../actions/users.actions';
 
 const INITIAL_STATE = Map({
@@ -34,10 +35,13 @@ const usersReducer = (state = INITIAL_STATE, action) => {
     case USER_LOGIN_FAILURE:
       return state.mergeDeep({
         currentUser: {
+          data: null,
           loading: false,
           error: action.data,
         },
       });
+    case USER_LOGOUT:
+      return INITIAL_STATE;
     default:
       return state;
   }

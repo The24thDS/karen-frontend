@@ -11,3 +11,13 @@ export const login = async (userData) => {
   const data = await res.json();
   return { data, status: res.status, ok: res.ok };
 };
+
+export const checkToken = async () => {
+  const res = await fetch(`${API_URL}/auth/check-token`, {
+    headers: {
+      Authorization: `Bearer ${sessionStorage.getItem('json-wt')}`,
+    },
+  });
+  const data = await res.json();
+  return { data, status: res.status, ok: res.ok };
+};
