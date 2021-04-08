@@ -13,6 +13,7 @@ import NavLink from './NavLink';
 import BrandLink from './BrandLink';
 import SearchInput from '../search/SearchInput';
 import { useHistory } from 'react-router-dom';
+import NavItem from './NavItem';
 
 const searchInputContainer = css({
   minWidth: '450px',
@@ -57,6 +58,9 @@ const Nav = ({
     ) : (
       ''
     );
+  const userGreetingItem = isLoggedIn && (
+    <NavItem>Hello, {currentUserData.email.split('@')[0]}</NavItem>
+  );
   const renderRegisterLink = () =>
     isLoggedIn === false ? <NavLink to="/register">Register</NavLink> : '';
   const renderLoginLink = () =>
@@ -73,7 +77,7 @@ const Nav = ({
       <ul className="flex">
         {renderLoginLink()}
         {renderRegisterLink()}
-        {isLoggedIn && <li>Hello, {currentUserData.email.split('@')[0]}</li>}
+        {userGreetingItem}
         {renderLogoutLink()}
       </ul>
     </nav>
