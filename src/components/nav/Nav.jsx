@@ -51,9 +51,9 @@ const Nav = ({ showBrand, showSearch, isLoggedIn, currentUserData }) => {
       <ul className="flex">
         {renderLoginLink()}
         {renderRegisterLink()}
+        {isLoggedIn && <p>Hello, {currentUserData.email.split('@')[0]}</p>}
         {renderLogoutLink()}
       </ul>
-      {isLoggedIn && <p>Hello, {currentUserData.email.split('@')[0]}</p>}
     </nav>
   );
 };
