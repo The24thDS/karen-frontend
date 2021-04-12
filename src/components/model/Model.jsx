@@ -7,7 +7,7 @@ import './model.css';
 
 const Model = () => {
   const { id } = useParams();
-  const model = useModel(id);
+  const { model, user, tags } = useModel(id);
 
   const galleryItems =
     model.images?.map((image) => ({
@@ -36,17 +36,18 @@ const Model = () => {
         </div>
         <div className="col-span-6">
           <h3 className="font-semibold">keywords</h3>
-          {model.tags?.map(({ name }) => (
+          {tags.map((tag) => (
             <span
-              key={name}
+              key={tag}
               className="p-1 m-1 rounded border font-semibold text-gray-400 inline-block"
             >
-              {name}
+              {tag}
             </span>
           ))}
         </div>
         <div className="col-span-3">
           <h3 className="font-semibold">uploaded by</h3>
+          <p className="text-sm">{user.email}</p>
         </div>
         <div className="col-span-3">
           <h3 className="font-semibold">date uploaded</h3>
