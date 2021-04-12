@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { tw } from 'twind';
 
-const NavItem = ({ children, to, ...rest }) => {
+const NavItem = ({ children, ...rest }) => {
   return (
     <li
       className={tw`
@@ -16,8 +16,10 @@ const NavItem = ({ children, to, ...rest }) => {
 };
 
 NavItem.propTypes = {
-  children: PropTypes.string.isRequired,
-  to: PropTypes.string.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.arrayOf(PropTypes.string),
+  ]).isRequired,
 };
 
 export default NavItem;

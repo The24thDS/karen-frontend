@@ -15,13 +15,16 @@ const Model = () => {
     })) ?? [];
 
   return (
-    <div className="grid grid-cols-2 gap-10 mt-10 mx-20">
+    <>
+      <h1 className="col-span-2 font-bold text-gray-800 text-2xl">
+        {model.name}
+      </h1>
       <div>
         <ImageGallery items={galleryItems} lazyLoad={true} />
       </div>
-      <div>
-        <h1 className="font-bold text-gray-800 text-2xl">{model.name}</h1>
-        <div className="description my-3 py-3 border border-l-0 border-r-0">
+      <div className="grid grid-cols-6 gap-y-4 content-start">
+        <div className="description col-span-6">
+          <h3 className="font-semibold">description</h3>
           {model.description
             ?.split('\r\n')
             .filter((s) => s !== '')
@@ -31,17 +34,45 @@ const Model = () => {
               </p>
             ))}
         </div>
-        <h3>Tags</h3>
-        {model.tags?.map(({ name }) => (
-          <span
-            key={name}
-            className="p-1 m-1 rounded border font-semibold text-gray-400 inline-block"
-          >
-            {name}
-          </span>
-        ))}
+        <div className="col-span-6">
+          <h3 className="font-semibold">keywords</h3>
+          {model.tags?.map(({ name }) => (
+            <span
+              key={name}
+              className="p-1 m-1 rounded border font-semibold text-gray-400 inline-block"
+            >
+              {name}
+            </span>
+          ))}
+        </div>
+        <div className="col-span-3">
+          <h3 className="font-semibold">uploaded by</h3>
+        </div>
+        <div className="col-span-3">
+          <h3 className="font-semibold">date uploaded</h3>
+        </div>
+        <div className="col-span-6">
+          <h3 className="font-semibold">files available</h3>
+          <ul className="text-sm">
+            {model.files?.map((fileName, idx) => (
+              <li key={idx}>{fileName}</li>
+            ))}
+          </ul>
+        </div>
+        <div className="col-span-2">
+          <h3 className="font-semibold">views</h3>
+          <p>{model.views || 0}</p>
+        </div>
+        <div className="col-span-2">
+          <h3 className="font-semibold">downloads</h3>
+          <p>{model.downloads || 0}</p>
+        </div>
+        <div className="col-span-2">
+          <h3 className="font-semibold">rating</h3>
+          <p>{model.rating || 0}</p>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
