@@ -7,7 +7,7 @@ export function useTagsOptions() {
   useEffect(() => {
     let mounted = true;
     fetchTags().then((tags) => {
-      const options = tags.map(({ name }) => ({ value: name, label: name }));
+      const options = tags.map((tag) => ({ value: tag, label: tag }));
       if (mounted) {
         setOptions(options);
       }
