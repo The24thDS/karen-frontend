@@ -26,7 +26,7 @@ const SearchResultsPage = ({ models, loading, error, searchTerm }) => {
         {!loading && (
           <div className="grid grid-cols-4 gap-4 mt-10">
             {models.map((m) => (
-              <ModelsListEntry id={m.id} name={m.name} image={m['images[0]']} />
+              <ModelsListEntry id={m.id} name={m.name} image={m.image} />
             ))}
           </div>
         )}
