@@ -10,7 +10,7 @@ const Model = () => {
   const { model, user, tags } = useModel(id);
 
   const galleryItems =
-    model.images?.map((image) => ({
+    model?.images?.map((image) => ({
       original: getImagePath(image),
     })) ?? [];
 
