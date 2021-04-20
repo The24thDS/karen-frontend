@@ -18,7 +18,7 @@ const ModelViewPage = () => {
         >
           Back
         </button>
-        <div className="grid grid-cols-2 gap-10 ">
+        <div className="grid grid-cols-2 gap-y-5 gap-x-10">
           <Model />
         </div>
       </div>
