@@ -2,6 +2,7 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import HomePage from './pages/home/HomePage';
 import NewModelPage from './pages/models/upload/NewModelPage';
+import EditModelPage from './pages/models/edit/EditModelPage';
 import LoginPage from './pages/auth/LoginPage';
 import RegisterPage from './pages/auth/RegisterPage';
 import ModelsListPage from './pages/models/list/ModelsListPage';
@@ -22,6 +23,9 @@ const Routes = () => {
       </Route>
       <Route exact path="/models/:id">
         <ModelViewPage />
+      </Route>
+      <Route exact path="/models/:id/edit">
+        <EditModelPage />
       </Route>
       <Route exact path="/login">
         <LoginPage />

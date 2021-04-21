@@ -1,53 +1,52 @@
 import React, { useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import CreatableSelect from 'react-select/creatable';
-import { yupResolver } from '@hookform/resolvers/yup';
-
-import { uploadModel } from '../../api/models.api';
-import { jsonToFormData } from '../../utils/forms';
-import FileInput from '../form/inputs/FileInput';
-import Input from '../form/inputs/Input';
-import SubmitButton from '../form/inputs/SubmitButton';
-import Textarea from '../form/textarea/Textarea';
-import { useTagsOptions } from './custom-hooks';
-import { ModelFormSchema } from './validation.schema';
-import Error from '../error/Error';
 import { Redirect } from 'react-router';
+import { tw } from 'twind';
 
-function ModelForm() {
-  const { register, handleSubmit, control, errors } = useForm({
-    resolver: yupResolver(ModelFormSchema),
-  });
+import { jsonToFormData } from '../../utils/forms';
+import ModelFormImageAndInformation from './partials/ModelFormImageAndInformation';
+import ModelForm3dFiles from './partials/ModelForm3dFiles';
 
+import './model-form.css';
+
+function ModelForm({ initialModel, initialTags, onFormSubmit }) {
   const [formStatus, setFormStatus] = useState({
     loading: false,
     done: false,
     redirect: false,
     modelId: '',
+    step: 0,
+    data: {},
   });
 
-  const options = useTagsOptions();
-
-  const onSubmit = async (data) => {
+  const onSubmit = async (lastData) => {
     setFormStatus({
       ...formStatus,
       loading: true,
+      data: {
+        ...formStatus.data,
+        ...lastData,
+      },
     });
+    const data = {
+      ...formStatus.data,
+      ...lastData,
+    };
+    console.log(data);
     try {
       data.tags = data.tags.map((tag) => tag.value);
       const formData = jsonToFormData(data);
-      const resData = await uploadModel(formData);
+      const resData = await onFormSubmit(formData);
       console.log(resData);
       setFormStatus({
         ...formStatus,
         loading: false,
-        modelId: resData.id,
         done: true,
       });
       setTimeout(() => {
         console.log(formStatus);
         setFormStatus({
           ...formStatus,
+          modelId: resData.id,
           redirect: true,
         });
       }, 1500);
@@ -69,62 +68,37 @@ function ModelForm() {
     return 'Upload';
   };
 
+  const nextStep = (data) => {
+    console.log(data);
+    setFormStatus({
+      ...formStatus,
+      data: {
+        ...formStatus.data,
+        ...data,
+      },
+      step: formStatus.step + 1,
+    });
+  };
+
+  const sectionStyle = tw`text-gray-700 font-semibold`;
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col mt-8">
-      <Input
-        id="model-title"
-        name="name"
-        label="Name"
-        register={register}
-        required
-        errors={errors.name}
-      />
-      <Textarea
-        id="description"
-        name="description"
-        label="Description"
-        rows={5}
-        register={register}
-        classNames={{
-          textarea: 'text-sm',
-        }}
-        required
-        errors={errors.description}
-      />
-      <FileInput
-        id="images"
-        name="images"
-        label="Static images"
-        accept="image/*"
-        register={register}
-        multiple
-        errors={errors.images}
-      />
-      <FileInput
-        id="models"
-        name="models"
-        label="3D files"
-        accept=".stl, .fbx, .obj, .mtl"
-        register={register}
-        multiple
-        errors={errors.models}
-      />
-      <label>Tags</label>
-      <Controller
-        options={options}
-        isMulti
-        name="tags"
-        control={control}
-        as={CreatableSelect}
-        defaultValue={[]}
-      />
-      {errors.tags && <Error message={errors.tags.message} />}
-      <SubmitButton
-        text={buttonText()}
-        className={`mt-5 ${formStatus.done && 'bg-green-500'}`}
-      />
+    <>
+      {formStatus.step === 0 && (
+        <ModelFormImageAndInformation
+          sectionStyle={sectionStyle}
+          onButtonClick={nextStep}
+        />
+      )}
+      {formStatus.step === 1 && (
+        <ModelForm3dFiles
+          sectionStyle={sectionStyle}
+          onButtonClick={onSubmit}
+          getButtonText={buttonText}
+        />
+      )}
       {formStatus.redirect && <Redirect to={`/models/${formStatus.modelId}`} />}
-    </form>
+    </>
   );
 }
 

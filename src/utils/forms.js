@@ -5,6 +5,8 @@ export const jsonToFormData = (data) => {
       for (let i = 0; i < data[key].length; i++) {
         formData.append(key, data[key][i]);
       }
+    } else if (typeof data[key] === 'object') {
+      formData.append(key, JSON.stringify(data[key]));
     } else {
       formData.append(key, data[key]);
     }

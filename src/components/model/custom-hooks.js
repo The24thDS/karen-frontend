@@ -26,10 +26,7 @@ export const useModel = (modelId) => {
         data.model.files,
         '.dae'
       );
-      const hasGltfFile = checkIfModelHasFileWithExtension(
-        data.model.files,
-        '.gltf'
-      );
+      const hasGltfFile = data.model.gltf?.length ? true : false;
       if (mounted) {
         setModel({
           ...data,

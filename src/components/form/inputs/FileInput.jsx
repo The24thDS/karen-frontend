@@ -1,34 +1,28 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
+import { FilePond, registerPlugin } from 'react-filepond';
+import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
+
 import Error from '../../error/Error';
+
+import 'filepond/dist/filepond.min.css';
+import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
+
+// Register the plugin
+registerPlugin(FilePondPluginImagePreview);
+registerPlugin(FilePondPluginFileValidateType);
 
 function FileInput(props) {
   const {
     id,
-    type,
     name,
     label,
     classNames,
-    register,
     errors,
+    onFilesUpdated,
     ...rest
   } = props;
-
-  const [inputStats, setInputStats] = useState({
-    count: 0,
-    names: [],
-  });
-
-  const onChange = ({ target: { files } }) => {
-    const names = [];
-    for (let i = 0; i < files.length; i++) {
-      names.push(files[i].name);
-    }
-    setInputStats({
-      names,
-      count: files.length,
-    });
-  };
 
   return (
     <div
@@ -36,45 +30,17 @@ function FileInput(props) {
     >
       <label
         htmlFor={id}
-        className={`px-1 text-sm text-gray-600 ${classNames?.container || ''}`}
+        className={`px-1 text-sm text-gray-600 ${classNames?.label || ''}`}
       >
         {label}
       </label>
-      <div
-        className={`text-md px-3 py-2 mt-1 rounded-lg w-full relative
-                flex flex-col justify-center items-center
-                bg-white border-2 border-gray-300 border-dashed
-                shadow-md focus:placeholder-gray-500 focus:bg-white focus:border-gray-600 
-                focus:outline-none`}
-      >
-        <p className="text-gray-600 font-semibold">
-          Click here to select your files
-        </p>
-        {inputStats.count > 0 && (
-          <>
-            <div className="text-sm text-gray-800 font-semibold text-center">
-              <p>
-                {inputStats.count} selected file
-                {inputStats.count > 1 ? 's' : ''}:
-              </p>
-              <ul className="text-left font-normal text-xs list-disc">
-                {inputStats.names.map((n, idx) => (
-                  <li key={idx}>{n}</li>
-                ))}
-              </ul>
-            </div>
-          </>
-        )}
-        <input
-          id={id}
-          type="file"
-          name={name}
-          className="opacity-0 w-full h-full absolute top-0 left-0 cursor-pointer"
-          ref={register}
-          onChange={onChange}
-          {...rest}
-        />
-      </div>
+      <FilePond
+        {...rest}
+        allowMultiple={true}
+        onupdatefiles={(files) => {
+          onFilesUpdated(files);
+        }}
+      />
       {errors && <Error message={errors.message} />}
     </div>
   );
@@ -82,7 +48,6 @@ function FileInput(props) {
 
 FileInput.propTypes = {
   id: PropTypes.string.isRequired,
-  type: PropTypes.string,
   name: PropTypes.string,
   label: PropTypes.string,
   errors: PropTypes.shape({
@@ -93,10 +58,10 @@ FileInput.propTypes = {
     label: PropTypes.string,
     container: PropTypes.string,
   }),
+  onFilesUpdated: PropTypes.func.isRequired,
 };
 
 FileInput.defaultProps = {
-  type: 'text',
   name: '',
   label: '',
 };

@@ -5,7 +5,7 @@ import { getImagePath, getModelFilePath } from '../../utils/general';
 import { useModel } from './custom-hooks';
 import { tw } from 'twind';
 import './model.css';
-import { OBJModel } from 'react-3d-viewer';
+import '@google/model-viewer/dist/model-viewer';
 
 const Model = () => {
   const { id } = useParams();
@@ -25,18 +25,18 @@ const Model = () => {
     }`;
 
   const render3dViewer = () => {
-    if (model.useObjViewer) {
-      const objFile = getModelFilePath(
-        model.files.find((file) => file.endsWith('.obj'))
-      );
+    if (model.useGltfViewer) {
+      const file = getModelFilePath(model.gltf);
       return (
-        <OBJModel
-          width="400"
-          height="400"
-          position={{ x: 0, y: -50, z: -50 }}
-          rotation={{ x: -1.3, y: 0, z: 0 }}
-          src={objFile}
-        />
+        <model-viewer
+          src={file}
+          ios-src=""
+          poster={galleryItems[0].original}
+          alt="A 3D model of an astronaut"
+          shadow-intensity="1"
+          camera-controls
+          auto-rotate
+        ></model-viewer>
       );
     }
   };
@@ -54,12 +54,14 @@ const Model = () => {
           >
             Gallery
           </button>
-          <button
-            className={viewerButtonClasses('3d')}
-            onClick={() => setViewer('3d')}
-          >
-            3D preview
-          </button>
+          {model.useGltfViewer && (
+            <button
+              className={viewerButtonClasses('3d')}
+              onClick={() => setViewer('3d')}
+            >
+              3D preview
+            </button>
+          )}
         </div>
         {viewer === 'gallery' ? (
           <ImageGallery

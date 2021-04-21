@@ -1,16 +1,19 @@
 import React from 'react';
+import { tw } from 'twind';
+
 import ModelForm from '../../../components/model-form/ModelForm';
 import Nav from '../../../components/nav/Nav';
+import { uploadModel } from '../../../api/models.api';
 
 function NewModelPage() {
   return (
     <>
       <Nav showBrand showSearch />
-      <div className="max-w-sm mx-auto px-6 md:mt-12">
-        <h1 className="text-center font-semibold text-black text-xl">
+      <div className="mx-20 px-6 md:mt-12">
+        <h1 className={tw`text(center black xl) font-semibold`}>
           Upload a new model
         </h1>
-        <ModelForm />
+        <ModelForm onFormSubmit={uploadModel} />
       </div>
     </>
   );

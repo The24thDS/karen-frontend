@@ -5325,6 +5325,16 @@
     "loader-utils" "^2.0.0"
     "schema-utils" "^3.0.0"
 
+"filepond-plugin-image-preview@^4.6.6":
+  "integrity" "sha512-zWbbpjNdvaVJ8tVsI2AYtjzVPMIqdsMhcSs3XlBKQXBMPmofGm3Xm2MT2QrZjhxBss03HeAp9Uf4Xab8lDgTlw=="
+  "resolved" "https://registry.npmjs.org/filepond-plugin-image-preview/-/filepond-plugin-image-preview-4.6.6.tgz"
+  "version" "4.6.6"
+
+"filepond@^4.27.0", "filepond@>=3.7.x < 5.x", "filepond@>=4.x <5.x":
+  "integrity" "sha512-Z1XUXny6BQw9RVORz/MMjyVJHcW+tXiMRxocLEAY6gY1EfpMPwLJcQhalpMnfiGax7sBqXkv3tE8sZO71Q7Hbw=="
+  "resolved" "https://registry.npmjs.org/filepond/-/filepond-4.27.0.tgz"
+  "version" "4.27.0"
+
 "filesize@6.1.0":
   "integrity" "sha512-LpCHtPQ3sFx67z+uh2HnSyWSLLu5Jxo21795uRDuar/EOuYWXib5EmPaGIBuSnRqH2IODiKA2k5re/K9OnN/Yg=="
   "resolved" "https://registry.npmjs.org/filesize/-/filesize-6.1.0.tgz"
@@ -9676,7 +9686,7 @@
     "strip-ansi" "6.0.0"
     "text-table" "0.2.0"
 
-"react-dom@^16.8.0 || ^17.0.0", "react-dom@^17.0.1", "react-dom@>= 16.8.0", "react-dom@>=16.6.0":
+"react-dom@^16.8.0 || ^17.0.0", "react-dom@^17.0.1", "react-dom@>= 16.8.0", "react-dom@>=16.6.0", "react-dom@16 - 18":
   "integrity" "sha512-6eV150oJZ9U2t9svnsspTMrWNyHc6chX0KzDeAOXftRa8bNeOKTTfCJ7KorIwenkHd2xqVTBTCZd79yk/lx/Ug=="
   "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-17.0.1.tgz"
   "version" "17.0.1"
@@ -9689,6 +9699,11 @@
   "integrity" "sha512-nQTTcUu+ATDbrSD1BZHr5kgSD4oF8OFjxun8uAaL8RwPBacGBNPf/yAuVVdx17N8XNzRDMrZ9XcKZHCjPW+9ew=="
   "resolved" "https://registry.npmjs.org/react-error-overlay/-/react-error-overlay-6.0.9.tgz"
   "version" "6.0.9"
+
+"react-filepond@^7.1.1":
+  "integrity" "sha512-6Szyi3zY4AEiSlE5rztJov/xIDB107Sv31MctDoSutdLinMqmbMej6kJ2MtSGzAhsP2+h8cDDr51mdHNXt97Yw=="
+  "resolved" "https://registry.npmjs.org/react-filepond/-/react-filepond-7.1.1.tgz"
+  "version" "7.1.1"
 
 "react-hook-form@^6.15.5", "react-hook-form@>=6.6.0":
   "integrity" "sha512-so2jEPYKdVk1olMo+HQ9D9n1hVzaPPFO4wsjgSeZ964R7q7CHsYRbVF0PGBi83FcycA5482WHflasdwLIUVENg=="
@@ -9899,7 +9914,7 @@
     "object-assign" "^4.1.1"
     "prop-types" "^15.6.2"
 
-"react@^16.0.0 || ^17.0.0", "react@^16.0.0-0", "react@^16.3.0 || ^17.0.0", "react@^16.8.0 || ^17.0.0", "react@^17.0.1", "react@>= 16.8.0", "react@>=16.6.0", "react@>=16.8.0", "react@0.13 - 17":
+"react@^16.0.0 || ^17.0.0", "react@^16.0.0-0", "react@^16.3.0 || ^17.0.0", "react@^16.8.0 || ^17.0.0", "react@^17.0.1", "react@>= 16.8.0", "react@>=16.6.0", "react@>=16.8.0", "react@0.13 - 17", "react@16 - 18":
   "integrity" "sha512-lG9c9UuMHdcAexXtigOZLX8exLWkW0Ku29qPRU8uhF2R9BN96dLCt0psvzPLlHc5OWkgymP3qwTRgbnw5BKx3w=="
   "resolved" "https://registry.npmjs.org/react/-/react-17.0.1.tgz"
   "version" "17.0.1"
