@@ -14,7 +14,7 @@ import Error from '../error/Error';
 import SubmitButton from '../form/inputs/SubmitButton';
 
 const schema = yup.object().shape({
-  email: yup.string().email().required(),
+  email: yup.string().required(),
   password: yup.string().required(),
 });
 
@@ -33,9 +33,8 @@ function LoginForm({ logUserIn, loginLoading, loginError }) {
       <Input
         register={register}
         id="email"
-        type="email"
         name="email"
-        label="Email"
+        label="Email / Username"
         errors={errors.email}
       />
       <Input

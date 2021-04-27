@@ -10,8 +10,8 @@ export const fetchModels = async () => {
   }
 };
 
-export const fetchModel = async (id) => {
-  const res = await fetch(`${API_URL}/models/${id}`);
+export const fetchModel = async (slug) => {
+  const res = await fetch(`${API_URL}/models/${slug}`);
   if (res.ok) {
     const data = await res.json();
     return data;

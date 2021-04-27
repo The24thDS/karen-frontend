@@ -21,7 +21,7 @@ const Routes = () => {
       <Route exact path="/models/new">
         <NewModelPage />
       </Route>
-      <Route exact path="/models/:id">
+      <Route exact path="/models/:slug">
         <ModelViewPage />
       </Route>
       <Route exact path="/models/:id/edit">

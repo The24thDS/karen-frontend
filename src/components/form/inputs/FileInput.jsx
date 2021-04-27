@@ -21,6 +21,7 @@ function FileInput(props) {
     classNames,
     errors,
     onFilesUpdated,
+    renderErrors,
     ...rest
   } = props;
 
@@ -41,7 +42,9 @@ function FileInput(props) {
           onFilesUpdated(files);
         }}
       />
-      {errors && <Error message={errors.message} />}
+      {renderErrors
+        ? errors && renderErrors(errors)
+        : errors && <Error message={errors.message} />}
     </div>
   );
 }
@@ -59,6 +62,7 @@ FileInput.propTypes = {
     container: PropTypes.string,
   }),
   onFilesUpdated: PropTypes.func.isRequired,
+  renderErrors: PropTypes.func,
 };
 
 FileInput.defaultProps = {

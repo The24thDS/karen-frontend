@@ -9,6 +9,7 @@ import SubmitButton from '../form/inputs/SubmitButton';
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),
+  username: yup.string().required(),
   password: yup.string().required(),
 });
 
@@ -56,6 +57,14 @@ function RegisterForm() {
         name="email"
         label="Email"
         errors={errors.email}
+      />
+      <Input
+        register={register}
+        id="username"
+        type="text"
+        name="username"
+        label="Username"
+        errors={errors.username}
       />
       <Input
         register={register}

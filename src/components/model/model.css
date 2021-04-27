@@ -1,1 +1,40 @@
 @import '~react-image-gallery/styles/css/image-gallery.css';
+
+model-viewer {
+  background: #000;
+  width: 100%;
+  height: 60vh;
+  background-color: #fff;
+  background-image: linear-gradient(
+      45deg,
+      #ccc 25%,
+      transparent 0,
+      transparent 75%,
+      #ccc 0,
+      #ccc
+    ),
+    linear-gradient(
+      45deg,
+      #ccc 25%,
+      transparent 0,
+      transparent 75%,
+      #ccc 0,
+      #ccc
+    );
+  background-position: 0 0, 4px 4px;
+  background-size: 3px 3px;
+}
+model-viewer::before {
+  content: '';
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-image: radial-gradient(
+    ellipse at center,
+    #bebdb5 0%,
+    #0f0f0f 100%
+  );
+  opacity: 0.9;
+}

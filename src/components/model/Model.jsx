@@ -1,20 +1,26 @@
+import '@google/model-viewer/dist/model-viewer';
+import { formatDistanceToNow, parse } from 'date-fns';
 import React, { useState } from 'react';
 import ImageGallery from 'react-image-gallery';
 import { useParams } from 'react-router';
-import { getImagePath, getModelFilePath } from '../../utils/general';
-import { useModel } from './custom-hooks';
 import { tw } from 'twind';
+import {
+  getGltfFilePath,
+  getImagePath,
+  getModelFilePath,
+} from '../../utils/general';
+import DownloadButton from '../download-button/DownloadButton';
+import { useModel } from './custom-hooks';
 import './model.css';
-import '@google/model-viewer/dist/model-viewer';
 
 const Model = () => {
-  const { id } = useParams();
-  const { model, user, tags } = useModel(id);
+  const { slug } = useParams();
+  const { model, user, tags } = useModel(slug);
   const [viewer, setViewer] = useState('gallery');
 
   const galleryItems =
     model?.images?.map((image) => ({
-      original: getImagePath(image),
+      original: getImagePath(slug, user.username, image),
     })) ?? [];
 
   const viewerButtonClasses = (buttonViewer) =>
@@ -26,7 +32,7 @@ const Model = () => {
 
   const render3dViewer = () => {
     if (model.useGltfViewer) {
-      const file = getModelFilePath(model.gltf);
+      const file = getGltfFilePath(slug, user.username, model.gltf);
       return (
         <model-viewer
           src={file}
@@ -98,19 +104,30 @@ const Model = () => {
           ))}
         </div>
         <div className="col-span-3">
-          <h3 className="font-semibold">uploaded by</h3>
-          <p className="text-sm">{user.email}</p>
+          <h3 className="font-semibold">by</h3>
+          <p className="text-sm">{user.username}</p>
         </div>
         <div className="col-span-3">
-          <h3 className="font-semibold">date uploaded</h3>
+          <h3 className="font-semibold">uploaded</h3>
+          <p className="text-sm">
+            {model.created_at &&
+              formatDistanceToNow(
+                parse(model.created_at, 'dd-MM-yyyy HH:mm:ss xxx', new Date()),
+                { addSuffix: true }
+              )}
+          </p>
         </div>
         <div className="col-span-6">
           <h3 className="font-semibold">files available</h3>
-          <ul className="text-sm">
-            {model.files?.map((fileName, idx) => (
-              <li key={idx}>{fileName}</li>
-            ))}
-          </ul>
+          {model?.files?.map(({ name, size }) => (
+            <DownloadButton
+              link={getModelFilePath(slug, user.username, name)}
+              label={`DOWNLOAD ${name
+                .slice(name.lastIndexOf('.') + 1)
+                .toUpperCase()}`}
+              size={size}
+            />
+          ))}
         </div>
         <div className="col-span-2">
           <h3 className="font-semibold">views</h3>

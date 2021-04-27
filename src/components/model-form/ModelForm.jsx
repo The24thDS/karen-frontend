@@ -13,12 +13,13 @@ function ModelForm({ initialModel, initialTags, onFormSubmit }) {
     loading: false,
     done: false,
     redirect: false,
-    modelId: '',
+    modelSlug: '',
     step: 0,
     data: {},
   });
 
   const onSubmit = async (lastData) => {
+    return;
     setFormStatus({
       ...formStatus,
       loading: true,
@@ -31,22 +32,19 @@ function ModelForm({ initialModel, initialTags, onFormSubmit }) {
       ...formStatus.data,
       ...lastData,
     };
-    console.log(data);
     try {
       data.tags = data.tags.map((tag) => tag.value);
       const formData = jsonToFormData(data);
       const resData = await onFormSubmit(formData);
-      console.log(resData);
       setFormStatus({
         ...formStatus,
         loading: false,
         done: true,
       });
       setTimeout(() => {
-        console.log(formStatus);
         setFormStatus({
           ...formStatus,
-          modelId: resData.id,
+          modelSlug: resData.slug,
           redirect: true,
         });
       }, 1500);
@@ -69,7 +67,6 @@ function ModelForm({ initialModel, initialTags, onFormSubmit }) {
   };
 
   const nextStep = (data) => {
-    console.log(data);
     setFormStatus({
       ...formStatus,
       data: {
@@ -97,7 +94,9 @@ function ModelForm({ initialModel, initialTags, onFormSubmit }) {
           getButtonText={buttonText}
         />
       )}
-      {formStatus.redirect && <Redirect to={`/models/${formStatus.modelId}`} />}
+      {formStatus.redirect && (
+        <Redirect to={`/models/${formStatus.modelSlug}`} />
+      )}
     </>
   );
 }

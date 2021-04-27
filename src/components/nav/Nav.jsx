@@ -53,7 +53,7 @@ const Nav = ({
     </NavLink>
   );
   const userGreetingItem = isLoggedIn && (
-    <NavItem>Hello, {currentUserData.email.split('@')[0]}</NavItem>
+    <NavItem>Hello, {currentUserData.username}</NavItem>
   );
   const registerLink = !isLoggedIn && (
     <NavLink to="/register">Register</NavLink>

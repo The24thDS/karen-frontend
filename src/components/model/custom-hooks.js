@@ -8,34 +8,21 @@ const checkIfModelHasFileWithExtension = (files, extension) => {
   }, false);
 };
 
-export const useModel = (modelId) => {
+export const useModel = (modelId, modelAuthor) => {
   const [model, setModel] = useState({ model: {}, user: {}, tags: [] });
 
   useEffect(() => {
     let mounted = true;
-    fetchModel(modelId).then((data) => {
-      const hasObjFile = checkIfModelHasFileWithExtension(
-        data.model.files,
-        '.obj'
-      );
-      const hasMtlFile = checkIfModelHasFileWithExtension(
-        data.model.files,
-        '.mtl'
-      );
-      const hasDaeFile = checkIfModelHasFileWithExtension(
-        data.model.files,
-        '.dae'
-      );
+    fetchModel(modelId, modelAuthor).then((data) => {
       const hasGltfFile = data.model.gltf?.length ? true : false;
       if (mounted) {
         setModel({
           ...data,
           model: {
             ...data.model,
-            useMtlViewer: hasMtlFile && hasObjFile,
-            useObjViewer: hasObjFile, // && !hasMtlFile,
-            useDaeViewer: hasDaeFile,
             useGltfViewer: hasGltfFile,
+            metadata: JSON.parse(data.model.metadata ?? '{}'),
+            files: data.model.files.map((item) => JSON.parse(item)),
           },
         });
       }

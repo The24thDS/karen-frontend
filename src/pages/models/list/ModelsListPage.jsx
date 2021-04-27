@@ -23,7 +23,12 @@ const ModelsListPage = ({ models, loading, fetchModels }) => {
       {!loading && (
         <div className="grid grid-cols-4 gap-4 mt-10 mx-20">
           {models.map((m) => (
-            <ModelsListEntry id={m.id} name={m.name} image={m.image} />
+            <ModelsListEntry
+              slug={m.slug}
+              name={m.name}
+              image={m.image}
+              username={m.u.username}
+            />
           ))}
         </div>
       )}

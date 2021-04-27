@@ -6,6 +6,7 @@ import FileInput from '../../form/inputs/FileInput';
 import Input from '../../form/inputs/Input';
 import ModelInfoInput from './ModelInfoInput';
 import SubmitButton from '../../form/inputs/SubmitButton';
+import Error from '../../error/Error';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ModelFormSchemaStep2 } from '../validation.schema';
@@ -18,7 +19,10 @@ const ModelForm3dFiles = ({ sectionStyle, onButtonClick, getButtonText }) => {
   const [keyName, setKeyName] = useState('');
 
   const addNewInfo = () => {
-    setCustomMetadataKeys([...customMetadataKeys, keyName]);
+    setCustomMetadataKeys([
+      ...customMetadataKeys,
+      keyName.toLowerCase().trim().replace(' ', '-'),
+    ]);
   };
 
   return (
@@ -40,7 +44,14 @@ const ModelForm3dFiles = ({ sectionStyle, onButtonClick, getButtonText }) => {
               id="models"
               allowMultiple={true}
               allowFileTypeValidation={false}
-              acceptedFileTypes={['.stl', '.mtl', '.obj', '.zip', '.dae']}
+              acceptedFileTypes={[
+                '.stl',
+                '.mtl',
+                '.obj',
+                '.zip',
+                '.dae',
+                '.fbx',
+              ]}
               errors={errors.models}
               onFilesUpdated={(files) => {
                 setValue(
@@ -69,47 +80,41 @@ const ModelForm3dFiles = ({ sectionStyle, onButtonClick, getButtonText }) => {
                   files.map((fileObj) => fileObj.file)
                 );
               }}
+              renderErrors={(gltfErrors) => {
+                if (gltfErrors.type === 'valid') {
+                  const errorMessages = JSON.parse(gltfErrors.message);
+                  return (
+                    <>
+                      {errorMessages.map((msg, idx) => (
+                        <Error key={msg + idx} message={msg} />
+                      ))}
+                    </>
+                  );
+                } else {
+                  return <Error message={gltfErrors.message} />;
+                }
+              }}
             />
           )}
         />
       </div>
       <div>
         <p className={sectionStyle}>Add some model related information</p>
-        <ModelInfoInput
-          id="quads"
-          name="metadata.quads"
-          label="Quads"
-          register={register}
-          errors={errors}
-        />
-        <ModelInfoInput
-          id="polygons"
-          name="metadata.polygons"
-          label="Polygons"
-          register={register}
-          errors={errors}
-        />
-        <ModelInfoInput
-          id="triangles"
-          name="metadata.triangles"
-          label="Total triangles"
-          register={register}
-          errors={errors}
-        />
+        <p className={`${sectionStyle} text-sm`}>
+          Total triangle count and total vertex count will be determined on the
+          server.
+        </p>
         {customMetadataKeys.map((key) => (
           <ModelInfoInput
             id={key}
             key={key}
             name={`metadata.${key}`}
-            label={key}
+            label={key.slice(0, 1).toUpperCase() + key.slice(1)}
             register={register}
             errors={errors}
           />
         ))}
         <div>
-          <p className={sectionStyle}>
-            Add custom information as key: value pair
-          </p>
           <div className="flex items-center">
             <Input
               id="key"
