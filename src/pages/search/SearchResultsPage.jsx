@@ -30,7 +30,7 @@ const SearchResultsPage = ({ models, loading, error, searchTerm }) => {
                 slug={m.slug}
                 name={m.name}
                 image={m.image}
-                username={m.u.username}
+                username={m.user.username}
               />
             ))}
           </div>
