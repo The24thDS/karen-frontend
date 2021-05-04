@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { ModelsListEntry } from '../../../components/models-list-entry';
+import ModelsListEntry from '../../../components/models-list-entry/ModelsListEntry';
 
 import { fetchModels } from '../../../state/actions/models.actions';
 import {
@@ -24,6 +24,7 @@ const ModelsListPage = ({ models, loading, fetchModels }) => {
         <div className="grid grid-cols-4 gap-4 mt-10 mx-20">
           {models.map((m) => (
             <ModelsListEntry
+              key={m.slug}
               slug={m.slug}
               name={m.name}
               image={m.image}

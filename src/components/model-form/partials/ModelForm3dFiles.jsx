@@ -17,6 +17,7 @@ const ModelForm3dFiles = ({ sectionStyle, onButtonClick, getButtonText }) => {
   });
   const [customMetadataKeys, setCustomMetadataKeys] = useState([]);
   const [keyName, setKeyName] = useState('');
+  const acceptedFileTypes = ['.stl', '.mtl', '.obj', '.zip', '.dae', '.fbx'];
 
   const addNewInfo = () => {
     setCustomMetadataKeys([
@@ -44,14 +45,7 @@ const ModelForm3dFiles = ({ sectionStyle, onButtonClick, getButtonText }) => {
               id="models"
               allowMultiple={true}
               allowFileTypeValidation={false}
-              acceptedFileTypes={[
-                '.stl',
-                '.mtl',
-                '.obj',
-                '.zip',
-                '.dae',
-                '.fbx',
-              ]}
+              acceptedFileTypes={acceptedFileTypes}
               errors={errors.models}
               onFilesUpdated={(files) => {
                 setValue(
@@ -141,6 +135,7 @@ const ModelForm3dFiles = ({ sectionStyle, onButtonClick, getButtonText }) => {
 ModelForm3dFiles.propTypes = {
   sectionStyle: PropTypes.string,
   onButtonClick: PropTypes.func.isRequired,
+  getButtonText: PropTypes.func.isRequired,
 };
 
 export default ModelForm3dFiles;

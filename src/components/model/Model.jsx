@@ -121,6 +121,7 @@ const Model = () => {
           <h3 className="font-semibold">files available</h3>
           {model?.files?.map(({ name, size }) => (
             <DownloadButton
+              key={slug + name}
               link={getModelFilePath(slug, user.username, name)}
               label={`DOWNLOAD ${name
                 .slice(name.lastIndexOf('.') + 1)

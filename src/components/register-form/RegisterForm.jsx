@@ -13,7 +13,7 @@ const schema = yup.object().shape({
   password: yup.string().required(),
 });
 
-function RegisterForm() {
+const RegisterForm = () => {
   const { register, handleSubmit, errors } = useForm({
     resolver: yupResolver(schema),
   });
@@ -89,6 +89,6 @@ function RegisterForm() {
         'Your account was successfully created. Go to log in to access it!'}
     </form>
   );
-}
+};
 
 export default RegisterForm;

@@ -5,7 +5,7 @@ import ModelForm from '../../../components/model-form/ModelForm';
 import Nav from '../../../components/nav/Nav';
 import { uploadModel } from '../../../api/models.api';
 
-function NewModelPage() {
+const NewModelPage = () => {
   return (
     <>
       <Nav showBrand showSearch />
@@ -17,6 +17,6 @@ function NewModelPage() {
       </div>
     </>
   );
-}
+};
 
 export default NewModelPage;

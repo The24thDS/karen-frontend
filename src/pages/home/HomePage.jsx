@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { tw, css } from 'twind/css';
 
 import Nav from '../../components/nav/Nav';
@@ -46,7 +45,5 @@ const HomePage = () => {
     </>
   );
 };
-
-HomePage.propTypes = {};
 
 export default HomePage;

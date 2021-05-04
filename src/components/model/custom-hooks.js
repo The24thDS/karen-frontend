@@ -1,13 +1,6 @@
 import { useEffect, useState } from 'react';
 import { fetchModel } from '../../api/models.api';
 
-const checkIfModelHasFileWithExtension = (files, extension) => {
-  return files.reduce((acc, item) => {
-    if (item.endsWith(extension)) return true;
-    else return acc;
-  }, false);
-};
-
 export const useModel = (modelId, modelAuthor) => {
   const [model, setModel] = useState({ model: {}, user: {}, tags: [] });
 

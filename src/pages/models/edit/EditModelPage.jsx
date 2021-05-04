@@ -1,12 +1,12 @@
 import React from 'react';
 import ModelForm from '../../../components/model-form/ModelForm';
 import Nav from '../../../components/nav/Nav';
-import { useParams } from 'react-router';
-import { useModel } from '../../../components/model/custom-hooks';
+// import { useParams } from 'react-router';
+// import { useModel } from '../../../components/model/custom-hooks';
 
-function EditModelPage() {
-  const { id } = useParams();
-  const { model, user, tags } = useModel(id);
+const EditModelPage = () => {
+  // const { id } = useParams();
+  // const { model, user, tags } = useModel(id);
   return (
     <>
       <Nav showBrand showSearch />
@@ -18,6 +18,6 @@ function EditModelPage() {
       </div>
     </>
   );
-}
+};
 
 export default EditModelPage;

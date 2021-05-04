@@ -1,15 +1,17 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import Input from '../form/inputs/Input';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { logUserIn } from '../../state/actions/users.actions';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+
+import { logUserIn } from '../../state/actions/users.actions';
 import {
   selectCurrentUserError,
   selectCurrentUserLoading,
 } from '../../state/selectors/users.selectors';
+
+import Input from '../form/inputs/Input';
 import Error from '../error/Error';
 import SubmitButton from '../form/inputs/SubmitButton';
 
@@ -18,7 +20,7 @@ const schema = yup.object().shape({
   password: yup.string().required(),
 });
 
-function LoginForm({ logUserIn, loginLoading, loginError }) {
+const LoginForm = ({ logUserIn, loginLoading, loginError }) => {
   const { register, handleSubmit, errors } = useForm({
     resolver: yupResolver(schema),
   });
@@ -49,7 +51,7 @@ function LoginForm({ logUserIn, loginLoading, loginError }) {
       {loginError && <Error message={loginErrorMessage} className="mt-2" />}
     </form>
   );
-}
+};
 
 const mapStateToProps = (state) => {
   return {

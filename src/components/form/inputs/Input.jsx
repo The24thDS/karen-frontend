@@ -1,19 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import Error from '../../error/Error';
 
-function Input(props) {
-  const {
-    id,
-    type,
-    name,
-    label,
-    classNames,
-    register,
-    errors,
-    ...rest
-  } = props;
-
+const Input = ({
+  id,
+  type,
+  name,
+  label,
+  classNames,
+  register,
+  errors,
+  ...rest
+}) => {
   return (
     <div
       className={`p-2 flex flex-col text-left ${classNames?.container || ''}`}
@@ -38,7 +37,7 @@ function Input(props) {
       {errors && <Error message={errors.message} />}
     </div>
   );
-}
+};
 
 Input.propTypes = {
   id: PropTypes.string.isRequired,

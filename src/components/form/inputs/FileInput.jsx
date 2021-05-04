@@ -13,18 +13,16 @@ import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 registerPlugin(FilePondPluginImagePreview);
 registerPlugin(FilePondPluginFileValidateType);
 
-function FileInput(props) {
-  const {
-    id,
-    name,
-    label,
-    classNames,
-    errors,
-    onFilesUpdated,
-    renderErrors,
-    ...rest
-  } = props;
-
+const FileInput = ({
+  id,
+  name,
+  label,
+  classNames,
+  errors,
+  onFilesUpdated,
+  renderErrors,
+  ...rest
+}) => {
   return (
     <div
       className={`p-2 flex flex-col text-left ${classNames?.container || ''}`}
@@ -47,7 +45,7 @@ function FileInput(props) {
         : errors && <Error message={errors.message} />}
     </div>
   );
-}
+};
 
 FileInput.propTypes = {
   id: PropTypes.string.isRequired,

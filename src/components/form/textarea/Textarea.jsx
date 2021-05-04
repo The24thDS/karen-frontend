@@ -1,10 +1,17 @@
 import React from 'react';
-import Error from '../../error/Error';
 import PropTypes from 'prop-types';
 
-function Textarea(props) {
-  const { id, name, label, classNames, register, errors, ...rest } = props;
+import Error from '../../error/Error';
 
+const Textarea = ({
+  id,
+  name,
+  label,
+  classNames,
+  register,
+  errors,
+  ...rest
+}) => {
   return (
     <div
       className={`p-2 flex flex-col text-left ${classNames?.container || ''}`}
@@ -28,7 +35,7 @@ function Textarea(props) {
       {errors && <Error message={errors.message} />}
     </div>
   );
-}
+};
 
 Textarea.propTypes = {
   id: PropTypes.string.isRequired,

@@ -8,7 +8,7 @@ import ModelForm3dFiles from './partials/ModelForm3dFiles';
 
 import './model-form.css';
 
-function ModelForm({ initialModel, initialTags, onFormSubmit }) {
+const ModelForm = ({ initialModel, initialTags, onFormSubmit }) => {
   const [formStatus, setFormStatus] = useState({
     loading: false,
     done: false,
@@ -98,6 +98,6 @@ function ModelForm({ initialModel, initialTags, onFormSubmit }) {
       )}
     </>
   );
-}
+};
 
 export default ModelForm;

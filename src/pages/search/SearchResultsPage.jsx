@@ -10,7 +10,7 @@ import {
   selectModelsError,
 } from '../../state/selectors/models.selectors';
 
-import { ModelsListEntry } from '../../components/models-list-entry';
+import ModelsListEntry from '../../components/models-list-entry/ModelsListEntry';
 import Nav from '../../components/nav/Nav';
 
 const SearchResultsPage = ({ models, loading, error, searchTerm }) => {

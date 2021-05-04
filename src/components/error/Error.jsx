@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Error({ message, className, ...rest }) {
+const Error = ({ message, className, ...rest }) => {
   return (
     <div className={`flex items-center py-1 pt-2 pl-1 ${className}`} {...rest}>
       <div className="bg-red-200 text-red-700 rounded-full p-1 fill-current">
@@ -24,7 +24,7 @@ function Error({ message, className, ...rest }) {
       </p>
     </div>
   );
-}
+};
 
 Error.propTypes = {
   message: PropTypes.string.isRequired,
