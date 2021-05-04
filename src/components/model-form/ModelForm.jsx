@@ -19,7 +19,6 @@ function ModelForm({ initialModel, initialTags, onFormSubmit }) {
   });
 
   const onSubmit = async (lastData) => {
-    return;
     setFormStatus({
       ...formStatus,
       loading: true,
