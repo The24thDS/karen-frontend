@@ -82,7 +82,7 @@ const Model = () => {
       </div>
       <div className="grid grid-cols-6 gap-y-4 content-start">
         <div className="description col-span-6">
-          <h3 className="font-semibold">description</h3>
+          <h3 className="font-semibold">Description</h3>
           {model.description
             ?.split('\r\n')
             .filter((s) => s !== '')
@@ -93,7 +93,7 @@ const Model = () => {
             ))}
         </div>
         <div className="col-span-6">
-          <h3 className="font-semibold">keywords</h3>
+          <h3 className="font-semibold">Keywords</h3>
           {tags.map((tag) => (
             <span
               key={tag}
@@ -104,11 +104,11 @@ const Model = () => {
           ))}
         </div>
         <div className="col-span-3">
-          <h3 className="font-semibold">by</h3>
+          <h3 className="font-semibold">Uploaded by</h3>
           <p className="text-sm">{user.username}</p>
         </div>
         <div className="col-span-3">
-          <h3 className="font-semibold">uploaded</h3>
+          <h3 className="font-semibold">Upload time</h3>
           <p className="text-sm">
             {model.created_at &&
               formatDistanceToNow(
@@ -118,7 +118,7 @@ const Model = () => {
           </p>
         </div>
         <div className="col-span-6">
-          <h3 className="font-semibold">files available</h3>
+          <h3 className="font-semibold">Available files</h3>
           {model?.files?.map(({ name, size }) => (
             <DownloadButton
               key={slug + name}
@@ -131,16 +131,29 @@ const Model = () => {
           ))}
         </div>
         <div className="col-span-2">
-          <h3 className="font-semibold">views</h3>
+          <h3 className="font-semibold">Views</h3>
           <p>{model.views || 0}</p>
         </div>
         <div className="col-span-2">
-          <h3 className="font-semibold">downloads</h3>
+          <h3 className="font-semibold">Downloads</h3>
           <p>{model.downloads || 0}</p>
         </div>
         <div className="col-span-2">
-          <h3 className="font-semibold">rating</h3>
+          <h3 className="font-semibold">Rating</h3>
           <p>{model.rating || 0}</p>
+        </div>
+        <div className="col-span-6 grid grid-cols-2">
+          <h3 className="col-span-2 font-semibold">Model data</h3>
+          <p>Total Vertex Count</p>
+          <p>{model.totalVertexCount}</p>
+          <p>Total Triangle Count</p>
+          <p>{model.totalTriangleCount}</p>
+          {Object.entries(model.metadata).map(([key, value]) => (
+            <>
+              <p>{key}</p>
+              <p>{value}</p>
+            </>
+          ))}
         </div>
       </div>
     </>

@@ -2,7 +2,11 @@ import { useEffect, useState } from 'react';
 import { fetchModel } from '../../api/models.api';
 
 export const useModel = (modelId, modelAuthor) => {
-  const [model, setModel] = useState({ model: {}, user: {}, tags: [] });
+  const [model, setModel] = useState({
+    model: { metadata: {} },
+    user: {},
+    tags: [],
+  });
 
   useEffect(() => {
     let mounted = true;
