@@ -41,25 +41,23 @@ const HomePage = () => {
   }, []);
 
   return (
-    <>
-      <div
-        className={tw(
-          'w-full relative flex flex-col justify-center items-center',
-          heroCss
-        )}
-      >
-        <h1 className={tw`text-8xl text-white relative z-10 font-bold mb-10`}>
-          KAREN
-        </h1>
-        <SearchInput
-          classNames={{
-            container: 'z-10 relative text-3xl',
-            input: 'px-4 py-2',
-            button: 'p-2',
-          }}
-        />
-      </div>
-    </>
+    <div
+      className={tw(
+        'w-full relative flex flex-col justify-center items-center',
+        heroCss
+      )}
+    >
+      <h1 className={tw`text-8xl text-white relative z-10 font-bold mb-10`}>
+        KAREN
+      </h1>
+      <SearchInput
+        classNames={{
+          container: 'z-10 relative text-3xl',
+          input: 'px-4 py-2',
+          button: 'p-2',
+        }}
+      />
+    </div>
   );
 };
 

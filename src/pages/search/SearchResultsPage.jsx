@@ -14,27 +14,25 @@ import ModelsListEntry from '../../components/models-list-entry/ModelsListEntry'
 
 const SearchResultsPage = ({ models, loading, error, searchTerm }) => {
   return (
-    <>
-      <div className="px-20 md:mt-12">
-        <h1 className="text-xl font-semibold">
-          Search results for{' '}
-          <span className="italic font-bold">{searchTerm}</span>
-        </h1>
-        {loading && 'Loading...'}
-        {!loading && (
-          <div className="grid grid-cols-4 gap-4 mt-10">
-            {models.map((m) => (
-              <ModelsListEntry
-                slug={m.slug}
-                name={m.name}
-                image={m.image}
-                username={m.user.username}
-              />
-            ))}
-          </div>
-        )}
-      </div>
-    </>
+    <div className="px-20 md:mt-12">
+      <h1 className="text-xl font-semibold">
+        Search results for{' '}
+        <span className="italic font-bold">{searchTerm}</span>
+      </h1>
+      {loading && 'Loading...'}
+      {!loading && (
+        <div className="grid grid-cols-4 gap-4 mt-10">
+          {models.map((m) => (
+            <ModelsListEntry
+              slug={m.slug}
+              name={m.name}
+              image={m.image}
+              username={m.user.username}
+            />
+          ))}
+        </div>
+      )}
+    </div>
   );
 };
 
