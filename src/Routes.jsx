@@ -7,7 +7,7 @@ import ModelUploadPage from 'pages/models/upload/ModelUploadPage';
 import EditModelPage from 'pages/models/edit/EditModelPage';
 import LoginPage from 'pages/auth/LoginPage';
 import RegisterPage from 'pages/auth/RegisterPage';
-import ModelsListPage from 'pages/models/list/ModelsListPage';
+import ModelListPage from 'pages/models/list/ModelListPage';
 import ModelViewPage from 'pages/models/view/ModelViewPage';
 import SearchResultsPage from 'pages/search/SearchResultsPage';
 import Error403 from 'pages/403/Error403';
@@ -19,7 +19,7 @@ const Routes = () => {
         <HomePage />
       </Route>
       <Route exact path="/models">
-        <ModelsListPage />
+        <ModelListPage />
       </Route>
       <ProtectedRoute exact path="/models/new" component={ModelUploadPage} />
       <Route exact path="/models/:slug">

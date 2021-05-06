@@ -1,16 +1,14 @@
+import ModelsGrid from 'components/models-grid/ModelsGrid';
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
 import { fetchModels } from '../../state/actions/models.actions';
 import {
   selectModels,
+  selectModelsError,
   selectModelsLoading,
   selectModelsSearchTerm,
-  selectModelsError,
 } from '../../state/selectors/models.selectors';
-
-import ModelsListEntry from '../../components/models-list-entry/ModelsListEntry';
 
 const SearchResultsPage = ({ models, loading, error, searchTerm }) => {
   return (
@@ -20,18 +18,7 @@ const SearchResultsPage = ({ models, loading, error, searchTerm }) => {
         <span className="italic font-bold">{searchTerm}</span>
       </h1>
       {loading && 'Loading...'}
-      {!loading && (
-        <div className="grid grid-cols-4 gap-4 mt-10">
-          {models.map((m) => (
-            <ModelsListEntry
-              slug={m.slug}
-              name={m.name}
-              image={m.image}
-              username={m.user.username}
-            />
-          ))}
-        </div>
-      )}
+      {!loading && <ModelsGrid models={models} />}
     </div>
   );
 };

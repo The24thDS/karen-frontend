@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+
 import { getImagePath } from '../../utils/general';
 
-const ModelsListEntry = ({ slug, name, username, image }) => (
+const ModelItem = ({ slug, name, user: { username }, image }) => (
   <Link
     to={`/models/${slug}`}
     key={slug}
@@ -23,4 +24,4 @@ const ModelsListEntry = ({ slug, name, username, image }) => (
   </Link>
 );
 
-export default ModelsListEntry;
+export default ModelItem;
