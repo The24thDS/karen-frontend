@@ -11,12 +11,10 @@ import {
 } from '../../state/selectors/models.selectors';
 
 import ModelsListEntry from '../../components/models-list-entry/ModelsListEntry';
-import Nav from '../../components/nav/Nav';
 
 const SearchResultsPage = ({ models, loading, error, searchTerm }) => {
   return (
     <>
-      <Nav showBrand showSearch />
       <div className="px-20 md:mt-12">
         <h1 className="text-xl font-semibold">
           Search results for{' '}

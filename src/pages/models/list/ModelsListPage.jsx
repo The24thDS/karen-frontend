@@ -8,7 +8,6 @@ import {
   selectModels,
   selectModelsLoading,
 } from '../../../state/selectors/models.selectors';
-import Nav from '../../../components/nav/Nav';
 
 const ModelsListPage = ({ models, loading, fetchModels }) => {
   useEffect(() => {
@@ -18,7 +17,6 @@ const ModelsListPage = ({ models, loading, fetchModels }) => {
 
   return (
     <>
-      <Nav showBrand showSearch />
       {loading && 'Loading...'}
       {!loading && (
         <div className="grid grid-cols-4 gap-4 mt-10 mx-20">

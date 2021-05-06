@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { tw, css } from 'twind/css';
 
-import Nav from '../../components/nav/Nav';
-import SearchInput from '../../components/search/SearchInput';
-import image from '../../assets/home_page_image.jpg';
+import NavbarContext from 'state/contexts/NavbarContext';
+
+import SearchInput from 'components/search/SearchInput';
+
+import image from 'assets/home_page_image.jpg';
 
 const heroCss = css({
   height: 'calc(100vh - 56px)',
@@ -22,9 +24,24 @@ const heroCss = css({
 });
 
 const HomePage = () => {
+  const { setNavbarState } = useContext(NavbarContext);
+
+  useEffect(() => {
+    setNavbarState({
+      showBrand: false,
+      showSearch: false,
+    });
+    return () => {
+      setNavbarState({
+        showBrand: true,
+        showSearch: true,
+      });
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <>
-      <Nav />
       <div
         className={tw(
           'w-full relative flex flex-col justify-center items-center',

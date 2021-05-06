@@ -1,32 +1,30 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { connect } from 'react-redux';
 import { tw, css } from 'twind/css';
 import { bindActionCreators } from 'redux';
+import { useHistory } from 'react-router-dom';
 
 import {
   selectCurrentUserData,
   selectUserLoggedIn,
 } from '../../state/selectors/users.selectors';
 import { logout } from '../../state/actions/users.actions';
+import NavbarContext from 'state/contexts/NavbarContext';
 
 import NavLink from './NavLink';
 import BrandLink from './BrandLink';
 import SearchInput from '../search/SearchInput';
-import { useHistory } from 'react-router-dom';
 import NavItem from './NavItem';
 
 const searchInputContainer = css({
   minWidth: '450px',
 });
 
-const Nav = ({
-  showBrand,
-  showSearch,
-  isLoggedIn,
-  currentUserData,
-  logout,
-}) => {
+const Navbar = ({ isLoggedIn, currentUserData, logout }) => {
   const history = useHistory();
+  const {
+    state: { showBrand, showSearch },
+  } = useContext(NavbarContext);
   const logUserOut = () => {
     sessionStorage.removeItem('json-wt');
     logout();
@@ -89,4 +87,4 @@ const mapDispatchToProps = (dispatch) => ({
   ...bindActionCreators({ logout }, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Nav);
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

@@ -1,11 +1,27 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import './App.css';
+
+import { checkToken } from 'state/actions/users.actions';
+import NavbarContext, {
+  navbarDefaultState,
+} from 'state/contexts/NavbarContext';
+
 import Routes from './Routes';
-import { checkToken } from './state/actions/users.actions';
+import Navbar from 'components/nav/Navbar';
+
+import './App.css';
 
 function App({ checkToken }) {
+  const [navbarState, setNavbarState] = useState({
+    state: navbarDefaultState,
+    setNavbarState: (navbarState) =>
+      setNavbarState((currentState) => ({
+        state: { ...currentState, ...navbarState },
+        setNavbarState: currentState.setNavbarState,
+      })),
+  });
+
   useEffect(() => {
     if (sessionStorage.getItem('json-wt')?.length) {
       checkToken();
@@ -14,9 +30,12 @@ function App({ checkToken }) {
   }, []);
 
   return (
-    <div className="container max-w-full mx-auto">
-      <Routes />
-    </div>
+    <main className="container max-w-full mx-auto">
+      <NavbarContext.Provider value={navbarState}>
+        <Navbar />
+        <Routes />
+      </NavbarContext.Provider>
+    </main>
   );
 }
 
