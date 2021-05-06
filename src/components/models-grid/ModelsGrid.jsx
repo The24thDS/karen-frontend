@@ -7,7 +7,12 @@ import Grid from 'components/grid/Grid';
 const ModelsGrid = ({ models }) => {
   return (
     <>
-      <Grid cols={4} items={models} itemComponent={ModelItem} />
+      <Grid
+        cols={4}
+        items={models}
+        itemComponent={ModelItem}
+        uniqueItemKey="slug"
+      />
     </>
   );
 };

@@ -6,7 +6,6 @@ import { getImagePath } from '../../utils/general';
 const ModelItem = ({ slug, name, user: { username }, image }) => (
   <Link
     to={`/models/${slug}`}
-    key={slug}
     className="flex flex-col rounded-md shadow-lg cursor-pointer hover:shadow-md transition-shadow"
   >
     <div className="h-64 overflow-hidden">
