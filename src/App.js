@@ -11,8 +11,17 @@ import Routes from './Routes';
 import Navbar from 'components/nav/Navbar';
 
 import './App.css';
+import Sidepanel from 'components/sidepanel/Sidepanel';
+import { setSidepanelOpened } from 'state/actions/settings.actions';
+import { getSidepanelOpened } from 'state/selectors/settings.selectors';
+import SidepanelModelContent from 'components/sidepanel/SidepanelModelContent';
 
-function App({ checkToken }) {
+const App = ({
+  sidepanelOpened,
+  selectedModel,
+  checkToken,
+  setSidepanelOpened,
+}) => {
   const [navbarState, setNavbarState] = useState({
     state: navbarDefaultState,
     setNavbarState: (navbarState) =>
@@ -33,14 +42,28 @@ function App({ checkToken }) {
     <main className="container max-w-full mx-auto">
       <NavbarContext.Provider value={navbarState}>
         <Navbar />
-        <Routes />
+        <div className="pt-14 flex">
+          <Routes />
+          <Sidepanel
+            opened={sidepanelOpened}
+            onClose={() => {
+              setSidepanelOpened(false);
+            }}
+          >
+            <SidepanelModelContent />
+          </Sidepanel>
+        </div>
       </NavbarContext.Provider>
     </main>
   );
-}
+};
 
-const mapDispatchToProps = (dispatch) => ({
-  ...bindActionCreators({ checkToken }, dispatch),
+const mapStateToProps = (state) => ({
+  sidepanelOpened: getSidepanelOpened(state),
 });
 
-export default connect(null, mapDispatchToProps)(App);
+const mapDispatchToProps = (dispatch) => ({
+  ...bindActionCreators({ checkToken, setSidepanelOpened }, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

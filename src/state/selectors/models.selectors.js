@@ -2,6 +2,11 @@ import { createSelector } from 'reselect';
 
 const getModelsContainer = (state) => state.models;
 
+export const getSelectedModel = createSelector(
+  getModelsContainer,
+  (container) => container.get('selectedModel')
+);
+
 export const selectModels = createSelector(getModelsContainer, (container) =>
   container.get('items')
 );

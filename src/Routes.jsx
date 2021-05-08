@@ -14,39 +14,41 @@ import Error403 from 'pages/403/Error403';
 
 const Routes = () => {
   return (
-    <Switch>
-      <Route exact path="/">
-        <HomePage />
-      </Route>
-      <Route exact path="/models">
-        <ModelListPage />
-      </Route>
-      <ProtectedRoute exact path="/models/new" component={ModelUploadPage} />
-      <Route exact path="/models/:slug">
-        <ModelViewPage />
-      </Route>
-      <Route exact path="/models/:id/edit">
-        <EditModelPage />
-      </Route>
-      <ProtectedRoute
-        exact
-        path="/login"
-        component={LoginPage}
-        reversed={true}
-      />
-      <ProtectedRoute
-        exact
-        path="/register"
-        component={RegisterPage}
-        reversed={true}
-      />
-      <Route exact path="/search">
-        <SearchResultsPage />
-      </Route>
-      <Route exact path="/403">
-        <Error403 />
-      </Route>
-    </Switch>
+    <div className="flex-grow">
+      <Switch>
+        <Route exact path="/">
+          <HomePage />
+        </Route>
+        <Route exact path="/models">
+          <ModelListPage />
+        </Route>
+        <ProtectedRoute exact path="/models/new" component={ModelUploadPage} />
+        <Route exact path="/models/:slug">
+          <ModelViewPage />
+        </Route>
+        <Route exact path="/models/:id/edit">
+          <EditModelPage />
+        </Route>
+        <ProtectedRoute
+          exact
+          path="/login"
+          component={LoginPage}
+          reversed={true}
+        />
+        <ProtectedRoute
+          exact
+          path="/register"
+          component={RegisterPage}
+          reversed={true}
+        />
+        <Route exact path="/search">
+          <SearchResultsPage />
+        </Route>
+        <Route exact path="/403">
+          <Error403 />
+        </Route>
+      </Switch>
+    </div>
   );
 };
 

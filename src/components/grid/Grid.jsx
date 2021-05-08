@@ -2,11 +2,24 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { tw } from 'twind';
 
-const Grid = ({ items, itemComponent: Item, cols, uniqueItemKey }) => {
+const Grid = ({
+  items,
+  itemComponent: Item,
+  cols,
+  uniqueItemKey,
+  classNames,
+  onItemClick,
+}) => {
   return (
-    <section className={tw`grid(& cols-${cols.toString()}) gap-4 mt-10 mx-20`}>
+    <section
+      className={tw`grid(& cols-${cols.toString()}) gap-4 mt-10 mx-20 ${classNames}`}
+    >
       {items.map((item) => (
-        <Item key={item[uniqueItemKey]} {...item} />
+        <Item
+          key={item[uniqueItemKey]}
+          {...item}
+          onClick={() => onItemClick(item)}
+        />
       ))}
     </section>
   );
@@ -17,6 +30,8 @@ Grid.propTypes = {
   itemComponent: PropTypes.elementType.isRequired,
   items: PropTypes.array.isRequired,
   uniqueItemKey: PropTypes.string,
+  classNames: PropTypes.string,
+  onItemClick: PropTypes.func,
 };
 
 Grid.defaultProps = {

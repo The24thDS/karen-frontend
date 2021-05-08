@@ -6,6 +6,7 @@ import {
   SEARCH_MODELS,
   SEARCH_MODELS_FAILURE,
   SEARCH_MODELS_SUCCESS,
+  SET_SELECTED_MODEL,
 } from '../actions/models.actions';
 
 const INITIAL_STATE = Map({
@@ -13,6 +14,7 @@ const INITIAL_STATE = Map({
   loading: false,
   error: null,
   searchTerm: null,
+  selectedModel: {},
 });
 
 const modelsReducer = (state = INITIAL_STATE, action) => {
@@ -35,6 +37,8 @@ const modelsReducer = (state = INITIAL_STATE, action) => {
     case SEARCH_MODELS_FAILURE:
     case FETCH_MODELS_FAILURE:
       return state.merge({ loading: false, error: action.message });
+    case SET_SELECTED_MODEL:
+      return state.merge({ selectedModel: action.payload });
     default:
       return state;
   }

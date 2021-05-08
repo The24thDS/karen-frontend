@@ -59,7 +59,7 @@ const Navbar = ({ isLoggedIn, currentUserData, logout }) => {
   const loginLink = !isLoggedIn && <NavLink to="/login">Login</NavLink>;
 
   return (
-    <nav className="flex mx-auto justify-between px-14 h-14 bg-gray-900">
+    <nav className="flex mx-auto justify-between px-14 h-14 bg-gray-900 fixed w-screen z-10">
       <ul className="flex">
         {brandLink}
         {allModelsLink}
