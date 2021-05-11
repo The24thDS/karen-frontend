@@ -16,12 +16,7 @@ import { setSidepanelOpened } from 'state/actions/settings.actions';
 import { getSidepanelOpened } from 'state/selectors/settings.selectors';
 import SidepanelModelContent from 'components/sidepanel/SidepanelModelContent';
 
-const App = ({
-  sidepanelOpened,
-  selectedModel,
-  checkToken,
-  setSidepanelOpened,
-}) => {
+const App = ({ sidepanelOpened, checkToken, setSidepanelOpened }) => {
   const [navbarState, setNavbarState] = useState({
     state: navbarDefaultState,
     setNavbarState: (navbarState) =>

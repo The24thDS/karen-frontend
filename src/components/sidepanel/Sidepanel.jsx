@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { tw, css } from 'twind/css';
 
-const Sidepanel = ({ children, opened, onClose }) => {
+const useContentStatus = (opened) => {
   const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
@@ -14,6 +14,12 @@ const Sidepanel = ({ children, opened, onClose }) => {
       setShowContent(false);
     }
   }, [opened]);
+
+  return showContent;
+};
+
+const Sidepanel = ({ children, opened, onClose }) => {
+  const shouldDisplayContent = useContentStatus(opened);
 
   const sidepanelOpenedCSS = css({
     width: '25vw',
@@ -43,12 +49,12 @@ const Sidepanel = ({ children, opened, onClose }) => {
       <div
         className={tw(
           `bg-black text-white fixed h-screen pt-10 px-6 ${
-            showContent ? 'block' : 'none'
+            shouldDisplayContent ? 'block' : 'none'
           }`,
           sidepanelOpenedCSS
         )}
       >
-        {children}
+        {shouldDisplayContent && children}
       </div>
     </aside>
   );
