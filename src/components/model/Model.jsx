@@ -34,6 +34,7 @@ const Model = () => {
     if (model.useGltfViewer) {
       const file = getGltfFilePath(slug, user.username, model.gltf);
       return (
+        // @ts-ignore
         <model-viewer
           src={file}
           ios-src=""

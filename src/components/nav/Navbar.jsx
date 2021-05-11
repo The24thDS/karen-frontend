@@ -7,8 +7,8 @@ import { useHistory } from 'react-router-dom';
 import {
   selectCurrentUserData,
   selectUserLoggedIn,
-} from '../../state/selectors/users.selectors';
-import { logout } from '../../state/actions/users.actions';
+} from 'state/selectors/users.selectors';
+import { logout } from 'state/actions/users.actions';
 import NavbarContext from 'state/contexts/NavbarContext';
 
 import NavLink from './NavLink';

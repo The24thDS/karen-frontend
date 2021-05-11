@@ -5,11 +5,11 @@ import { bindActionCreators } from 'redux';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { logUserIn } from '../../state/actions/users.actions';
+import { logUserIn } from 'state/actions/users.actions';
 import {
   selectCurrentUserError,
   selectCurrentUserLoading,
-} from '../../state/selectors/users.selectors';
+} from 'state/selectors/users.selectors';
 
 import Input from '../form/inputs/Input';
 import Error from '../error/Error';

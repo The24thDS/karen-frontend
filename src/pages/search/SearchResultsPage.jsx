@@ -1,4 +1,5 @@
 import ModelsGrid from 'components/models-grid/ModelsGrid';
+import WithLoading from 'components/with-loading/WithLoading';
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -17,8 +18,9 @@ const SearchResultsPage = ({ models, loading, error, searchTerm }) => {
         Search results for{' '}
         <span className="italic font-bold">{searchTerm}</span>
       </h1>
-      {loading && 'Loading...'}
-      {!loading && <ModelsGrid models={models} />}
+      <WithLoading condition={!loading}>
+        <ModelsGrid models={models} />
+      </WithLoading>
     </div>
   );
 };

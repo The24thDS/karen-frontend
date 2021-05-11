@@ -13,7 +13,6 @@ import Grid from 'components/grid/Grid';
 const ModelsGrid = ({ models, setSelectedModel, setSidepanelOpened }) => {
   useEffect(() => {
     return () => {
-      console.log('component unmounted');
       setSidepanelOpened(false);
     };
   }, []);

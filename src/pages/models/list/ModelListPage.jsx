@@ -7,6 +7,7 @@ import {
   selectModels,
   selectModelsLoading,
 } from 'state/selectors/models.selectors';
+import WithLoading from 'components/with-loading/WithLoading';
 
 const ModelListPage = ({ models, loading, fetchModels }) => {
   useEffect(() => {
@@ -15,10 +16,9 @@ const ModelListPage = ({ models, loading, fetchModels }) => {
   }, []);
 
   return (
-    <>
-      {loading && 'Loading...'}
-      {!loading && <ModelsGrid models={models} />}
-    </>
+    <WithLoading condition={!loading}>
+      <ModelsGrid models={models} />
+    </WithLoading>
   );
 };
 

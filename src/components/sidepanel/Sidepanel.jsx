@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { tw, css } from 'twind/css';
+import WithLoading from 'components/with-loading/WithLoading';
+
+const transitionDurationMs = 200;
 
 const useContentStatus = (opened) => {
   const [showContent, setShowContent] = useState(false);
@@ -9,7 +12,7 @@ const useContentStatus = (opened) => {
     if (opened === true) {
       setTimeout(() => {
         setShowContent(true);
-      }, 500);
+      }, transitionDurationMs);
     } else {
       setShowContent(false);
     }
@@ -32,14 +35,14 @@ const Sidepanel = ({ children, opened, onClose }) => {
   return (
     <aside
       className={tw(
-        'relative max-h-screen',
+        `relative max-h-screen transition-all ease-linear duration-${transitionDurationMs}`,
         opened ? sidepanelOpenedCSS : sidepanelClosedCSS
       )}
     >
       <button
         className={tw`${
           opened ? 'block' : 'none'
-        } fixed cursor-pointer bg-none border-0 text-white z-10 transition-all ease-linear duration-200 text-xl w-8 h-8`}
+        } fixed cursor-pointer bg-none border-0 text-white z-10 text-xl w-8 h-8`}
         onClick={() => {
           onClose();
         }}
@@ -54,7 +57,7 @@ const Sidepanel = ({ children, opened, onClose }) => {
           sidepanelOpenedCSS
         )}
       >
-        {shouldDisplayContent && children}
+        <WithLoading condition={shouldDisplayContent}>{children}</WithLoading>
       </div>
     </aside>
   );
