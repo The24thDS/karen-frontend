@@ -12,11 +12,13 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useTagsOptions } from '../custom-hooks';
 import { ModelFormSchemaStep1 } from '../validation.schema';
+import { imagesFileInputServerConfig } from '../file-inputs-server-configs';
 
 const ModelFormImageAndInformation = ({ sectionStyle, onButtonClick }) => {
-  const { register, handleSubmit, control, errors, setValue } = useForm({
-    resolver: yupResolver(ModelFormSchemaStep1),
-  });
+  const { register, handleSubmit, control, errors, setValue, getValues } =
+    useForm({
+      resolver: yupResolver(ModelFormSchemaStep1),
+    });
   const tagsOptions = useTagsOptions();
 
   return (
@@ -35,15 +37,29 @@ const ModelFormImageAndInformation = ({ sectionStyle, onButtonClick }) => {
           render={({ field }) => (
             <FileInput
               {...field}
+              server={imagesFileInputServerConfig(getValues)}
               id="images"
+              name="images"
               allowMultiple={true}
               acceptedFileTypes={['image/*']}
               errors={errors.images}
-              onFilesUpdated={(files) => {
-                setValue(
-                  'images',
-                  files.map((fileObj) => fileObj.file)
-                );
+              onprocessfile={(error, file) => {
+                if (error === null) {
+                  setValue('images', [
+                    ...getValues('images'),
+                    { id: file.serverId, name: file.filename },
+                  ]);
+                }
+              }}
+              onremovefile={(error, file) => {
+                if (error === null) {
+                  setValue(
+                    'images',
+                    getValues('images').filter(
+                      (img) => img.id !== file.serverId
+                    )
+                  );
+                }
               }}
             />
           )}

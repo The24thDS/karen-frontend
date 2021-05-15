@@ -7,6 +7,7 @@ import ModelFormImageAndInformation from './partials/ModelFormImageAndInformatio
 import ModelForm3dFiles from './partials/ModelForm3dFiles';
 
 import './model-form.css';
+import Error from 'components/error/Error';
 
 const ModelForm = ({ initialModel, initialTags, onFormSubmit }) => {
   const [formStatus, setFormStatus] = useState({
@@ -16,6 +17,7 @@ const ModelForm = ({ initialModel, initialTags, onFormSubmit }) => {
     modelSlug: '',
     step: 0,
     data: {},
+    serverErrors: [],
   });
 
   const onSubmit = async (lastData) => {
@@ -33,20 +35,31 @@ const ModelForm = ({ initialModel, initialTags, onFormSubmit }) => {
     };
     try {
       data.tags = data.tags.map((tag) => tag.value);
-      const formData = jsonToFormData(data);
-      const resData = await onFormSubmit(formData);
-      setFormStatus({
-        ...formStatus,
-        loading: false,
-        done: true,
-      });
-      setTimeout(() => {
+      const resData = await onFormSubmit(data);
+      if (resData.statusCode && resData.statusCode !== 201) {
         setFormStatus({
           ...formStatus,
-          modelSlug: resData.slug,
-          redirect: true,
+          loading: false,
+          done: false,
+          serverErrors:
+            typeof resData.message === 'string'
+              ? [resData.message]
+              : resData.message,
         });
-      }, 1500);
+      } else {
+        setFormStatus({
+          ...formStatus,
+          loading: false,
+          done: true,
+        });
+        setTimeout(() => {
+          setFormStatus({
+            ...formStatus,
+            modelSlug: resData.slug,
+            redirect: true,
+          });
+        }, 1500);
+      }
     } catch (e) {
       setFormStatus({
         ...formStatus,
@@ -93,6 +106,10 @@ const ModelForm = ({ initialModel, initialTags, onFormSubmit }) => {
           getButtonText={buttonText}
         />
       )}
+      {formStatus.serverErrors.length > 0 &&
+        formStatus.serverErrors.map((error, index) => (
+          <Error key={error + index} message={error} />
+        ))}
       {formStatus.redirect && (
         <Redirect to={`/models/${formStatus.modelSlug}`} />
       )}

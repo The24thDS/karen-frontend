@@ -15,11 +15,9 @@ registerPlugin(FilePondPluginFileValidateType);
 
 const FileInput = ({
   id,
-  name,
   label,
   classNames,
   errors,
-  onFilesUpdated,
   renderErrors,
   ...rest
 }) => {
@@ -33,13 +31,7 @@ const FileInput = ({
       >
         {label}
       </label>
-      <FilePond
-        {...rest}
-        allowMultiple={true}
-        onupdatefiles={(files) => {
-          onFilesUpdated(files);
-        }}
-      />
+      <FilePond {...rest} />
       {renderErrors
         ? errors && renderErrors(errors)
         : errors && <Error message={errors.message} />}
@@ -49,7 +41,6 @@ const FileInput = ({
 
 FileInput.propTypes = {
   id: PropTypes.string.isRequired,
-  name: PropTypes.string,
   label: PropTypes.string,
   errors: PropTypes.shape({
     message: PropTypes.string,
@@ -59,7 +50,6 @@ FileInput.propTypes = {
     label: PropTypes.string,
     container: PropTypes.string,
   }),
-  onFilesUpdated: PropTypes.func.isRequired,
   renderErrors: PropTypes.func,
 };
 

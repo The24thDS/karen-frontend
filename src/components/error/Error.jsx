@@ -28,6 +28,11 @@ const Error = ({ message, className, ...rest }) => {
 
 Error.propTypes = {
   message: PropTypes.string.isRequired,
+  className: PropTypes.string,
+};
+
+Error.defaultProps = {
+  className: '',
 };
 
 export default Error;

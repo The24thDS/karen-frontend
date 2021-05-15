@@ -26,6 +26,7 @@
     "titleBar.activeBackground": "#0F01E1",
     "titleBar.activeForeground": "#FEFEFF",
     "javascript.updateImportsOnFileMove.enabled": "always",
-    "javascript.preferences.importModuleSpecifier": "non-relative"
+    "javascript.preferences.importModuleSpecifier": "non-relative",
+    "typescript.validate.enable": false,
   }
 }

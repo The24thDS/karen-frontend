@@ -1,3 +1,5 @@
+import { getBearerToken } from 'utils/general';
+
 const API_URL = process.env.API_URL || 'http://localhost:3001';
 
 export const fetchModels = async () => {
@@ -23,10 +25,11 @@ export const fetchModel = async (slug) => {
 export const uploadModel = async (data) => {
   const res = await fetch(`${API_URL}/models`, {
     headers: {
-      Authorization: `Bearer ${sessionStorage.getItem('json-wt')}`,
+      Authorization: getBearerToken(),
+      'Content-Type': 'application/json; charset=utf-8',
     },
     method: 'POST',
-    body: data,
+    body: JSON.stringify(data),
   });
   if (res.ok) {
     const data = await res.json();

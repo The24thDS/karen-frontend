@@ -6,15 +6,19 @@ import FileInput from '../../form/inputs/FileInput';
 import Input from '../../form/inputs/Input';
 import ModelInfoInput from './ModelInfoInput';
 import SubmitButton from '../../form/inputs/SubmitButton';
-import Error from '../../error/Error';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ModelFormSchemaStep2 } from '../validation.schema';
+import {
+  gltfFileInputServerConfig,
+  modelsFileInputServerConfig,
+} from '../file-inputs-server-configs';
 
 const ModelForm3dFiles = ({ sectionStyle, onButtonClick, getButtonText }) => {
-  const { register, handleSubmit, control, errors, setValue } = useForm({
-    resolver: yupResolver(ModelFormSchemaStep2),
-  });
+  const { register, handleSubmit, control, errors, setValue, getValues } =
+    useForm({
+      resolver: yupResolver(ModelFormSchemaStep2),
+    });
   const [customMetadataKeys, setCustomMetadataKeys] = useState([]);
   const [keyName, setKeyName] = useState('');
   const acceptedFileTypes = ['.stl', '.mtl', '.obj', '.zip', '.dae', '.fbx'];
@@ -42,16 +46,30 @@ const ModelForm3dFiles = ({ sectionStyle, onButtonClick, getButtonText }) => {
           render={({ field }) => (
             <FileInput
               {...field}
+              server={modelsFileInputServerConfig(getValues)}
               id="models"
+              name="models"
               allowMultiple={true}
               allowFileTypeValidation={false}
               acceptedFileTypes={acceptedFileTypes}
               errors={errors.models}
-              onFilesUpdated={(files) => {
-                setValue(
-                  'models',
-                  files.map((fileObj) => fileObj.file)
-                );
+              onprocessfile={(error, file) => {
+                if (error === null) {
+                  setValue('models', [
+                    ...getValues('models'),
+                    { id: file.serverId, name: file.filename },
+                  ]);
+                }
+              }}
+              onremovefile={(error, file) => {
+                if (error === null) {
+                  setValue(
+                    'models',
+                    getValues('models').filter(
+                      (img) => img.id !== file.serverId
+                    )
+                  );
+                }
               }}
             />
           )}
@@ -66,26 +84,25 @@ const ModelForm3dFiles = ({ sectionStyle, onButtonClick, getButtonText }) => {
           render={({ field }) => (
             <FileInput
               {...field}
+              server={gltfFileInputServerConfig(getValues)}
               id="gltf"
+              name="gltf"
+              allowMultiple={true}
               errors={errors.gltf}
-              onFilesUpdated={(files) => {
-                setValue(
-                  'gltf',
-                  files.map((fileObj) => fileObj.file)
-                );
+              onprocessfile={(error, file) => {
+                if (error === null) {
+                  setValue('gltf', [
+                    ...getValues('gltf'),
+                    { id: file.serverId, name: file.filename },
+                  ]);
+                }
               }}
-              renderErrors={(gltfErrors) => {
-                if (gltfErrors.type === 'valid') {
-                  const errorMessages = JSON.parse(gltfErrors.message);
-                  return (
-                    <>
-                      {errorMessages.map((msg, idx) => (
-                        <Error key={msg + idx} message={msg} />
-                      ))}
-                    </>
+              onremovefile={(error, file) => {
+                if (error === null) {
+                  setValue(
+                    'gltf',
+                    getValues('gltf').filter((img) => img.id !== file.serverId)
                   );
-                } else {
-                  return <Error message={gltfErrors.message} />;
                 }
               }}
             />

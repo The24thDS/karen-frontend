@@ -8,3 +8,6 @@ export const getModelFilePath = (modelSlug, username, fileName) =>
 
 export const getGltfFilePath = (modelSlug, username, fileName) =>
   encodeURI(`${API_URL}/assets/gltf/${username}/${modelSlug}/${fileName}`);
+
+export const getBearerToken = () =>
+  `Bearer ${sessionStorage.getItem('json-wt')}`;

@@ -1,3 +1,5 @@
+import { getBearerToken } from 'utils/general';
+
 const API_URL = process.env.API_URL || 'http://localhost:3001';
 
 export const login = async (userData) => {
@@ -27,7 +29,7 @@ export const register = async (userData) => {
 export const checkToken = async () => {
   const res = await fetch(`${API_URL}/auth/check-token`, {
     headers: {
-      Authorization: `Bearer ${sessionStorage.getItem('json-wt')}`,
+      Authorization: getBearerToken(),
     },
   });
   const data = await res.json();
