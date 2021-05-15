@@ -13,14 +13,32 @@ import {
   gltfFileInputServerConfig,
   modelsFileInputServerConfig,
 } from '../file-inputs-server-configs';
+import {
+  useCustomMetadataVales,
+  useInitialModelFiles,
+  useInitialModelGltf,
+} from '../custom-hooks';
+const validator = require('gltf-validator');
 
-const ModelForm3dFiles = ({ sectionStyle, onButtonClick, getButtonText }) => {
+const ModelForm3dFiles = ({
+  initialModel,
+  sectionStyle,
+  onButtonClick,
+  getButtonText,
+}) => {
   const { register, handleSubmit, control, errors, setValue, getValues } =
     useForm({
       resolver: yupResolver(ModelFormSchemaStep2),
     });
-  const [customMetadataKeys, setCustomMetadataKeys] = useState([]);
+  const [customMetadataKeys, setCustomMetadataKeys] = useState(
+    Object.keys(initialModel?.model?.metadata) ?? []
+  );
   const [keyName, setKeyName] = useState('');
+  useCustomMetadataVales(setValue, initialModel);
+  const initialFiles = useInitialModelFiles(initialModel);
+  const initialGltfFiles = useInitialModelGltf(initialModel);
+  const [modelFiles, setModelFiles] = useState(initialFiles);
+  const [gltfFiles, setGltfFiles] = useState(initialGltfFiles);
   const acceptedFileTypes = ['.stl', '.mtl', '.obj', '.zip', '.dae', '.fbx'];
 
   const addNewInfo = () => {
@@ -28,6 +46,19 @@ const ModelForm3dFiles = ({ sectionStyle, onButtonClick, getButtonText }) => {
       ...customMetadataKeys,
       keyName.toLowerCase().trim().replace(' ', '-'),
     ]);
+  };
+
+  const getResourceFilesFromGltf = async (file) => {
+    const arrayBuffer = await file.arrayBuffer();
+    const result = await validator.validateBytes(new Uint8Array(arrayBuffer), {
+      externalResourceFunction: (uri) =>
+        new Promise((resolve, reject) => reject('')),
+    });
+    const resources = result.info.resources.map((resource) => ({
+      source: resource.uri,
+      options: { type: 'local' },
+    }));
+    setGltfFiles([...gltfFiles, ...resources]);
   };
 
   return (
@@ -46,7 +77,12 @@ const ModelForm3dFiles = ({ sectionStyle, onButtonClick, getButtonText }) => {
           render={({ field }) => (
             <FileInput
               {...field}
-              server={modelsFileInputServerConfig(getValues)}
+              server={modelsFileInputServerConfig(
+                getValues,
+                initialModel?.model?.slug,
+                initialModel?.user?.username
+              )}
+              files={modelFiles}
               id="models"
               name="models"
               allowMultiple={true}
@@ -71,6 +107,20 @@ const ModelForm3dFiles = ({ sectionStyle, onButtonClick, getButtonText }) => {
                   );
                 }
               }}
+              onaddfile={(error, file) => {
+                if (error === null && file.serverID !== null) {
+                  setValue('models', [
+                    ...getValues('models'),
+                    { id: file.serverId, name: file.filename, old: true },
+                  ]);
+                }
+              }}
+              onupdatefiles={(fileItems) => {
+                setModelFiles([
+                  ...modelFiles,
+                  fileItems.map((fileItem) => fileItem.file),
+                ]);
+              }}
             />
           )}
         />
@@ -84,7 +134,12 @@ const ModelForm3dFiles = ({ sectionStyle, onButtonClick, getButtonText }) => {
           render={({ field }) => (
             <FileInput
               {...field}
-              server={gltfFileInputServerConfig(getValues)}
+              server={gltfFileInputServerConfig(
+                getValues,
+                initialModel?.model?.slug,
+                initialModel?.user?.username
+              )}
+              files={gltfFiles}
               id="gltf"
               name="gltf"
               allowMultiple={true}
@@ -104,6 +159,23 @@ const ModelForm3dFiles = ({ sectionStyle, onButtonClick, getButtonText }) => {
                     getValues('gltf').filter((img) => img.id !== file.serverId)
                   );
                 }
+              }}
+              onaddfile={(error, file) => {
+                if (error === null && file.serverId !== null) {
+                  setValue('gltf', [
+                    ...getValues('gltf'),
+                    { id: file.serverId, name: file.filename, old: true },
+                  ]);
+                  if (file.filename.endsWith('.gltf')) {
+                    getResourceFilesFromGltf(file.file);
+                  }
+                }
+              }}
+              onupdatefiles={(fileItems) => {
+                setGltfFiles([
+                  ...gltfFiles,
+                  fileItems.map((fileItem) => fileItem.file),
+                ]);
               }}
             />
           )}

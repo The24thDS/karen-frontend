@@ -39,6 +39,23 @@ export const uploadModel = async (data) => {
   }
 };
 
+export const updateModel = (id) => async (data) => {
+  const res = await fetch(`${API_URL}/models/${id}`, {
+    headers: {
+      Authorization: getBearerToken(),
+      'Content-Type': 'application/json; charset=utf-8',
+    },
+    method: 'PUT',
+    body: JSON.stringify(data),
+  });
+  if (res.ok) {
+    const data = await res.json();
+    return data;
+  } else {
+    return new Error('Server did not return OK');
+  }
+};
+
 export const searchModels = async (data) => {
   const res = await fetch(`${API_URL}/models/search`, {
     method: 'POST',

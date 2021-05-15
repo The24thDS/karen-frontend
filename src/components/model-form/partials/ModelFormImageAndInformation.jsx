@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState } from 'react';
 import { tw } from 'twind';
 import { Controller } from 'react-hook-form';
 import CreatableSelect from 'react-select/creatable';
@@ -10,16 +10,27 @@ import Error from '../../error/Error';
 import SubmitButton from '../../form/inputs/SubmitButton';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useTagsOptions } from '../custom-hooks';
+import {
+  useInitialModel,
+  useInitialModelImages,
+  useTagsOptions,
+} from '../custom-hooks';
 import { ModelFormSchemaStep1 } from '../validation.schema';
 import { imagesFileInputServerConfig } from '../file-inputs-server-configs';
 
-const ModelFormImageAndInformation = ({ sectionStyle, onButtonClick }) => {
+const ModelFormImageAndInformation = ({
+  initialModel,
+  sectionStyle,
+  onButtonClick,
+}) => {
   const { register, handleSubmit, control, errors, setValue, getValues } =
     useForm({
       resolver: yupResolver(ModelFormSchemaStep1),
     });
   const tagsOptions = useTagsOptions();
+  useInitialModel(setValue, initialModel);
+  const initialImages = useInitialModelImages(initialModel);
+  const [images, setImages] = useState(initialImages);
 
   return (
     <form
@@ -37,7 +48,12 @@ const ModelFormImageAndInformation = ({ sectionStyle, onButtonClick }) => {
           render={({ field }) => (
             <FileInput
               {...field}
-              server={imagesFileInputServerConfig(getValues)}
+              server={imagesFileInputServerConfig(
+                getValues,
+                initialModel?.model?.slug,
+                initialModel?.user?.username
+              )}
+              files={images}
               id="images"
               name="images"
               allowMultiple={true}
@@ -60,6 +76,17 @@ const ModelFormImageAndInformation = ({ sectionStyle, onButtonClick }) => {
                     )
                   );
                 }
+              }}
+              onaddfile={(error, file) => {
+                if (error === null && file.serverId !== null) {
+                  setValue('images', [
+                    ...getValues('images'),
+                    { id: file.serverId, name: file.filename, old: true },
+                  ]);
+                }
+              }}
+              onupdatefiles={(fileItems) => {
+                setImages(fileItems.map((fileItem) => fileItem.file));
               }}
             />
           )}

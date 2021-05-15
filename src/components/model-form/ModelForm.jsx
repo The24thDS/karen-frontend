@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 import { Redirect } from 'react-router';
 import { tw } from 'twind';
 
-import { jsonToFormData } from '../../utils/forms';
 import ModelFormImageAndInformation from './partials/ModelFormImageAndInformation';
 import ModelForm3dFiles from './partials/ModelForm3dFiles';
 
 import './model-form.css';
 import Error from 'components/error/Error';
 
-const ModelForm = ({ initialModel, initialTags, onFormSubmit }) => {
+const ModelForm = ({ initialModel, onFormSubmit }) => {
   const [formStatus, setFormStatus] = useState({
     loading: false,
     done: false,
@@ -35,6 +34,11 @@ const ModelForm = ({ initialModel, initialTags, onFormSubmit }) => {
     };
     try {
       data.tags = data.tags.map((tag) => tag.value);
+      if (initialModel) {
+        data.gltf = data.gltf.filter((file) => !file.old);
+        data.images = data.images.filter((file) => !file.old);
+        data.models = data.models.filter((file) => !file.old);
+      }
       const resData = await onFormSubmit(data);
       if (resData.statusCode && resData.statusCode !== 201) {
         setFormStatus({
@@ -97,6 +101,7 @@ const ModelForm = ({ initialModel, initialTags, onFormSubmit }) => {
         <ModelFormImageAndInformation
           sectionStyle={sectionStyle}
           onButtonClick={nextStep}
+          initialModel={initialModel}
         />
       )}
       {formStatus.step === 1 && (
@@ -104,6 +109,7 @@ const ModelForm = ({ initialModel, initialTags, onFormSubmit }) => {
           sectionStyle={sectionStyle}
           onButtonClick={onSubmit}
           getButtonText={buttonText}
+          initialModel={initialModel}
         />
       )}
       {formStatus.serverErrors.length > 0 &&

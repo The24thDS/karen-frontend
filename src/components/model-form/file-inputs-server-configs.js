@@ -7,7 +7,7 @@ const headers = {
   Authorization: getBearerToken(),
 };
 
-export const imagesFileInputServerConfig = (getValues) => ({
+export const imagesFileInputServerConfig = (getValues, slug, username) => ({
   process: {
     url: `${API_URL}/assets/images`,
     headers: {
@@ -25,12 +25,12 @@ export const imagesFileInputServerConfig = (getValues) => ({
       error(err);
     }
   },
-  load: null,
+  load: `${API_URL}/assets/images/inline/${username}/${slug}/`,
   restore: null,
   fetch: null,
 });
 
-export const modelsFileInputServerConfig = (getValues) => ({
+export const modelsFileInputServerConfig = (getValues, slug, username) => ({
   process: {
     url: `${API_URL}/assets/models`,
     headers: {
@@ -48,12 +48,12 @@ export const modelsFileInputServerConfig = (getValues) => ({
       error(err);
     }
   },
-  load: null,
+  load: `${API_URL}/assets/models/inline/${username}/${slug}/`,
   restore: null,
   fetch: null,
 });
 
-export const gltfFileInputServerConfig = (getValues) => ({
+export const gltfFileInputServerConfig = (getValues, slug, username) => ({
   process: {
     url: `${API_URL}/assets/gltf`,
     headers: {
@@ -71,7 +71,7 @@ export const gltfFileInputServerConfig = (getValues) => ({
       error(err);
     }
   },
-  load: null,
+  load: `${API_URL}/assets/gltf/inline/${username}/${slug}/`,
   restore: null,
   fetch: null,
 });
