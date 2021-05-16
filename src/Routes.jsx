@@ -1,16 +1,16 @@
-import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import React from "react";
+import { Switch, Route } from "react-router-dom";
 
-import ProtectedRoute from 'components/protected-route/ProtectedRoute';
-import HomePage from 'pages/home/HomePage';
-import ModelUploadPage from 'pages/models/upload/ModelUploadPage';
-import EditModelPage from 'pages/models/edit/EditModelPage';
-import LoginPage from 'pages/auth/LoginPage';
-import RegisterPage from 'pages/auth/RegisterPage';
-import ModelListPage from 'pages/models/list/ModelListPage';
-import ModelViewPage from 'pages/models/view/ModelViewPage';
-import SearchResultsPage from 'pages/search/SearchResultsPage';
-import Error403 from 'pages/403/Error403';
+import ProtectedRoute from "components/protected-route/ProtectedRoute";
+import HomePage from "pages/home/HomePage";
+import ModelUploadPage from "pages/models/upload/ModelUploadPage";
+import EditModelPage from "pages/models/edit/EditModelPage";
+import LoginPage from "pages/auth/LoginPage";
+import RegisterPage from "pages/auth/RegisterPage";
+import ModelListPage from "pages/models/list/ModelListPage";
+import ModelViewPage from "pages/models/view/ModelViewPage";
+import SearchResultsPage from "pages/search/SearchResultsPage";
+import Error403 from "pages/403/Error403";
 
 const Routes = () => {
   return (
@@ -26,7 +26,7 @@ const Routes = () => {
         <Route exact path="/models/:slug">
           <ModelViewPage />
         </Route>
-        <Route exact path="/models/:id/edit">
+        <Route exact path="/models/:slug/edit">
           <EditModelPage />
         </Route>
         <ProtectedRoute

@@ -1,25 +1,38 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import { tw } from 'twind';
-import { Controller } from 'react-hook-form';
-import CreatableSelect from 'react-select/creatable';
-import FileInput from '../../form/inputs/FileInput';
-import Input from '../../form/inputs/Input';
-import Textarea from '../../form/textarea/Textarea';
-import Error from '../../error/Error';
-import SubmitButton from '../../form/inputs/SubmitButton';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useTagsOptions } from '../custom-hooks';
-import { ModelFormSchemaStep1 } from '../validation.schema';
-import { imagesFileInputServerConfig } from '../file-inputs-server-configs';
+import PropTypes from "prop-types";
+import React, { useState } from "react";
+import { tw } from "twind";
+import { Controller } from "react-hook-form";
+import CreatableSelect from "react-select/creatable";
+import FileInput from "components/form/inputs/FileInput";
+import Input from "components/form/inputs/Input";
+import Textarea from "components/form/textarea/Textarea";
+import Error from "components/error/Error";
+import SubmitButton from "components/form/inputs/SubmitButton";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useInitialModelInfo, useTagsOptions } from "../custom-hooks";
+import {
+  ModelEditFormSchemaStep1,
+  ModelFormSchemaStep1,
+} from "../validation.schema";
+import { imagesFileInputServerConfig } from "../file-inputs-server-configs";
+import ExistingFilesSection from "components/model-form/partials/ExistingFilesSection";
 
-const ModelFormImageAndInformation = ({ sectionStyle, onButtonClick }) => {
+const ModelFormImageAndInformation = ({
+  initialModel,
+  sectionStyle,
+  onButtonClick,
+}) => {
   const { register, handleSubmit, control, errors, setValue, getValues } =
     useForm({
-      resolver: yupResolver(ModelFormSchemaStep1),
+      resolver: yupResolver(
+        initialModel?.model?.images
+          ? ModelEditFormSchemaStep1
+          : ModelFormSchemaStep1
+      ),
     });
   const tagsOptions = useTagsOptions();
+  useInitialModelInfo(setValue, initialModel);
 
   return (
     <form
@@ -41,12 +54,12 @@ const ModelFormImageAndInformation = ({ sectionStyle, onButtonClick }) => {
               id="images"
               name="images"
               allowMultiple={true}
-              acceptedFileTypes={['image/*']}
+              acceptedFileTypes={["image/*"]}
               errors={errors.images}
               onprocessfile={(error, file) => {
                 if (error === null) {
-                  setValue('images', [
-                    ...getValues('images'),
+                  setValue("images", [
+                    ...getValues("images"),
                     { id: file.serverId, name: file.filename },
                   ]);
                 }
@@ -54,8 +67,8 @@ const ModelFormImageAndInformation = ({ sectionStyle, onButtonClick }) => {
               onremovefile={(error, file) => {
                 if (error === null) {
                   setValue(
-                    'images',
-                    getValues('images').filter(
+                    "images",
+                    getValues("images").filter(
                       (img) => img.id !== file.serverId
                     )
                   );
@@ -63,6 +76,13 @@ const ModelFormImageAndInformation = ({ sectionStyle, onButtonClick }) => {
               }}
             />
           )}
+        />
+        <p className={sectionStyle}>Existing files:</p>
+        <ExistingFilesSection
+          files={initialModel?.model?.images}
+          slug={initialModel?.model?.slug}
+          username={initialModel?.user?.username}
+          type="images"
         />
       </div>
       <div>
@@ -81,7 +101,7 @@ const ModelFormImageAndInformation = ({ sectionStyle, onButtonClick }) => {
           rows={5}
           register={register}
           classNames={{
-            textarea: 'text-sm',
+            textarea: "text-sm",
           }}
           errors={errors.description}
         />

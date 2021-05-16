@@ -1,10 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-const Error = ({ message, className, ...rest }) => {
+const Error = ({ message, className = "", ...rest }) => {
   return (
     <div className={`flex items-center py-1 pt-2 pl-1 ${className}`} {...rest}>
-      <div className="bg-red-200 text-red-700 rounded-full p-1 fill-current">
+      <div className="p-1 text-red-700 bg-red-200 rounded-full fill-current">
         <svg
           className="w-4 h-4"
           fill="none"
@@ -19,7 +19,7 @@ const Error = ({ message, className, ...rest }) => {
           />
         </svg>
       </div>
-      <p className="text-red-700 font-medium text-sm ml-3">
+      <p className="ml-3 text-sm font-medium text-red-700">
         {message[0].toUpperCase() + message.slice(1)}
       </p>
     </div>
@@ -32,7 +32,7 @@ Error.propTypes = {
 };
 
 Error.defaultProps = {
-  className: '',
+  className: "",
 };
 
 export default Error;

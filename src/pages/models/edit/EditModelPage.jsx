@@ -1,17 +1,22 @@
-import React from 'react';
-import ModelForm from '../../../components/model-form/ModelForm';
-// import { useParams } from 'react-router';
-// import { useModel } from '../../../components/model/custom-hooks';
+import React from "react";
+import ModelForm from "components/model-form/ModelForm";
+import { useParams } from "react-router";
+import { useModel } from "components/model/custom-hooks";
+import { tw } from "twind";
+import { updateModel } from "api/models.api";
 
 const EditModelPage = () => {
-  // const { id } = useParams();
-  // const { model, user, tags } = useModel(id);
+  const { slug } = useParams();
+  const model = useModel(slug);
   return (
-    <div className="max-w-sm mx-auto px-6 md:mt-12">
-      <h1 className="text-center font-semibold text-black text-xl">
-        Edit this model
+    <div className="px-6 mx-20 md:mt-12">
+      <h1 className={tw`text(center black xl) font-semibold`}>
+        Editing model <em>{slug}</em>
       </h1>
-      <ModelForm />
+      <ModelForm
+        initialModel={model}
+        onFormSubmit={(data) => updateModel(data, slug)}
+      />
     </div>
   );
 };

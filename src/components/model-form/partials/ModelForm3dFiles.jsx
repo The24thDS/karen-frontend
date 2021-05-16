@@ -1,32 +1,49 @@
-import PropTypes from 'prop-types';
-import React, { useState } from 'react';
-import { tw } from 'twind';
-import { Controller } from 'react-hook-form';
-import FileInput from '../../form/inputs/FileInput';
-import Input from '../../form/inputs/Input';
-import ModelInfoInput from './ModelInfoInput';
-import SubmitButton from '../../form/inputs/SubmitButton';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { ModelFormSchemaStep2 } from '../validation.schema';
+import PropTypes from "prop-types";
+import React, { useState } from "react";
+import { tw } from "twind";
+import { Controller } from "react-hook-form";
+import FileInput from "components/form/inputs/FileInput";
+import Input from "components/form/inputs/Input";
+import ModelInfoInput from "./ModelInfoInput";
+import SubmitButton from "components/form/inputs/SubmitButton";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import {
+  ModelEditFormSchemaStep2,
+  ModelFormSchemaStep2,
+} from "../validation.schema";
 import {
   gltfFileInputServerConfig,
   modelsFileInputServerConfig,
-} from '../file-inputs-server-configs';
+} from "../file-inputs-server-configs";
+import { useCustomMetadataVales } from "../custom-hooks";
+import ExistingFilesSection from "components/model-form/partials/ExistingFilesSection";
 
-const ModelForm3dFiles = ({ sectionStyle, onButtonClick, getButtonText }) => {
+const ModelForm3dFiles = ({
+  initialModel,
+  sectionStyle,
+  onButtonClick,
+  getButtonText,
+}) => {
   const { register, handleSubmit, control, errors, setValue, getValues } =
     useForm({
-      resolver: yupResolver(ModelFormSchemaStep2),
+      resolver: yupResolver(
+        initialModel?.model?.images
+          ? ModelEditFormSchemaStep2
+          : ModelFormSchemaStep2
+      ),
     });
-  const [customMetadataKeys, setCustomMetadataKeys] = useState([]);
-  const [keyName, setKeyName] = useState('');
-  const acceptedFileTypes = ['.stl', '.mtl', '.obj', '.zip', '.dae', '.fbx'];
+  const [customMetadataKeys, setCustomMetadataKeys] = useState(
+    Object.keys(initialModel?.model?.metadata ?? {})
+  );
+  const [keyName, setKeyName] = useState("");
+  useCustomMetadataVales(setValue, initialModel);
+  const acceptedFileTypes = [".stl", ".mtl", ".obj", ".zip", ".dae", ".fbx"];
 
   const addNewInfo = () => {
     setCustomMetadataKeys([
       ...customMetadataKeys,
-      keyName.toLowerCase().trim().replace(' ', '-'),
+      keyName.toLowerCase().trim().replace(" ", "-"),
     ]);
   };
 
@@ -46,7 +63,11 @@ const ModelForm3dFiles = ({ sectionStyle, onButtonClick, getButtonText }) => {
           render={({ field }) => (
             <FileInput
               {...field}
-              server={modelsFileInputServerConfig(getValues)}
+              server={modelsFileInputServerConfig(
+                getValues,
+                initialModel?.model?.slug,
+                initialModel?.user?.username
+              )}
               id="models"
               name="models"
               allowMultiple={true}
@@ -55,8 +76,8 @@ const ModelForm3dFiles = ({ sectionStyle, onButtonClick, getButtonText }) => {
               errors={errors.models}
               onprocessfile={(error, file) => {
                 if (error === null) {
-                  setValue('models', [
-                    ...getValues('models'),
+                  setValue("models", [
+                    ...getValues("models"),
                     { id: file.serverId, name: file.filename },
                   ]);
                 }
@@ -64,8 +85,8 @@ const ModelForm3dFiles = ({ sectionStyle, onButtonClick, getButtonText }) => {
               onremovefile={(error, file) => {
                 if (error === null) {
                   setValue(
-                    'models',
-                    getValues('models').filter(
+                    "models",
+                    getValues("models").filter(
                       (img) => img.id !== file.serverId
                     )
                   );
@@ -73,6 +94,13 @@ const ModelForm3dFiles = ({ sectionStyle, onButtonClick, getButtonText }) => {
               }}
             />
           )}
+        />
+        <p className={sectionStyle}>Existing files:</p>
+        <ExistingFilesSection
+          files={initialModel?.model?.files.map((file) => file.name)}
+          slug={initialModel?.model?.slug}
+          username={initialModel?.user?.username}
+          type="models"
         />
         <p className={sectionStyle}>
           Add a GLTF file and its images to activate the 3D preview
@@ -84,15 +112,19 @@ const ModelForm3dFiles = ({ sectionStyle, onButtonClick, getButtonText }) => {
           render={({ field }) => (
             <FileInput
               {...field}
-              server={gltfFileInputServerConfig(getValues)}
+              server={gltfFileInputServerConfig(
+                getValues,
+                initialModel?.model?.slug,
+                initialModel?.user?.username
+              )}
               id="gltf"
               name="gltf"
               allowMultiple={true}
               errors={errors.gltf}
               onprocessfile={(error, file) => {
                 if (error === null) {
-                  setValue('gltf', [
-                    ...getValues('gltf'),
+                  setValue("gltf", [
+                    ...getValues("gltf"),
                     { id: file.serverId, name: file.filename },
                   ]);
                 }
@@ -100,13 +132,27 @@ const ModelForm3dFiles = ({ sectionStyle, onButtonClick, getButtonText }) => {
               onremovefile={(error, file) => {
                 if (error === null) {
                   setValue(
-                    'gltf',
-                    getValues('gltf').filter((img) => img.id !== file.serverId)
+                    "gltf",
+                    getValues("gltf").filter((img) => img.id !== file.serverId)
                   );
                 }
               }}
             />
           )}
+        />
+        <p className={sectionStyle}>
+          Existing GLTF file:{" "}
+          <span className={tw`text-sm`}>
+            (deleting it will delete all the resources it's referencing)
+          </span>
+        </p>
+        <ExistingFilesSection
+          files={
+            initialModel?.model?.gltf?.length ? [initialModel?.model?.gltf] : []
+          }
+          slug={initialModel?.model?.slug}
+          username={initialModel?.user?.username}
+          type="gltf"
         />
       </div>
       <div>
@@ -130,7 +176,7 @@ const ModelForm3dFiles = ({ sectionStyle, onButtonClick, getButtonText }) => {
             <Input
               id="key"
               placeholder="Type the key name and press add"
-              classNames={{ container: 'flex-grow' }}
+              classNames={{ container: "flex-grow" }}
               onChange={({ target: { value } }) => {
                 setKeyName(value);
               }}

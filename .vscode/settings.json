@@ -25,8 +25,11 @@
     "activityBar.background": "#0B01A1",
     "titleBar.activeBackground": "#0F01E1",
     "titleBar.activeForeground": "#FEFEFF",
-    "javascript.updateImportsOnFileMove.enabled": "always",
-    "javascript.preferences.importModuleSpecifier": "non-relative",
-    "typescript.validate.enable": false,
+  },
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "javascript.preferences.importModuleSpecifier": "non-relative",
+  "typescript.validate.enable": false,
+  "editor.quickSuggestions": {
+    "strings": true
   }
 }

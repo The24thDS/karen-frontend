@@ -1,9 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Route, Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
+import React from "react";
+import PropTypes from "prop-types";
+import { Route, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
 
-import { selectUserLoggedIn } from 'state/selectors/users.selectors';
+import { selectUserLoggedIn } from "state/selectors/users.selectors";
 
 const ProtectedRoute = ({
   component: Component,
@@ -19,7 +19,7 @@ const ProtectedRoute = ({
         isAllowed ? (
           <Component {...rest} {...props} />
         ) : (
-          <Redirect to={{ pathname: '/', state: { from: props.location } }} />
+          <Redirect to={{ pathname: "/", state: { from: props.location } }} />
         )
       }
     />
@@ -31,7 +31,7 @@ const mapStateToProps = (state) => ({
 });
 
 ProtectedRoute.propTypes = {
-  component: PropTypes.element.isRequired,
+  component: PropTypes.elementType.isRequired,
   reversed: PropTypes.bool,
 };
 
