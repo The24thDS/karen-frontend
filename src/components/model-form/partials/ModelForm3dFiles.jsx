@@ -1,24 +1,23 @@
-import PropTypes from 'prop-types';
-import React, { useState } from 'react';
-import { tw } from 'twind';
-import { Controller } from 'react-hook-form';
-import FileInput from '../../form/inputs/FileInput';
-import Input from '../../form/inputs/Input';
-import ModelInfoInput from './ModelInfoInput';
-import SubmitButton from '../../form/inputs/SubmitButton';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { ModelFormSchemaStep2 } from '../validation.schema';
+import PropTypes from "prop-types";
+import React, { useState } from "react";
+import { tw } from "twind";
+import { Controller } from "react-hook-form";
+import FileInput from "components/form/inputs/FileInput";
+import Input from "components/form/inputs/Input";
+import ModelInfoInput from "./ModelInfoInput";
+import SubmitButton from "components/form/inputs/SubmitButton";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import {
+  ModelEditFormSchemaStep2,
+  ModelFormSchemaStep2,
+} from "../validation.schema";
 import {
   gltfFileInputServerConfig,
   modelsFileInputServerConfig,
-} from '../file-inputs-server-configs';
-import {
-  useCustomMetadataVales,
-  useInitialModelFiles,
-  useInitialModelGltf,
-} from '../custom-hooks';
-const validator = require('gltf-validator');
+} from "../file-inputs-server-configs";
+import { useCustomMetadataVales } from "../custom-hooks";
+import ExistingFilesSection from "components/model-form/partials/ExistingFilesSection";
 
 const ModelForm3dFiles = ({
   initialModel,
@@ -28,37 +27,24 @@ const ModelForm3dFiles = ({
 }) => {
   const { register, handleSubmit, control, errors, setValue, getValues } =
     useForm({
-      resolver: yupResolver(ModelFormSchemaStep2),
+      resolver: yupResolver(
+        initialModel?.model?.images
+          ? ModelEditFormSchemaStep2
+          : ModelFormSchemaStep2
+      ),
     });
   const [customMetadataKeys, setCustomMetadataKeys] = useState(
-    Object.keys(initialModel?.model?.metadata) ?? []
+    Object.keys(initialModel?.model?.metadata ?? {})
   );
-  const [keyName, setKeyName] = useState('');
+  const [keyName, setKeyName] = useState("");
   useCustomMetadataVales(setValue, initialModel);
-  const initialFiles = useInitialModelFiles(initialModel);
-  const initialGltfFiles = useInitialModelGltf(initialModel);
-  const [modelFiles, setModelFiles] = useState(initialFiles);
-  const [gltfFiles, setGltfFiles] = useState(initialGltfFiles);
-  const acceptedFileTypes = ['.stl', '.mtl', '.obj', '.zip', '.dae', '.fbx'];
+  const acceptedFileTypes = [".stl", ".mtl", ".obj", ".zip", ".dae", ".fbx"];
 
   const addNewInfo = () => {
     setCustomMetadataKeys([
       ...customMetadataKeys,
-      keyName.toLowerCase().trim().replace(' ', '-'),
+      keyName.toLowerCase().trim().replace(" ", "-"),
     ]);
-  };
-
-  const getResourceFilesFromGltf = async (file) => {
-    const arrayBuffer = await file.arrayBuffer();
-    const result = await validator.validateBytes(new Uint8Array(arrayBuffer), {
-      externalResourceFunction: (uri) =>
-        new Promise((resolve, reject) => reject('')),
-    });
-    const resources = result.info.resources.map((resource) => ({
-      source: resource.uri,
-      options: { type: 'local' },
-    }));
-    setGltfFiles([...gltfFiles, ...resources]);
   };
 
   return (
@@ -82,7 +68,6 @@ const ModelForm3dFiles = ({
                 initialModel?.model?.slug,
                 initialModel?.user?.username
               )}
-              files={modelFiles}
               id="models"
               name="models"
               allowMultiple={true}
@@ -91,8 +76,8 @@ const ModelForm3dFiles = ({
               errors={errors.models}
               onprocessfile={(error, file) => {
                 if (error === null) {
-                  setValue('models', [
-                    ...getValues('models'),
+                  setValue("models", [
+                    ...getValues("models"),
                     { id: file.serverId, name: file.filename },
                   ]);
                 }
@@ -100,29 +85,22 @@ const ModelForm3dFiles = ({
               onremovefile={(error, file) => {
                 if (error === null) {
                   setValue(
-                    'models',
-                    getValues('models').filter(
+                    "models",
+                    getValues("models").filter(
                       (img) => img.id !== file.serverId
                     )
                   );
                 }
               }}
-              onaddfile={(error, file) => {
-                if (error === null && file.serverID !== null) {
-                  setValue('models', [
-                    ...getValues('models'),
-                    { id: file.serverId, name: file.filename, old: true },
-                  ]);
-                }
-              }}
-              onupdatefiles={(fileItems) => {
-                setModelFiles([
-                  ...modelFiles,
-                  fileItems.map((fileItem) => fileItem.file),
-                ]);
-              }}
             />
           )}
+        />
+        <p className={sectionStyle}>Existing files:</p>
+        <ExistingFilesSection
+          files={initialModel?.model?.files.map((file) => file.name)}
+          slug={initialModel?.model?.slug}
+          username={initialModel?.user?.username}
+          type="models"
         />
         <p className={sectionStyle}>
           Add a GLTF file and its images to activate the 3D preview
@@ -139,15 +117,14 @@ const ModelForm3dFiles = ({
                 initialModel?.model?.slug,
                 initialModel?.user?.username
               )}
-              files={gltfFiles}
               id="gltf"
               name="gltf"
               allowMultiple={true}
               errors={errors.gltf}
               onprocessfile={(error, file) => {
                 if (error === null) {
-                  setValue('gltf', [
-                    ...getValues('gltf'),
+                  setValue("gltf", [
+                    ...getValues("gltf"),
                     { id: file.serverId, name: file.filename },
                   ]);
                 }
@@ -155,30 +132,27 @@ const ModelForm3dFiles = ({
               onremovefile={(error, file) => {
                 if (error === null) {
                   setValue(
-                    'gltf',
-                    getValues('gltf').filter((img) => img.id !== file.serverId)
+                    "gltf",
+                    getValues("gltf").filter((img) => img.id !== file.serverId)
                   );
                 }
               }}
-              onaddfile={(error, file) => {
-                if (error === null && file.serverId !== null) {
-                  setValue('gltf', [
-                    ...getValues('gltf'),
-                    { id: file.serverId, name: file.filename, old: true },
-                  ]);
-                  if (file.filename.endsWith('.gltf')) {
-                    getResourceFilesFromGltf(file.file);
-                  }
-                }
-              }}
-              onupdatefiles={(fileItems) => {
-                setGltfFiles([
-                  ...gltfFiles,
-                  fileItems.map((fileItem) => fileItem.file),
-                ]);
-              }}
             />
           )}
+        />
+        <p className={sectionStyle}>
+          Existing GLTF file:{" "}
+          <span className={tw`text-sm`}>
+            (deleting it will delete all the resources it's referencing)
+          </span>
+        </p>
+        <ExistingFilesSection
+          files={
+            initialModel?.model?.gltf?.length ? [initialModel?.model?.gltf] : []
+          }
+          slug={initialModel?.model?.slug}
+          username={initialModel?.user?.username}
+          type="gltf"
         />
       </div>
       <div>
@@ -202,7 +176,7 @@ const ModelForm3dFiles = ({
             <Input
               id="key"
               placeholder="Type the key name and press add"
-              classNames={{ container: 'flex-grow' }}
+              classNames={{ container: "flex-grow" }}
               onChange={({ target: { value } }) => {
                 setKeyName(value);
               }}

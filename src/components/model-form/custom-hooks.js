@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { fetchTags } from '../../api/tags.api';
+import { useEffect, useState } from "react";
+import { fetchTags } from "../../api/tags.api";
 
 export const useTagsOptions = () => {
   const [options, setOptions] = useState([]);
@@ -20,7 +20,7 @@ export const useTagsOptions = () => {
   return options;
 };
 
-export const useInitialModel = (setValue, initialModel) => {
+export const useInitialModelInfo = (setValue, initialModel) => {
   useEffect(() => {
     let mounted = true;
     if (initialModel) {
@@ -33,86 +33,15 @@ export const useInitialModel = (setValue, initialModel) => {
         value: tag,
       }));
       if (mounted) {
-        setValue('name', name);
-        setValue('description', description);
-        setValue('tags', selectedTags);
+        setValue("name", name);
+        setValue("description", description);
+        setValue("tags", selectedTags);
       }
     }
     return () => {
       mounted = false;
     };
   }, [setValue, initialModel]);
-};
-
-export const useInitialModelImages = (initialModel) => {
-  const [images, setImages] = useState([]);
-
-  useEffect(() => {
-    let mounted = true;
-    if (initialModel) {
-      const {
-        model: { images },
-      } = initialModel;
-      const uploadedImages = images?.map((img) => ({
-        source: img,
-        options: { type: 'local' },
-      }));
-      if (mounted) {
-        setImages(uploadedImages);
-      }
-    }
-    return () => {
-      mounted = false;
-    };
-  }, [initialModel]);
-
-  return images;
-};
-
-export const useInitialModelFiles = (initialModel) => {
-  const [files, setFiles] = useState([]);
-
-  useEffect(() => {
-    let mounted = true;
-    if (initialModel) {
-      const {
-        model: { files },
-      } = initialModel;
-      const uploadedFiles = files.map((file) => ({
-        source: file.name,
-        options: { type: 'local' },
-      }));
-      if (mounted) {
-        setFiles(uploadedFiles);
-      }
-    }
-    return () => {
-      mounted = false;
-    };
-  }, [initialModel]);
-
-  return files;
-};
-
-export const useInitialModelGltf = (initialModel) => {
-  const [files, setFiles] = useState([]);
-
-  useEffect(() => {
-    let mounted = true;
-    if (initialModel) {
-      const {
-        model: { gltf },
-      } = initialModel;
-      if (mounted) {
-        setFiles([{ source: gltf, options: { type: 'local' } }]);
-      }
-    }
-    return () => {
-      mounted = false;
-    };
-  }, [initialModel]);
-
-  return files;
 };
 
 export const useCustomMetadataVales = (setValue, initialModel) => {

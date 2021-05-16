@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
-import { Redirect } from 'react-router';
-import { tw } from 'twind';
+import React, { useState } from "react";
+import { Redirect } from "react-router";
+import { tw } from "twind";
 
-import ModelFormImageAndInformation from './partials/ModelFormImageAndInformation';
-import ModelForm3dFiles from './partials/ModelForm3dFiles';
+import ModelFormImageAndInformation from "./partials/ModelFormImageAndInformation";
+import ModelForm3dFiles from "./partials/ModelForm3dFiles";
 
-import './model-form.css';
-import Error from 'components/error/Error';
+import "./model-form.css";
+import Error from "components/error/Error";
 
 const ModelForm = ({ initialModel, onFormSubmit }) => {
   const [formStatus, setFormStatus] = useState({
     loading: false,
     done: false,
     redirect: false,
-    modelSlug: '',
+    modelSlug: "",
     step: 0,
     data: {},
     serverErrors: [],
@@ -40,13 +40,14 @@ const ModelForm = ({ initialModel, onFormSubmit }) => {
         data.models = data.models.filter((file) => !file.old);
       }
       const resData = await onFormSubmit(data);
+      console.log(resData);
       if (resData.statusCode && resData.statusCode !== 201) {
         setFormStatus({
           ...formStatus,
           loading: false,
           done: false,
           serverErrors:
-            typeof resData.message === 'string'
+            typeof resData.message === "string"
               ? [resData.message]
               : resData.message,
         });
@@ -59,7 +60,7 @@ const ModelForm = ({ initialModel, onFormSubmit }) => {
         setTimeout(() => {
           setFormStatus({
             ...formStatus,
-            modelSlug: resData.slug,
+            modelSlug: initialModel?.model?.slug ?? resData.slug,
             redirect: true,
           });
         }, 1500);
@@ -74,12 +75,12 @@ const ModelForm = ({ initialModel, onFormSubmit }) => {
 
   const buttonText = () => {
     if (formStatus.loading) {
-      return 'Uploading...';
+      return "Uploading...";
     }
     if (formStatus.done) {
-      return 'Done!';
+      return "Done!";
     }
-    return 'Upload';
+    return "Upload";
   };
 
   const nextStep = (data) => {
@@ -93,7 +94,7 @@ const ModelForm = ({ initialModel, onFormSubmit }) => {
     });
   };
 
-  const sectionStyle = tw`text-gray-700 font-semibold`;
+  const sectionStyle = tw`font-semibold text-gray-700`;
 
   return (
     <>
