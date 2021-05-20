@@ -9,15 +9,16 @@ const DownloadButton = ({ link, icon, size, label }) => {
     >
       <a
         href={link}
-        target="_blank"
-        rel="noreferrer"
-        className={tw`block py-1 px-2`}
+        target='_blank'
+        rel='noreferrer'
+        className={tw`block px-2 py-1`}
       >
         {icon}
         {label}
         {size && (
           <i
             className={tw`ml-2 px-1 py-1 font-semibold text(xs black) inline-block bg-green-200 rounded`}
+            aria-label='size'
           >
             {size}
           </i>

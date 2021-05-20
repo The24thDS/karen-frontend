@@ -31,7 +31,7 @@ const FileInput = ({
       >
         {label}
       </label>
-      <FilePond {...rest} />
+      <FilePond id={id} {...rest} />
       {renderErrors
         ? errors && renderErrors(errors)
         : errors && <Error message={errors.message} />}

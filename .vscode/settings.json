@@ -28,8 +28,8 @@
   },
   "javascript.updateImportsOnFileMove.enabled": "always",
   "javascript.preferences.importModuleSpecifier": "non-relative",
-  "typescript.validate.enable": false,
   "editor.quickSuggestions": {
     "strings": true
-  }
+  },
+  "jest.jestCommandLine": "npm run test --"
 }

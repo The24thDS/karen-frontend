@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 const SubmitButton = ({ text, classNames, ...rest }) => {
   return (
     <input
-      type="submit"
+      type='submit'
       value={text}
       className={`mt-3 text-lg font-semibold cursor-pointer
             bg-gray-800 w-full text-white rounded-lg
