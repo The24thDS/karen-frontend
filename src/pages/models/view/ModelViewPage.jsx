@@ -30,7 +30,7 @@ const ModelViewPage = () => {
       >
         Delete
       </button>
-      <div className="grid grid-cols-2 gap-y-5 gap-x-10">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-5 gap-x-10">
         <Model />
       </div>
     </div>
