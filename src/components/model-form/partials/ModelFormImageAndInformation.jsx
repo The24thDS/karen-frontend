@@ -1,22 +1,22 @@
-import PropTypes from "prop-types";
-import React, { useState } from "react";
-import { tw } from "twind";
-import { Controller } from "react-hook-form";
-import CreatableSelect from "react-select/creatable";
-import FileInput from "components/form/inputs/FileInput";
-import Input from "components/form/inputs/Input";
-import Textarea from "components/form/textarea/Textarea";
-import Error from "components/error/Error";
-import SubmitButton from "components/form/inputs/SubmitButton";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useInitialModelInfo, useTagsOptions } from "../custom-hooks";
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import { tw } from 'twind';
+import { Controller } from 'react-hook-form';
+import CreatableSelect from 'react-select/creatable';
+import FileInput from 'components/form/inputs/FileInput';
+import Input from 'components/form/inputs/Input';
+import Textarea from 'components/form/textarea/Textarea';
+import Error from 'components/error/Error';
+import SubmitButton from 'components/form/inputs/SubmitButton';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useInitialModelInfo, useTagsOptions } from '../custom-hooks';
 import {
   ModelEditFormSchemaStep1,
   ModelFormSchemaStep1,
-} from "../validation.schema";
-import { imagesFileInputServerConfig } from "../file-inputs-server-configs";
-import ExistingFilesSection from "components/model-form/partials/ExistingFilesSection";
+} from '../validation.schema';
+import { imagesFileInputServerConfig } from '../file-inputs-server-configs';
+import ExistingFilesSection from 'components/model-form/partials/ExistingFilesSection';
 
 const ModelFormImageAndInformation = ({
   initialModel,
@@ -54,12 +54,12 @@ const ModelFormImageAndInformation = ({
               id="images"
               name="images"
               allowMultiple={true}
-              acceptedFileTypes={["image/*"]}
+              acceptedFileTypes={['image/*']}
               errors={errors.images}
               onprocessfile={(error, file) => {
                 if (error === null) {
-                  setValue("images", [
-                    ...getValues("images"),
+                  setValue('images', [
+                    ...getValues('images'),
                     { id: file.serverId, name: file.filename },
                   ]);
                 }
@@ -67,8 +67,8 @@ const ModelFormImageAndInformation = ({
               onremovefile={(error, file) => {
                 if (error === null) {
                   setValue(
-                    "images",
-                    getValues("images").filter(
+                    'images',
+                    getValues('images').filter(
                       (img) => img.id !== file.serverId
                     )
                   );
@@ -77,13 +77,17 @@ const ModelFormImageAndInformation = ({
             />
           )}
         />
-        <p className={sectionStyle}>Existing files:</p>
-        <ExistingFilesSection
-          files={initialModel?.model?.images}
-          slug={initialModel?.model?.slug}
-          username={initialModel?.user?.username}
-          type="images"
-        />
+        {initialModel?.model?.images && (
+          <>
+            <p className={sectionStyle}>Existing files:</p>
+            <ExistingFilesSection
+              files={initialModel?.model?.images}
+              slug={initialModel?.model?.slug}
+              username={initialModel?.user?.username}
+              type="images"
+            />
+          </>
+        )}
       </div>
       <div>
         <p className={sectionStyle}>Add some information about your model</p>
@@ -101,7 +105,7 @@ const ModelFormImageAndInformation = ({
           rows={5}
           register={register}
           classNames={{
-            textarea: "text-sm",
+            textarea: 'text-sm',
           }}
           errors={errors.description}
         />
