@@ -1,3 +1,5 @@
+import { setFetchError } from 'state/actions/errors.actions';
+
 const API_URL = process.env.API_URL || 'http://localhost:3001';
 
 export const getImagePath = (modelSlug, username, imageName) =>
@@ -10,4 +12,38 @@ export const getGltfFilePath = (modelSlug, username, fileName) =>
   encodeURI(`${API_URL}/assets/gltf/${username}/${modelSlug}/${fileName}`);
 
 export const getBearerToken = () =>
-  `Bearer ${sessionStorage.getItem('json-wt')}`;
+  sessionStorage.getItem('json-wt')
+    ? `Bearer ${sessionStorage.getItem('json-wt')}`
+    : false;
+
+export const handleApiCall = async (path, dispatch, params = {}) => {
+  const API_URL = process.env.API_URL || 'http://localhost:3001';
+  const auth = getBearerToken();
+  const configuration = {
+    ...params,
+  };
+  if (auth) {
+    if (configuration.headers) {
+      configuration.headers.Authorization = auth;
+    } else {
+      configuration.headers = {
+        Authorization: auth,
+      };
+    }
+  }
+  const response = await fetch(`${API_URL}/${path}`, configuration);
+  let content = await response.text();
+  try {
+    content = JSON.parse(content);
+  } catch (e) {
+    // response is not json
+  }
+  if (!response.ok) {
+    // throw new Error(
+    // `failed request to '${url}' with status: ${response.status} and message: ${content}`
+    // );
+    dispatch(setFetchError(content));
+    return null;
+  }
+  return content;
+};

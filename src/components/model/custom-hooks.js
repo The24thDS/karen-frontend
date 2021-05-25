@@ -1,29 +1,34 @@
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { fetchModel } from '../../api/models.api';
 
-export const useModel = (modelId, modelAuthor) => {
+export const useModel = (slug) => {
   const [model, setModel] = useState({
     model: { metadata: {} },
     user: {},
     tags: [],
   });
+  const dispatch = useDispatch();
 
   useEffect(() => {
     let mounted = true;
-    fetchModel(modelId, modelAuthor).then((data) => {
-      const hasGltfFile = data.model.gltf?.length ? true : false;
-      if (mounted) {
-        setModel({
-          ...data,
-          model: {
-            ...data.model,
-            useGltfViewer: hasGltfFile,
-            metadata: JSON.parse(data.model.metadata ?? '{}'),
-            files: data.model.files.map((item) => JSON.parse(item)),
-          },
-        });
+    (async () => {
+      const content = await fetchModel(slug, dispatch);
+      if (content) {
+        const hasGltfFile = content.model.gltf?.length ? true : false;
+        if (mounted) {
+          setModel({
+            ...content,
+            model: {
+              ...content.model,
+              useGltfViewer: hasGltfFile,
+              metadata: JSON.parse(content.model.metadata ?? '{}'),
+              files: content.model.files.map((item) => JSON.parse(item)),
+            },
+          });
+        }
       }
-    });
+    })();
     return () => {
       mounted = false;
     };
