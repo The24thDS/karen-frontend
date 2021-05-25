@@ -13,6 +13,8 @@ const errorsReducer = (state = INITIAL_STATE, action) => {
       return state.merge({ hasError: true, data: action.payload });
     case types.CLEAR_FETCH_ERROR:
       return state.merge({ hasError: false, data: null });
+    case types.HIDE_FETCH_ERROR:
+      return state.merge({ hasError: false });
     default:
       return state;
   }

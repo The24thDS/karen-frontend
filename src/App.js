@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { checkToken } from 'state/actions/users.actions';
 import NavbarContext, {
@@ -9,14 +8,20 @@ import NavbarContext, {
 
 import Routes from './Routes';
 import Navbar from 'components/nav/Navbar';
-
-import './App.css';
 import Sidepanel from 'components/sidepanel/Sidepanel';
+import SidepanelModelContent from 'components/sidepanel/SidepanelModelContent';
+import ErrorToast from 'components/error-toast/ErrorToast';
+
 import { setSidepanelOpened } from 'state/actions/settings.actions';
 import { getSidepanelOpened } from 'state/selectors/settings.selectors';
-import SidepanelModelContent from 'components/sidepanel/SidepanelModelContent';
+import { clearFetchError } from 'state/actions/errors.actions';
+import { useLocationChange } from 'utils/hooks';
 
-const App = ({ sidepanelOpened, checkToken, setSidepanelOpened }) => {
+import './App.css';
+
+const App = () => {
+  const dispatch = useDispatch();
+  const sidepanelOpened = useSelector(getSidepanelOpened);
   const [navbarState, setNavbarState] = useState({
     state: navbarDefaultState,
     setNavbarState: (navbarState) =>
@@ -26,9 +31,13 @@ const App = ({ sidepanelOpened, checkToken, setSidepanelOpened }) => {
       })),
   });
 
+  useLocationChange(() => {
+    dispatch(clearFetchError());
+  });
+
   useEffect(() => {
     if (sessionStorage.getItem('json-wt')?.length) {
-      checkToken();
+      dispatch(checkToken());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -37,28 +46,21 @@ const App = ({ sidepanelOpened, checkToken, setSidepanelOpened }) => {
     <main className="container max-w-full mx-auto">
       <NavbarContext.Provider value={navbarState}>
         <Navbar />
-        <div className="pt-14 flex">
+        <div className="pt-14 flex justify-center">
           <Routes />
           <Sidepanel
             opened={sidepanelOpened}
             onClose={() => {
-              setSidepanelOpened(false);
+              dispatch(setSidepanelOpened(false));
             }}
           >
             <SidepanelModelContent />
           </Sidepanel>
+          <ErrorToast />
         </div>
       </NavbarContext.Provider>
     </main>
   );
 };
 
-const mapStateToProps = (state) => ({
-  sidepanelOpened: getSidepanelOpened(state),
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  ...bindActionCreators({ checkToken, setSidepanelOpened }, dispatch),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

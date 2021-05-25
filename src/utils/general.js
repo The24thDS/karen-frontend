@@ -17,7 +17,6 @@ export const getBearerToken = () =>
     : false;
 
 export const handleApiCall = async (path, dispatch, params = {}) => {
-  const API_URL = process.env.API_URL || 'http://localhost:3001';
   const auth = getBearerToken();
   const configuration = {
     ...params,
