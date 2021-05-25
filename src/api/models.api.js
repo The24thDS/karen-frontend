@@ -65,3 +65,16 @@ export const searchModels = async (data) => {
     return new Error('Server did not return OK');
   }
 };
+
+export const voteModel = async (slug, type, dispatch) => {
+  const path = `models/${slug}/vote`;
+  const params = {
+    method: 'POST',
+    body: JSON.stringify({ voteType: type }),
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+    },
+  };
+  const content = await handleApiCall(path, dispatch, params);
+  return content;
+};

@@ -1,11 +1,12 @@
 import '@google/model-viewer/dist/model-viewer';
 import Rating from 'components/rating/Rating';
 import { formatDistanceToNow, parse } from 'date-fns';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ImageGallery from 'react-image-gallery';
 import { useParams } from 'react-router';
 import { tw } from 'twind';
 import { TiEye, TiDownload } from 'react-icons/ti';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   getGltfFilePath,
   getImagePath,
@@ -14,16 +15,34 @@ import {
 import DownloadButton from '../download-button/DownloadButton';
 import { useModel } from './custom-hooks';
 import './model.css';
+import { selectUserLoggedIn } from 'state/selectors/users.selectors';
+import { voteModel } from 'api/models.api';
 
 const Model = () => {
+  const dispatch = useDispatch();
   const { slug } = useParams();
+  const loggedIn = useSelector(selectUserLoggedIn);
   const { model, user, tags } = useModel(slug);
   const [viewer, setViewer] = useState('gallery');
-  const [rating, setRating] = useState(0);
   const [ratingStatus, setRatingStatus] = useState({
+    value: 0,
     upvoted: false,
     downvoted: false,
   });
+
+  useEffect(() => {
+    let mounted = true;
+    if (model.rating !== undefined && mounted) {
+      setRatingStatus({
+        value: model.rating,
+        upvoted: model.isUpvoted,
+        downvoted: model.isDownvoted,
+      });
+    }
+    return () => {
+      mounted = false;
+    };
+  }, [model]);
 
   const galleryItems =
     model?.images?.map((image) => ({
@@ -37,19 +56,34 @@ const Model = () => {
         : 'bg-gray-300 text-gray-800'
     }`;
 
-  const onVote = (type) => {
-    let valueChange = type === 'up' ? 1 : -1;
-    const typeName = `${type}voted`;
-    if (ratingStatus[typeName]) {
-      setRating((rating) => rating - valueChange);
-      setRatingStatus((state) => ({ ...state, [typeName]: false }));
-    } else {
-      const otherType = Object.keys(ratingStatus).find((k) => k !== typeName);
-      if (ratingStatus[otherType]) {
-        valueChange += valueChange;
+  const onVote = async (type) => {
+    if (loggedIn) {
+      const backup = ratingStatus;
+      let valueChange = type === 'up' ? 1 : -1;
+      const typeName = `${type}voted`;
+      if (ratingStatus[typeName]) {
+        setRatingStatus((state) => ({
+          ...state,
+          value: state.value - valueChange,
+          [typeName]: false,
+        }));
+      } else {
+        const otherType = Object.keys(ratingStatus).find(
+          (k) => k !== typeName && k !== 'value'
+        );
+        if (ratingStatus[otherType]) {
+          valueChange += valueChange;
+        }
+        setRatingStatus((state) => ({
+          [typeName]: true,
+          [otherType]: false,
+          value: state.value + valueChange,
+        }));
       }
-      setRatingStatus({ [typeName]: true, [otherType]: false });
-      setRating((rating) => rating + valueChange);
+      const response = await voteModel(slug, type, dispatch);
+      if (response === null) {
+        setRatingStatus(backup);
+      }
     }
   };
 
@@ -114,7 +148,7 @@ const Model = () => {
         </div>
         <div className="col-span-2 flex justify-center">
           <Rating
-            value={rating}
+            value={ratingStatus.value}
             onUpvote={() => onVote('up')}
             onDownvote={() => onVote('down')}
             isUpvoted={ratingStatus.upvoted}
