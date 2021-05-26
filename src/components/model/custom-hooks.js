@@ -23,7 +23,6 @@ export const useModel = (slug) => {
               ...content.model,
               useGltfViewer: hasGltfFile,
               metadata: JSON.parse(content.model.metadata ?? '{}'),
-              files: content.model.files.map((item) => JSON.parse(item)),
             },
           });
         }
