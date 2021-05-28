@@ -3,7 +3,7 @@ import Rating from 'components/rating/Rating';
 import { formatDistanceToNow, parse } from 'date-fns';
 import React, { useState, useEffect } from 'react';
 import ImageGallery from 'react-image-gallery';
-import { useParams } from 'react-router';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import { tw } from 'twind';
 import { TiEye, TiDownload } from 'react-icons/ti';
 import { useSelector, useDispatch } from 'react-redux';
@@ -17,6 +17,7 @@ import { useModel } from './custom-hooks';
 import './model.css';
 import { selectUserLoggedIn } from 'state/selectors/users.selectors';
 import { voteModel } from 'api/models.api';
+import ModelActionButtons from 'components/model/ModelActionButtons';
 
 const Model = () => {
   const dispatch = useDispatch();
@@ -91,7 +92,6 @@ const Model = () => {
     if (model.useGltfViewer) {
       const file = getGltfFilePath(slug, user.username, model.gltf);
       return (
-        // @ts-ignore
         <model-viewer
           src={file}
           ios-src=""
@@ -136,6 +136,7 @@ const Model = () => {
         )}
       </div>
       <div className="grid grid-cols-6 gap-y-4 content-start">
+        <ModelActionButtons user={user} slug={model.slug} />
         <div className="col-span-1 col-start-4 flex justify-around items-center">
           <p className="flex flex-col items-center justify-center">
             <TiEye />
