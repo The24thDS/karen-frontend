@@ -78,3 +78,9 @@ export const voteModel = async (slug, type, dispatch) => {
   const content = await handleApiCall(path, dispatch, params);
   return content;
 };
+
+export const deleteModel = async (slug, dispatch) => {
+  const path = `models/${slug}`;
+  const content = await handleApiCall(path, dispatch, { method: 'delete' });
+  return content;
+};
