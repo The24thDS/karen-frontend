@@ -1,8 +1,7 @@
-import React, { useContext } from 'react';
-import { connect } from 'react-redux';
+import React, { useCallback, useContext, useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { tw, css } from 'twind/css';
-import { bindActionCreators } from 'redux';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import {
   selectCurrentUserData,
@@ -15,21 +14,34 @@ import NavLink from './NavLink';
 import BrandLink from './BrandLink';
 import SearchInput from '../search/SearchInput';
 import NavItem from './NavItem';
+import md5 from 'md5';
 
 const searchInputContainer = css({
   minWidth: '450px',
 });
+const showOnHover = css({
+  '&:hover .dropdown-menu': {
+    display: 'block',
+  },
+});
+const dropdownItemStyle = tw(
+  'cursor-pointer py-2 px-1 border-b-2 hover:(bg-gray-900 text-white)'
+);
 
-const Navbar = ({ isLoggedIn, currentUserData, logout }) => {
+const Navbar = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
   const {
     state: { showBrand, showSearch },
   } = useContext(NavbarContext);
-  const logUserOut = () => {
+  const isLoggedIn = useSelector(selectUserLoggedIn);
+  const currentUserData = useSelector(selectCurrentUserData);
+
+  const logUserOut = useCallback(() => {
     sessionStorage.removeItem('json-wt');
-    logout();
+    dispatch(logout());
     history.push('/login');
-  };
+  }, [dispatch, history]);
 
   const brandLink = showBrand && <BrandLink to="/">KAREN</BrandLink>;
   const allModelsLink = <NavLink to="/models">All Models</NavLink>;
@@ -45,13 +57,42 @@ const Navbar = ({ isLoggedIn, currentUserData, logout }) => {
       }}
     />
   );
-  const logoutLink = isLoggedIn && (
-    <NavLink onClick={logUserOut} to="/login">
-      Logout
-    </NavLink>
-  );
-  const userGreetingItem = isLoggedIn && (
-    <NavItem>Hello, {currentUserData.username}</NavItem>
+  const userDropdown = useMemo(
+    () =>
+      isLoggedIn && (
+        <NavItem addClassNames={tw(showOnHover, 'cursor-pointer')}>
+          <img
+            src={`https://www.gravatar.com/avatar/${md5(
+              currentUserData?.email
+            )}?s=36&d=${encodeURI(
+              `https://eu.ui-avatars.com/api/${currentUserData?.username}/36/1155ff/ffffff`
+            )}`}
+            alt="profile"
+            className={tw(`rounded-full mr-2`)}
+          />{' '}
+          {currentUserData?.username}
+          <ul
+            className={tw(
+              'hidden dropdown-menu absolute origin-top-right top-full right-0 w-40 bg-white p-2 text-black rounded-sm shadow z-50'
+            )}
+          >
+            <li className={tw(dropdownItemStyle)}>Profile</li>
+            <Link to="/models/new" className={tw(dropdownItemStyle, 'block')}>
+              Upload model
+            </Link>
+            <li className={tw(dropdownItemStyle)}>Your models</li>
+            <li className={tw(dropdownItemStyle)}>Your collections</li>
+            <Link
+              className={tw(dropdownItemStyle, 'block border-b-0')}
+              onClick={logUserOut}
+              to="/login"
+            >
+              Logout
+            </Link>
+          </ul>
+        </NavItem>
+      ),
+    [currentUserData?.username, isLoggedIn, logUserOut]
   );
   const registerLink = !isLoggedIn && (
     <NavLink to="/register">Register</NavLink>
@@ -69,22 +110,10 @@ const Navbar = ({ isLoggedIn, currentUserData, logout }) => {
       <ul className="flex">
         {loginLink}
         {registerLink}
-        {userGreetingItem}
-        {logoutLink}
+        {userDropdown}
       </ul>
     </nav>
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    isLoggedIn: selectUserLoggedIn(state),
-    currentUserData: selectCurrentUserData(state),
-  };
-};
-
-const mapDispatchToProps = (dispatch) => ({
-  ...bindActionCreators({ logout }, dispatch),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
+export default Navbar;

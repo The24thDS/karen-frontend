@@ -15,6 +15,7 @@
     "filepond-plugin-image-preview": "^4.6.6",
     "gltf-validator": "^2.0.0-dev.3.3",
     "immutable": "^4.0.0-rc.12",
+    "md5": "^2.3.0",
     "react": "^17.0.1",
     "react-3d-viewer": "^1.0.12",
     "react-dom": "^17.0.1",
