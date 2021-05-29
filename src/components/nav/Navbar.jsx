@@ -63,7 +63,7 @@ const Navbar = () => {
         <NavItem addClassNames={tw(showOnHover, 'cursor-pointer')}>
           <img
             src={`https://www.gravatar.com/avatar/${md5(
-              currentUserData?.email
+              currentUserData.email ?? 'placeholder@a.a'
             )}?s=36&d=${encodeURI(
               `https://eu.ui-avatars.com/api/${currentUserData?.username}/36/1155ff/ffffff`
             )}`}
