@@ -92,7 +92,7 @@ const Navbar = () => {
           </ul>
         </NavItem>
       ),
-    [currentUserData?.username, isLoggedIn, logUserOut]
+    [currentUserData, isLoggedIn, logUserOut]
   );
   const registerLink = !isLoggedIn && (
     <NavLink to="/register">Register</NavLink>
