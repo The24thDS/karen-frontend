@@ -14,14 +14,14 @@ const ErrorToast = () => {
   return (
     <div
       className={tw(
-        'fixed bg-white shadow-xl p-2 pr-10 rounded transition-all duration-500 border-l-8 border-red-500',
+        'fixed bg-white shadow-xl p-2 pr-10 rounded transition-all duration-500 border-l-8 border-red-500 z-50',
         hasError ? 'bottom-5' : '-bottom-full'
       )}
       role="alert"
     >
       <h4 className={tw('text-lg font-bold')}>Error: {errorData?.error}!</h4>
       <p className={tw('font-medium')}>
-        {errorData?.message} (Code: {errorData?.statusCode})
+        {errorData?.message.toString()} (Code: {errorData?.statusCode})
       </p>
       <AiOutlineClose
         className={tw(

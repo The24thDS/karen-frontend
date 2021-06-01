@@ -12,7 +12,7 @@ const Grid = ({
 }) => {
   return (
     <section
-      className={tw`grid(& cols-${cols.toString()}) gap-4 mt-10 mx-20 ${classNames}`}
+      className={tw`grid(& cols-${cols.toString()}) gap-4 ${classNames}`}
     >
       {items.map((item) => (
         <Item

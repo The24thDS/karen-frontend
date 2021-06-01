@@ -79,6 +79,22 @@ export const voteModel = async (slug, type, dispatch) => {
   return content;
 };
 
+export const addModelToCollection = async (slug, collectionSlug, dispatch) => {
+  const path = `models/${slug}/collections/${collectionSlug}`;
+  const content = await handleApiCall(path, dispatch, { method: 'post' });
+  return content;
+};
+
+export const removeModelFromCollection = async (
+  slug,
+  collectionSlug,
+  dispatch
+) => {
+  const path = `models/${slug}/collections/${collectionSlug}`;
+  const content = await handleApiCall(path, dispatch, { method: 'delete' });
+  return content;
+};
+
 export const deleteModel = async (slug, dispatch) => {
   const path = `models/${slug}`;
   const content = await handleApiCall(path, dispatch, { method: 'delete' });
