@@ -12,6 +12,7 @@ import ModelViewPage from 'pages/models/view/ModelViewPage';
 import SearchResultsPage from 'pages/search/SearchResultsPage';
 import Error403 from 'pages/403/Error403';
 import CollectionsList from 'pages/collections/CollectionsList';
+import CollectionView from 'pages/collections/CollectionView';
 
 const Routes = () => {
   return (
@@ -30,8 +31,11 @@ const Routes = () => {
         <Route exact path="/models/:slug/edit">
           <EditModelPage />
         </Route>
-        <Route exact path="/collections/:username">
+        <Route exact path="/collections/user/:username">
           <CollectionsList />
+        </Route>
+        <Route exact path="/collections/:slug">
+          <CollectionView />
         </Route>
         <ProtectedRoute
           exact

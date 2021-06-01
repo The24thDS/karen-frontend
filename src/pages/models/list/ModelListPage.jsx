@@ -8,6 +8,7 @@ import {
   selectModelsLoading,
 } from 'state/selectors/models.selectors';
 import WithLoading from 'components/with-loading/WithLoading';
+import { tw } from 'twind';
 
 const ModelListPage = ({ models, loading, fetchModels }) => {
   useEffect(() => {
@@ -16,9 +17,11 @@ const ModelListPage = ({ models, loading, fetchModels }) => {
   }, []);
 
   return (
-    <WithLoading condition={!loading}>
-      <ModelsGrid models={models} />
-    </WithLoading>
+    <section className={tw(`mt-10 mx-20`)}>
+      <WithLoading condition={!loading}>
+        <ModelsGrid models={models} />
+      </WithLoading>
+    </section>
   );
 };
 

@@ -38,9 +38,6 @@ export const handleApiCall = async (path, dispatch, params = {}) => {
     // response is not json
   }
   if (!response.ok) {
-    // throw new Error(
-    // `failed request to '${url}' with status: ${response.status} and message: ${content}`
-    // );
     dispatch(setFetchError(content));
     return null;
   }

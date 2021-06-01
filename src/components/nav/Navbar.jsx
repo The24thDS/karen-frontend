@@ -25,7 +25,7 @@ const showOnHover = css({
   },
 });
 const dropdownItemStyle = tw(
-  'cursor-pointer py-2 px-1 border-b-2 hover:(bg-gray-900 text-white)'
+  'block cursor-pointer py-2 px-1 border-b-2 hover:(bg-gray-900 text-white)'
 );
 
 const Navbar = () => {
@@ -77,13 +77,18 @@ const Navbar = () => {
             )}
           >
             <li className={tw(dropdownItemStyle)}>Profile</li>
-            <Link to="/models/new" className={tw(dropdownItemStyle, 'block')}>
+            <Link to="/models/new" className={tw(dropdownItemStyle)}>
               Upload model
             </Link>
             <li className={tw(dropdownItemStyle)}>Your models</li>
-            <li className={tw(dropdownItemStyle)}>Your collections</li>
             <Link
-              className={tw(dropdownItemStyle, 'block border-b-0')}
+              className={tw(dropdownItemStyle)}
+              to={`/collections/user/${currentUserData?.username}`}
+            >
+              Your collections
+            </Link>
+            <Link
+              className={tw(dropdownItemStyle, 'border-b-0')}
               onClick={logUserOut}
               to="/login"
             >
