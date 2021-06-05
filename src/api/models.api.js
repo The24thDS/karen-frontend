@@ -100,3 +100,9 @@ export const deleteModel = async (slug, dispatch) => {
   const content = await handleApiCall(path, dispatch, { method: 'delete' });
   return content;
 };
+
+export const getModelRecommendations = async (slug, dispatch) => {
+  const path = `models/${slug}/recommended`;
+  const content = await handleApiCall(path, dispatch);
+  return content;
+};

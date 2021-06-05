@@ -10,7 +10,13 @@ import { setSidepanelOpened } from 'state/actions/settings.actions';
 import ModelItem from 'components/model-item/ModelItem';
 import Grid from 'components/grid/Grid';
 
-const ModelsGrid = ({ models, setSelectedModel, setSidepanelOpened }) => {
+const ModelsGrid = ({
+  models,
+  cols = 4,
+  item: Item = ModelItem,
+  setSelectedModel,
+  setSidepanelOpened,
+}) => {
   useEffect(() => {
     return () => {
       setSidepanelOpened(false);
@@ -19,8 +25,8 @@ const ModelsGrid = ({ models, setSelectedModel, setSidepanelOpened }) => {
 
   return (
     <Grid
-      cols={4}
-      itemComponent={ModelItem}
+      cols={cols}
+      itemComponent={Item}
       items={models}
       uniqueItemKey="slug"
       classNames={tw`flex-grow`}
@@ -34,6 +40,7 @@ const ModelsGrid = ({ models, setSelectedModel, setSidepanelOpened }) => {
 
 ModelsGrid.propTypes = {
   models: PropTypes.array.isRequired,
+  cols: PropTypes.number,
 };
 
 const mapDispatchToProps = (dispatch) => ({

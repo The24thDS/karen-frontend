@@ -1,15 +1,27 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getSelectedModel } from 'state/selectors/models.selectors';
-import { getImagePath } from 'utils/general';
 
-const SidepanelModelContent = ({ selectedModel }) => {
+import { getSelectedModel } from 'state/selectors/models.selectors';
+import { useModelRecommendations } from 'components/sidepanel/custom-hooks';
+import { getImagePath } from 'utils/general';
+import ModelsGrid from 'components/models-grid/ModelsGrid';
+import { ModelItemSmall } from 'components/model-item/ModelItem';
+import { tw, css } from 'twind/css';
+
+const container = css({
+  maxHeight: 'calc(100vh - 96px)',
+});
+
+const SidepanelModelContent = () => {
+  const selectedModel = useSelector(getSelectedModel);
+
+  const recommendedModels = useModelRecommendations(selectedModel?.slug);
+
   return (
-    <>
-      <Link to={`/models/${selectedModel.slug}`}>
+    <div className={tw(`overflow-y-auto pr-6`, container)}>
+      <Link to={`/models/${selectedModel.slug}`} className={tw(`row-span-1`)}>
         <img
-          className="rounded"
+          className="w-full m-auto"
           src={getImagePath(
             selectedModel?.slug,
             selectedModel?.user?.username,
@@ -17,14 +29,14 @@ const SidepanelModelContent = ({ selectedModel }) => {
           )}
           alt=""
         />
-        <h1 className="text-center text-2xl pt-4">{selectedModel?.name}</h1>
+        <h1 className={tw(`text-2xl py-4 mb-2 border-b text-center`)}>
+          {selectedModel?.name}
+        </h1>
       </Link>
-    </>
+      <p className={tw(`pb-1`)}>Similar models</p>
+      <ModelsGrid models={recommendedModels} cols={3} item={ModelItemSmall} />
+    </div>
   );
 };
 
-const mapStateToProps = (state) => ({
-  selectedModel: getSelectedModel(state),
-});
-
-export default connect(mapStateToProps)(SidepanelModelContent);
+export default SidepanelModelContent;
