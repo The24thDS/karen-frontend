@@ -2,8 +2,12 @@ import { getBearerToken, handleApiCall } from 'utils/general';
 
 const API_URL = process.env.API_URL || 'http://localhost:3001';
 
-export const fetchModels = async () => {
-  const res = await fetch(`${API_URL}/models`);
+export const fetchModels = async (data) => {
+  const page = data.page ?? 0;
+  const pageSize = data.pageSize ?? 20;
+  const res = await fetch(
+    `${API_URL}/models?page=${page}&pageSize=${pageSize}`
+  );
   if (res.ok) {
     const data = await res.json();
     return data;

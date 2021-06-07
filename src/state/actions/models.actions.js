@@ -6,9 +6,10 @@ export const SEARCH_MODELS_SUCCESS = 'MODELS_SEARCH_SUCCEEDED';
 export const SEARCH_MODELS_FAILURE = 'MODELS_SEARCH_FAILED';
 export const SET_SELECTED_MODEL = 'SET_SELECTED_MODEL';
 
-export function fetchModels() {
+export function fetchModels(pageData) {
   return {
     type: FETCH_MODELS,
+    payload: pageData,
   };
 }
 

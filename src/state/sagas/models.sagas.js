@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest, takeEvery } from 'redux-saga/effects';
 
 import {
   fetchModels as fetchModelsApi,
@@ -13,9 +13,9 @@ import {
   SEARCH_MODELS_SUCCESS,
 } from '../actions/models.actions';
 
-function* fetchModels(_action) {
+function* fetchModels(action) {
   try {
-    const data = yield call(fetchModelsApi);
+    const data = yield call(fetchModelsApi, action.payload);
     yield put({ type: FETCH_MODELS_SUCCESS, data });
   } catch (e) {
     yield put({ type: FETCH_MODELS_FAILURE, message: e.message });
@@ -32,6 +32,6 @@ function* searchModels(action) {
 }
 
 export function* modelsSaga() {
-  yield takeLatest(FETCH_MODELS, fetchModels);
+  yield takeEvery(FETCH_MODELS, fetchModels);
   yield takeLatest(SEARCH_MODELS, searchModels);
 }

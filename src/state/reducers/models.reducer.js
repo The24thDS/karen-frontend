@@ -28,11 +28,16 @@ const modelsReducer = (state = INITIAL_STATE, action) => {
     case FETCH_MODELS:
       return state.merge({ loading: true, error: null, searchTerm: null });
     case SEARCH_MODELS_SUCCESS:
-    case FETCH_MODELS_SUCCESS:
       return state.merge({
         loading: false,
         error: null,
         items: action.data,
+      });
+    case FETCH_MODELS_SUCCESS:
+      return state.merge({
+        loading: false,
+        error: null,
+        items: [...state.get('items'), ...action.data],
       });
     case SEARCH_MODELS_FAILURE:
     case FETCH_MODELS_FAILURE:
