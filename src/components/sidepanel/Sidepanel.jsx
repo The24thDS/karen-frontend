@@ -1,9 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { tw, css } from 'twind/css';
+import { tw, css, theme } from 'twind/css';
 import WithLoading from 'components/with-loading/WithLoading';
 
 const transitionDurationMs = 200;
+
+const sidepanelOpenedCSS = css({
+  width: '25vw',
+});
+
+const sidepanelClosedCSS = css({
+  width: '0vw',
+});
 
 const useContentStatus = (opened) => {
   const [showContent, setShowContent] = useState(false);
@@ -24,14 +32,6 @@ const useContentStatus = (opened) => {
 const Sidepanel = ({ children, opened, onClose }) => {
   const shouldDisplayContent = useContentStatus(opened);
 
-  const sidepanelOpenedCSS = css({
-    width: '25vw',
-  });
-
-  const sidepanelClosedCSS = css({
-    width: '0vw',
-  });
-
   return (
     <aside
       className={tw(
@@ -42,7 +42,7 @@ const Sidepanel = ({ children, opened, onClose }) => {
       <button
         className={tw`${
           opened ? 'block' : 'none'
-        } fixed cursor-pointer bg-none border-0 text-white z-10 text-xl w-8 h-8`}
+        } fixed cursor-pointer bg-none border-0 text-white z-10 text-xl w-8 h-8 right-[23vw]`}
         onClick={() => {
           onClose();
         }}
@@ -51,9 +51,8 @@ const Sidepanel = ({ children, opened, onClose }) => {
       </button>
       <div
         className={tw(
-          `bg-black text-white fixed h-screen pt-10 px-6 ${
-            shouldDisplayContent ? 'block' : 'none'
-          }`,
+          `bg-black text-white box-border fixed h-screen py-10 pl-6 right-0`,
+          shouldDisplayContent ? 'block' : 'hidden',
           sidepanelOpenedCSS
         )}
       >
