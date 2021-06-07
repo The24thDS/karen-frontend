@@ -38,7 +38,7 @@ const Navbar = () => {
   const currentUserData = useSelector(selectCurrentUser);
 
   const logUserOut = useCallback(() => {
-    sessionStorage.removeItem('json-wt');
+    localStorage.removeItem('karen_jwt');
     dispatch(logout());
     history.push('/login');
   }, [dispatch, history]);

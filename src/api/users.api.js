@@ -1,7 +1,5 @@
 import { handleApiCall } from 'utils/general';
 
-const API_URL = process.env.API_URL || 'http://localhost:3001';
-
 export const login = async (userData) => {
   const path = `auth/login`;
   const params = {
@@ -16,15 +14,16 @@ export const login = async (userData) => {
 };
 
 export const register = async (userData) => {
-  const res = await fetch(`${API_URL}/auth/register`, {
+  const path = `auth/register`;
+  const params = {
     method: 'POST',
     body: JSON.stringify(userData),
     headers: {
-      'Content-Type': 'application/json; charset=utf-8',
+      'Content-Type': 'application/json',
     },
-  });
-  const data = await res.json();
-  return { data, status: res.status, ok: res.ok };
+  };
+  const content = await handleApiCall(path, params);
+  return content;
 };
 
 export const checkToken = async () => {
