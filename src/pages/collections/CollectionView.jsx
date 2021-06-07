@@ -8,8 +8,8 @@ import { selectCurrentUserData } from 'state/selectors/users.selectors';
 import Modal from 'components/modal/Modal';
 import CollectionForm from 'components/collection-form/CollectionForm';
 import ModelsGrid from 'components/models-grid/ModelsGrid';
-import { useCollectionWithModels } from 'pages/collections/custom-hooks';
 import WithLoading from 'components/with-loading/WithLoading';
+import useCollectionWithModels from 'hooks/useCollectionsWithModels';
 import CollectionDeleteModal from 'pages/collections/CollectionDeleteModal';
 
 const CollectionView = () => {

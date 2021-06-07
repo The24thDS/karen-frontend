@@ -7,13 +7,9 @@ import { useParams, Link, useLocation } from 'react-router-dom';
 import { tw } from 'twind';
 import { TiEye, TiDownload } from 'react-icons/ti';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  getGltfFilePath,
-  getImagePath,
-  getModelFilePath,
-} from '../../utils/general';
+import { getGltfFilePath, getImagePath, getModelFilePath } from 'utils/general';
 import DownloadButton from '../download-button/DownloadButton';
-import { useModel } from './custom-hooks';
+import useModel from 'hooks/useModel';
 import './model.css';
 import { selectUserLoggedIn } from 'state/selectors/users.selectors';
 import { voteModel } from 'api/models.api';

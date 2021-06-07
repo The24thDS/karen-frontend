@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
 import { tw } from 'twind';
@@ -9,7 +9,7 @@ import CollectionsGrid from 'components/collections-grid/CollectionsGrid';
 import WithLoading from 'components/with-loading/WithLoading';
 import Modal from 'components/modal/Modal';
 import CollectionForm from 'components/collection-form/CollectionForm';
-import { useUserCollections } from 'pages/collections/custom-hooks';
+import useUserCollections from 'hooks/useUserCollections';
 
 const CollectionsList = () => {
   const { username } = useParams();

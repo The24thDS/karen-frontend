@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React from 'react';
 import { tw } from 'twind';
 import { Controller } from 'react-hook-form';
 import CreatableSelect from 'react-select/creatable';
+
 import FileInput from 'components/form/inputs/FileInput';
 import Input from 'components/form/inputs/Input';
 import Textarea from 'components/form/textarea/Textarea';
@@ -10,7 +11,8 @@ import Error from 'components/error/Error';
 import SubmitButton from 'components/form/inputs/SubmitButton';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useInitialModelInfo, useTagsOptions } from '../custom-hooks';
+import useInitialModelInfo from 'hooks/useInitialModelInfo';
+import useTagsOptions from 'hooks/useTagsOptions';
 import {
   ModelEditFormSchemaStep1,
   ModelFormSchemaStep1,

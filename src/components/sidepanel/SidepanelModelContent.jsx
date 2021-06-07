@@ -1,12 +1,12 @@
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { tw, css } from 'twind/css';
 
+import useModelRecommendations from 'hooks/useModelRecommendations';
 import { getSelectedModel } from 'state/selectors/models.selectors';
-import { useModelRecommendations } from 'components/sidepanel/custom-hooks';
-import { getImagePath } from 'utils/general';
 import ModelsGrid from 'components/models-grid/ModelsGrid';
 import { ModelItemSmall } from 'components/model-item/ModelItem';
-import { tw, css } from 'twind/css';
+import { getImagePath } from 'utils/general';
 
 const container = css({
   maxHeight: 'calc(100vh - 96px)',

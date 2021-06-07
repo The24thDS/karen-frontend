@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { fetchModel } from '../../api/models.api';
+import { fetchModel } from 'api/models.api';
 
-export const useModel = (slug) => {
+const useModel = (slug) => {
   const [model, setModel] = useState({
     model: { metadata: {} },
     user: {},
@@ -36,3 +36,5 @@ export const useModel = (slug) => {
 
   return model;
 };
+
+export default useModel;

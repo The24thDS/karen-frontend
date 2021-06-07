@@ -6,10 +6,8 @@ import { useForm } from 'react-hook-form';
 import Modal from 'components/modal/Modal';
 import Select from 'components/form/inputs/Select';
 import { removeModelFromCollection } from 'api/models.api';
-import {
-  useUserCollections,
-  useUserCollectionsForModel,
-} from 'pages/collections/custom-hooks';
+import useUserCollectionsForModel from 'hooks/useUserCollectionsForModel';
+import useUserCollections from 'hooks/useUserCollections';
 import { selectCurrentUserData } from 'state/selectors/users.selectors';
 import SubmitButton from 'components/form/inputs/SubmitButton';
 

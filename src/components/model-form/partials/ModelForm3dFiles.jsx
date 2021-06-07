@@ -16,7 +16,7 @@ import {
   gltfFileInputServerConfig,
   modelsFileInputServerConfig,
 } from '../file-inputs-server-configs';
-import { useCustomMetadataVales } from '../custom-hooks';
+import useCustomMetadataValues from 'hooks/useCustomMetadataValues';
 import ExistingFilesSection from 'components/model-form/partials/ExistingFilesSection';
 
 const ModelForm3dFiles = ({
@@ -37,7 +37,7 @@ const ModelForm3dFiles = ({
     Object.keys(initialModel?.model?.metadata ?? {})
   );
   const [keyName, setKeyName] = useState('');
-  useCustomMetadataVales(setValue, initialModel);
+  useCustomMetadataValues(setValue, initialModel);
   const acceptedFileTypes = ['.stl', '.mtl', '.obj', '.zip', '.dae', '.fbx'];
 
   const addNewInfo = () => {

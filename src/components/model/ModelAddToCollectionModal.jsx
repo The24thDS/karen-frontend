@@ -3,14 +3,12 @@ import { tw, apply } from 'twind/css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 
+import { selectCurrentUserData } from 'state/selectors/users.selectors';
 import Modal from 'components/modal/Modal';
 import Select from 'components/form/inputs/Select';
 import { addModelToCollection } from 'api/models.api';
-import {
-  useUserCollections,
-  useUserCollectionsForModel,
-} from 'pages/collections/custom-hooks';
-import { selectCurrentUserData } from 'state/selectors/users.selectors';
+import useUserCollectionsForModel from 'hooks/useUserCollectionsForModel';
+import useUserCollections from 'hooks/useUserCollections';
 import SubmitButton from 'components/form/inputs/SubmitButton';
 
 const buttonBaseStyles = tw`p-2 mt-2 text-white rounded`;

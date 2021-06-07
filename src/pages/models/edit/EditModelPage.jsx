@@ -1,7 +1,7 @@
 import React from 'react';
 import ModelForm from 'components/model-form/ModelForm';
 import { Redirect, useParams } from 'react-router';
-import { useModel } from 'components/model/custom-hooks';
+import useModel from 'hooks/useModel';
 import { tw } from 'twind';
 import { updateModel } from 'api/models.api';
 import { useSelector } from 'react-redux';
