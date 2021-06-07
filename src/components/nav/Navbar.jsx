@@ -4,7 +4,7 @@ import { tw, css } from 'twind/css';
 import { Link, useHistory } from 'react-router-dom';
 
 import {
-  selectCurrentUserData,
+  selectCurrentUser,
   selectUserLoggedIn,
 } from 'state/selectors/users.selectors';
 import { logout } from 'state/actions/users.actions';
@@ -35,7 +35,7 @@ const Navbar = () => {
     state: { showBrand, showSearch },
   } = useContext(NavbarContext);
   const isLoggedIn = useSelector(selectUserLoggedIn);
-  const currentUserData = useSelector(selectCurrentUserData);
+  const currentUserData = useSelector(selectCurrentUser);
 
   const logUserOut = useCallback(() => {
     sessionStorage.removeItem('json-wt');

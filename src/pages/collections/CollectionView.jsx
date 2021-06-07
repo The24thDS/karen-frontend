@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { RiGitRepositoryPrivateFill } from 'react-icons/ri';
 import { tw } from 'twind';
 
-import { selectCurrentUserData } from 'state/selectors/users.selectors';
+import { selectCurrentUser } from 'state/selectors/users.selectors';
 import Modal from 'components/modal/Modal';
 import CollectionForm from 'components/collection-form/CollectionForm';
 import ModelsGrid from 'components/models-grid/ModelsGrid';
@@ -15,7 +15,7 @@ import CollectionDeleteModal from 'pages/collections/CollectionDeleteModal';
 const CollectionView = () => {
   const { slug } = useParams();
 
-  const currentUser = useSelector(selectCurrentUserData);
+  const currentUser = useSelector(selectCurrentUser);
 
   const [editModalOpened, setEditModalOpened] = useState(false);
   const [deleteModalOpened, setDeleteModalOpened] = useState(false);

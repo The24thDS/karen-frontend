@@ -5,11 +5,11 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 
-import { selectCurrentUserData } from 'state/selectors/users.selectors';
+import { selectCurrentUser } from 'state/selectors/users.selectors';
 import { tw } from 'twind';
 
 const ModelActionButtons = ({ user, slug }) => {
-  const loggedInUser = useSelector(selectCurrentUserData);
+  const loggedInUser = useSelector(selectCurrentUser);
   const location = useLocation();
   const [deleteModalOpened, setDeleteModalOpened] = useState(false);
   const [collectionAddModalOpened, setCollectionAddModalOpened] =

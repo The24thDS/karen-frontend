@@ -3,7 +3,7 @@ import { tw, apply } from 'twind/css';
 import { useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 
-import { selectCurrentUserData } from 'state/selectors/users.selectors';
+import { selectCurrentUser } from 'state/selectors/users.selectors';
 import Modal from 'components/modal/Modal';
 import Select from 'components/form/inputs/Select';
 import { addModelToCollection } from 'api/models.api';
@@ -15,7 +15,7 @@ const buttonBaseStyles = tw`p-2 mt-2 text-white rounded`;
 const greenButton = apply(buttonBaseStyles, `bg-green-600`);
 
 const ModelAddToCollectionModal = ({ onClose, slug }) => {
-  const currentUser = useSelector(selectCurrentUserData);
+  const currentUser = useSelector(selectCurrentUser);
 
   const [loading, setLoading] = useState(false);
   const [added, setAdded] = useState(false);

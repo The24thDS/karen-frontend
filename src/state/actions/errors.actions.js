@@ -1,5 +1,6 @@
 export const types = {
   SET_FETCH_ERROR: 'SET_FETCH_ERROR',
+  SET_TOAST: 'SET_TOAST',
   CLEAR_FETCH_ERROR: 'CLEAR_FETCH_ERROR',
   HIDE_FETCH_ERROR: 'HIDE_FETCH_ERROR',
 };
@@ -7,6 +8,13 @@ export const types = {
 export function setFetchError(payload) {
   return {
     type: types.SET_FETCH_ERROR,
+    payload,
+  };
+}
+
+export function setToast(payload) {
+  return {
+    type: types.SET_TOAST,
     payload,
   };
 }

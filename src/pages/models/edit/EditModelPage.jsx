@@ -5,12 +5,12 @@ import useModel from 'hooks/useModel';
 import { tw } from 'twind';
 import { updateModel } from 'api/models.api';
 import { useSelector } from 'react-redux';
-import { selectCurrentUserData } from 'state/selectors/users.selectors';
+import { selectCurrentUser } from 'state/selectors/users.selectors';
 
 const EditModelPage = () => {
   const { slug } = useParams();
   const model = useModel(slug);
-  const loggedInUser = useSelector(selectCurrentUserData);
+  const loggedInUser = useSelector(selectCurrentUser);
   return loggedInUser?.username === model.user?.username ? (
     <div className="px-6 mx-20 md:mt-12">
       <h1 className={tw`text(center black xl) font-semibold`}>

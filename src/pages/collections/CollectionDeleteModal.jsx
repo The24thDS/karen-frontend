@@ -7,7 +7,7 @@ import LoadingIndicator from 'components/loading-indicator/LoadingIndicator';
 import Modal from 'components/modal/Modal';
 import { deleteCollection } from 'api/collections.api';
 import { Redirect } from 'react-router';
-import { selectCurrentUserData } from 'state/selectors/users.selectors';
+import { selectCurrentUser } from 'state/selectors/users.selectors';
 
 const buttonBaseStyles = tw`p-2 mt-2 text-white rounded`;
 const greenButton = apply(buttonBaseStyles, `bg-green-600`);
@@ -19,7 +19,7 @@ const redButton = apply(
 const CollectionDeleteModal = ({ onClose, slug }) => {
   const [loading, setLoading] = useState(false);
   const [deleted, setDeleted] = useState(false);
-  const currentUser = useSelector(selectCurrentUserData);
+  const currentUser = useSelector(selectCurrentUser);
 
   const onDelete = async () => {
     setLoading(true);

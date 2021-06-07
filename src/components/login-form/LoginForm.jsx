@@ -1,15 +1,13 @@
-import React from 'react';
+import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useHistory } from 'react-router';
 import * as yup from 'yup';
 
+import { getErrorsData, getHasError } from 'state/selectors/errors.selectors';
 import { logUserIn } from 'state/actions/users.actions';
-import {
-  selectCurrentUserError,
-  selectCurrentUserLoading,
-} from 'state/selectors/users.selectors';
+import { login } from 'api/users.api';
 
 import Input from '../form/inputs/Input';
 import Error from '../error/Error';
@@ -20,18 +18,43 @@ const schema = yup.object().shape({
   password: yup.string().required(),
 });
 
-const LoginForm = ({ logUserIn, loginLoading, loginError }) => {
+const LoginForm = () => {
+  const dispatch = useDispatch();
+  const history = useHistory();
   const { register, handleSubmit, errors } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const loginErrorMessage =
-    loginError?.statusCode === 401
-      ? 'Incorrect email and password'
-      : loginError?.message;
+  // USE SELECTOR HOOKS
+  const hasError = useSelector(getHasError);
+  const errorData = useSelector(getErrorsData);
+
+  // USE STATE HOOKS
+  const [loading, setLoading] = useState(false);
+
+  // USE MEMO HOOKS
+  const loginErrorMessage = useMemo(
+    () =>
+      errorData?.statusCode === 401
+        ? 'Incorrect email and password'
+        : errorData?.message,
+    [errorData]
+  );
+
+  // FUNCTIONS
+  const onSubmit = async (data) => {
+    setLoading(true);
+    const response = await login(data);
+    setLoading(false);
+    if (response !== null) {
+      dispatch(logUserIn(response.user));
+      localStorage.setItem('karen_jwt', response.access_token);
+      history.replace('/');
+    }
+  };
 
   return (
-    <form onSubmit={handleSubmit(logUserIn)} className="flex flex-col mt-8">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col mt-8">
       <Input
         register={register}
         id="email"
@@ -47,21 +70,10 @@ const LoginForm = ({ logUserIn, loginLoading, loginError }) => {
         label="Password"
         errors={errors.password}
       />
-      <SubmitButton text={loginLoading ? 'Logging you in...' : 'Login'} />
-      {loginError && <Error message={loginErrorMessage} className="mt-2" />}
+      <SubmitButton text={loading ? 'Logging you in...' : 'Login'} />
+      {hasError && <Error message={loginErrorMessage} className="mt-2" />}
     </form>
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    loginError: selectCurrentUserError(state),
-    loginLoading: selectCurrentUserLoading(state),
-  };
-};
-
-const mapDispatchToProps = (dispatch) => ({
-  ...bindActionCreators({ logUserIn }, dispatch),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
+export default LoginForm;

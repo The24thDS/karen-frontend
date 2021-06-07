@@ -1,17 +1,18 @@
-import { getBearerToken } from 'utils/general';
+import { getBearerToken, handleApiCall } from 'utils/general';
 
 const API_URL = process.env.API_URL || 'http://localhost:3001';
 
 export const login = async (userData) => {
-  const res = await fetch(`${API_URL}/auth/login`, {
+  const path = `auth/login`;
+  const params = {
     method: 'POST',
     body: JSON.stringify(userData),
     headers: {
-      'Content-Type': 'application/json; charset=utf-8',
+      'Content-Type': 'application/json',
     },
-  });
-  const data = await res.json();
-  return { data, status: res.status, ok: res.ok };
+  };
+  const content = await handleApiCall(path, params);
+  return content;
 };
 
 export const register = async (userData) => {

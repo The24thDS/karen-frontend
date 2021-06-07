@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { tw } from 'twind';
 
-import { selectCurrentUserData } from 'state/selectors/users.selectors';
+import { selectCurrentUser } from 'state/selectors/users.selectors';
 
 import CollectionsGrid from 'components/collections-grid/CollectionsGrid';
 import WithLoading from 'components/with-loading/WithLoading';
@@ -13,7 +13,7 @@ import useUserCollections from 'hooks/useUserCollections';
 
 const CollectionsList = () => {
   const { username } = useParams();
-  const currentUser = useSelector(selectCurrentUserData);
+  const currentUser = useSelector(selectCurrentUser);
   const [modalOpened, setModalOpened] = useState(false);
   const isMyCollectionsPage = useMemo(
     () => username === currentUser?.username,

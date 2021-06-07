@@ -8,14 +8,14 @@ import Select from 'components/form/inputs/Select';
 import { removeModelFromCollection } from 'api/models.api';
 import useUserCollectionsForModel from 'hooks/useUserCollectionsForModel';
 import useUserCollections from 'hooks/useUserCollections';
-import { selectCurrentUserData } from 'state/selectors/users.selectors';
+import { selectCurrentUser } from 'state/selectors/users.selectors';
 import SubmitButton from 'components/form/inputs/SubmitButton';
 
 const buttonBaseStyles = tw`p-2 mt-2 text-white rounded`;
 const greenButton = apply(buttonBaseStyles, `bg-green-600`);
 
 const ModelRemoveFromCollectionModal = ({ onClose, slug }) => {
-  const currentUser = useSelector(selectCurrentUserData);
+  const currentUser = useSelector(selectCurrentUser);
 
   const [loading, setLoading] = useState(false);
   const [added, setAdded] = useState(false);
