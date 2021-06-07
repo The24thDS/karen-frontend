@@ -15,7 +15,7 @@ const errorsReducer = (state = INITIAL_STATE, action) => {
     case types.SET_TOAST:
       return state.merge({ toast: action.payload });
     case types.CLEAR_FETCH_ERROR:
-      return state.merge({ hasError: false, data: null });
+      return state.merge({ hasError: false, toast: false, data: null });
     case types.HIDE_FETCH_ERROR:
       return state.merge({ hasError: false, toast: false });
     default:

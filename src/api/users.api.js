@@ -1,4 +1,4 @@
-import { getBearerToken, handleApiCall } from 'utils/general';
+import { handleApiCall } from 'utils/general';
 
 const API_URL = process.env.API_URL || 'http://localhost:3001';
 
@@ -28,11 +28,7 @@ export const register = async (userData) => {
 };
 
 export const checkToken = async () => {
-  const res = await fetch(`${API_URL}/auth/check-token`, {
-    headers: {
-      Authorization: getBearerToken(),
-    },
-  });
-  const data = await res.json();
-  return { data, status: res.status, ok: res.ok };
+  const path = `auth/check-token`;
+  const content = await handleApiCall(path);
+  return content;
 };

@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { checkToken } from 'state/actions/users.actions';
 import NavbarContext, {
   navbarDefaultState,
 } from 'state/contexts/NavbarContext';
+
+import { checkToken } from 'api/users.api';
+import { clearFetchError } from 'state/actions/errors.actions';
+import { logUserIn } from 'state/actions/users.actions';
+import { setSidepanelOpened } from 'state/actions/settings.actions';
+import { getSidepanelOpened } from 'state/selectors/settings.selectors';
+import { useLocationChange } from 'utils/hooks';
+import { getBearerToken } from 'utils/general';
 
 import Routes from './Routes';
 import Navbar from 'components/nav/Navbar';
@@ -12,16 +19,15 @@ import Sidepanel from 'components/sidepanel/Sidepanel';
 import SidepanelModelContent from 'components/sidepanel/SidepanelModelContent';
 import ErrorToast from 'components/error-toast/ErrorToast';
 
-import { setSidepanelOpened } from 'state/actions/settings.actions';
-import { getSidepanelOpened } from 'state/selectors/settings.selectors';
-import { clearFetchError } from 'state/actions/errors.actions';
-import { useLocationChange } from 'utils/hooks';
-
 import './App.css';
 
 const App = () => {
   const dispatch = useDispatch();
+
+  // USE SELECTOR HOOKS
   const sidepanelOpened = useSelector(getSidepanelOpened);
+
+  // USE STATE HOOKS
   const [navbarState, setNavbarState] = useState({
     state: navbarDefaultState,
     setNavbarState: (navbarState) =>
@@ -31,13 +37,19 @@ const App = () => {
       })),
   });
 
+  // USE EFFECT HOOKS
   useLocationChange(() => {
     dispatch(clearFetchError());
   });
 
   useEffect(() => {
-    if (sessionStorage.getItem('json-wt')?.length) {
-      dispatch(checkToken());
+    if (getBearerToken()) {
+      (async function logUserInWithToken() {
+        const response = await checkToken();
+        if (response?.valid) {
+          dispatch(logUserIn(response.user));
+        }
+      })();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

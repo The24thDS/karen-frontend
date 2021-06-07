@@ -13,8 +13,8 @@ export const getGltfFilePath = (modelSlug, username, fileName) =>
   encodeURI(`${API_URL}/assets/gltf/${username}/${modelSlug}/${fileName}`);
 
 export const getBearerToken = () =>
-  localStorage.getItem('json-wt')
-    ? `Bearer ${localStorage.getItem('json-wt')}`
+  localStorage.getItem('karen_jwt')
+    ? `Bearer ${localStorage.getItem('karen_jwt')}`
     : false;
 
 export const handleApiCall = async (path, params = {}) => {
