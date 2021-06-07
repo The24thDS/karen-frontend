@@ -2,13 +2,13 @@ import { useState, useEffect } from 'react';
 
 import { fetchUserCollections } from 'api/collections.api';
 
-const useUserCollections = (username, dispatch) => {
+const useUserCollections = (username) => {
   const [collections, setCollections] = useState([]);
 
   useEffect(() => {
     let mounted = true;
     (async () => {
-      const response = await fetchUserCollections(username, dispatch);
+      const response = await fetchUserCollections(username);
       if (!mounted) {
         return;
       }
@@ -17,7 +17,7 @@ const useUserCollections = (username, dispatch) => {
     return () => {
       mounted = false;
     };
-  }, [dispatch, username]);
+  }, [username]);
 
   return collections;
 };

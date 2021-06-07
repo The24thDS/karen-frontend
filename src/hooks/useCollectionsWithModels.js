@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { fetchCollectionWithModels } from 'api/collections.api';
 
-const useCollectionWithModels = (slug, dispatch, trigger = null) => {
+const useCollectionWithModels = (slug, trigger = null) => {
   const [collection, setCollection] = useState(null);
 
   useEffect(() => {
     let mounted = true;
     (async () => {
-      const response = await fetchCollectionWithModels(slug, dispatch);
+      const response = await fetchCollectionWithModels(slug);
       if (!mounted) {
         return;
       }
@@ -16,7 +16,7 @@ const useCollectionWithModels = (slug, dispatch, trigger = null) => {
     return () => {
       mounted = false;
     };
-  }, [slug, dispatch, trigger]);
+  }, [slug, trigger]);
 
   return collection;
 };

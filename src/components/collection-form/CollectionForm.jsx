@@ -1,7 +1,6 @@
 import { useMemo, useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useDispatch } from 'react-redux';
 
 import validationSchema from './validation.schema';
 
@@ -13,7 +12,6 @@ import { storeCollection, updateCollection } from 'api/collections.api';
 import { useHistory } from 'react-router';
 
 const CollectionForm = ({ initialValues, slug, onClose, onSuccess }) => {
-  const dispatch = useDispatch();
   const history = useHistory();
   const [loading, setLoading] = useState(false);
   const { register, handleSubmit, setValue, errors } = useForm({
@@ -36,14 +34,14 @@ const CollectionForm = ({ initialValues, slug, onClose, onSuccess }) => {
   const onSubmit = async (data) => {
     setLoading(true);
     if (!isEditForm) {
-      const response = await storeCollection(data, dispatch);
+      const response = await storeCollection(data);
       setLoading(false);
       if (response?.success) {
         onClose();
         history.push(`/collections/${response.collection.slug}`);
       }
     } else {
-      const response = await updateCollection(slug, data, dispatch);
+      const response = await updateCollection(slug, data);
       setLoading(false);
       if (response?.success) {
         onClose();

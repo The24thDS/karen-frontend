@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { tw, apply } from 'twind/css';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 
 import { selectCurrentUserData } from 'state/selectors/users.selectors';
@@ -15,18 +15,16 @@ const buttonBaseStyles = tw`p-2 mt-2 text-white rounded`;
 const greenButton = apply(buttonBaseStyles, `bg-green-600`);
 
 const ModelAddToCollectionModal = ({ onClose, slug }) => {
-  const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUserData);
 
   const [loading, setLoading] = useState(false);
   const [added, setAdded] = useState(false);
   const [trigger, setTrigger] = useState(0);
 
-  const collections = useUserCollections(currentUser?.username, dispatch);
+  const collections = useUserCollections(currentUser?.username);
   const userCollectionsForModel = useUserCollectionsForModel(
     currentUser?.username,
     slug,
-    dispatch,
     trigger
   );
   const selectOptions = useMemo(
@@ -55,7 +53,7 @@ const ModelAddToCollectionModal = ({ onClose, slug }) => {
   const onAdd = async (data) => {
     console.log(data);
     setLoading(true);
-    const content = await addModelToCollection(slug, data.collection, dispatch);
+    const content = await addModelToCollection(slug, data.collection);
     if (content.success) {
       setLoading(false);
       setAdded(true);

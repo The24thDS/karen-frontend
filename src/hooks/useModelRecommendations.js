@@ -1,17 +1,15 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 
 import { getModelRecommendations } from 'api/models.api';
 
 const useModelRecommendations = (slug) => {
   const [models, setModels] = useState([]);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     let mounted = true;
     if (slug) {
       (async () => {
-        const response = await getModelRecommendations(slug, dispatch);
+        const response = await getModelRecommendations(slug);
         if (response && mounted) {
           setModels(response);
         }
@@ -20,7 +18,7 @@ const useModelRecommendations = (slug) => {
     return () => {
       mounted = false;
     };
-  }, [dispatch, slug]);
+  }, [slug]);
 
   return models;
 };

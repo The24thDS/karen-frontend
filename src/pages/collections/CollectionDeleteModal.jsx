@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { tw, apply } from 'twind/css';
 import { RiDeleteBin2Fill } from 'react-icons/ri';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import LoadingIndicator from 'components/loading-indicator/LoadingIndicator';
 import Modal from 'components/modal/Modal';
@@ -19,12 +19,11 @@ const redButton = apply(
 const CollectionDeleteModal = ({ onClose, slug }) => {
   const [loading, setLoading] = useState(false);
   const [deleted, setDeleted] = useState(false);
-  const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUserData);
 
   const onDelete = async () => {
     setLoading(true);
-    const content = await deleteCollection(slug, dispatch);
+    const content = await deleteCollection(slug);
     if (content.success) {
       setLoading(false);
       setDeleted(true);

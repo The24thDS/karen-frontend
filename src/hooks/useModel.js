@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { fetchModel } from 'api/models.api';
 
 const useModel = (slug) => {
@@ -8,12 +7,11 @@ const useModel = (slug) => {
     user: {},
     tags: [],
   });
-  const dispatch = useDispatch();
 
   useEffect(() => {
     let mounted = true;
     (async () => {
-      const content = await fetchModel(slug, dispatch);
+      const content = await fetchModel(slug);
       if (content) {
         const hasGltfFile = content.model.gltf?.length ? true : false;
         if (mounted) {

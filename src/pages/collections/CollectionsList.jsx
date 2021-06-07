@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { tw } from 'twind';
 
@@ -13,14 +13,13 @@ import useUserCollections from 'hooks/useUserCollections';
 
 const CollectionsList = () => {
   const { username } = useParams();
-  const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUserData);
   const [modalOpened, setModalOpened] = useState(false);
   const isMyCollectionsPage = useMemo(
     () => username === currentUser?.username,
     [username, currentUser]
   );
-  const collections = useUserCollections(username, dispatch);
+  const collections = useUserCollections(username);
 
   return (
     <section className={tw(`px-20 md:mt-12`)}>

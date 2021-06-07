@@ -1,4 +1,5 @@
 import { setFetchError } from 'state/actions/errors.actions';
+import store from 'store';
 
 const API_URL = process.env.API_URL || 'http://localhost:3001';
 
@@ -16,7 +17,7 @@ export const getBearerToken = () =>
     ? `Bearer ${sessionStorage.getItem('json-wt')}`
     : false;
 
-export const handleApiCall = async (path, dispatch, params = {}) => {
+export const handleApiCall = async (path, params = {}) => {
   const auth = getBearerToken();
   const configuration = {
     ...params,
@@ -38,7 +39,7 @@ export const handleApiCall = async (path, dispatch, params = {}) => {
     // response is not json
   }
   if (!response.ok) {
-    dispatch(setFetchError(content));
+    store.dispatch(setFetchError(content));
     return null;
   }
   return content;

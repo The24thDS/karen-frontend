@@ -1,22 +1,13 @@
 import { useState, useEffect } from 'react';
 import { fetchUserCollectionsForModel } from 'api/collections.api';
 
-const useUserCollectionsForModel = (
-  username,
-  slug,
-  dispatch,
-  trigger = null
-) => {
+const useUserCollectionsForModel = (username, slug, trigger = null) => {
   const [collections, setCollections] = useState([]);
 
   useEffect(() => {
     let mounted = true;
     (async () => {
-      const response = await fetchUserCollectionsForModel(
-        username,
-        slug,
-        dispatch
-      );
+      const response = await fetchUserCollectionsForModel(username, slug);
       if (!mounted) {
         return;
       }
@@ -25,7 +16,7 @@ const useUserCollectionsForModel = (
     return () => {
       mounted = false;
     };
-  }, [dispatch, username, slug, trigger]);
+  }, [username, slug, trigger]);
 
   return collections;
 };

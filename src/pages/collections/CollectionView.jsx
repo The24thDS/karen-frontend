@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useParams } from 'react-router';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RiGitRepositoryPrivateFill } from 'react-icons/ri';
 import { tw } from 'twind';
 
@@ -15,13 +15,12 @@ import CollectionDeleteModal from 'pages/collections/CollectionDeleteModal';
 const CollectionView = () => {
   const { slug } = useParams();
 
-  const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUserData);
 
   const [editModalOpened, setEditModalOpened] = useState(false);
   const [deleteModalOpened, setDeleteModalOpened] = useState(false);
   const [trigger, setTrigger] = useState(0);
-  const collection = useCollectionWithModels(slug, dispatch, trigger);
+  const collection = useCollectionWithModels(slug, trigger);
 
   const isMyCollection = useMemo(
     () => collection?.user?.username === currentUser?.username,

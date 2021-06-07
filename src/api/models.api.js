@@ -16,9 +16,9 @@ export const fetchModels = async (data) => {
   }
 };
 
-export const fetchModel = async (slug, dispatch) => {
+export const fetchModel = async (slug) => {
   const path = `models/${slug}`;
-  const content = await handleApiCall(path, dispatch);
+  const content = await handleApiCall(path);
   return content;
 };
 
@@ -70,7 +70,7 @@ export const searchModels = async (data) => {
   }
 };
 
-export const voteModel = async (slug, type, dispatch) => {
+export const voteModel = async (slug, type) => {
   const path = `models/${slug}/vote`;
   const params = {
     method: 'POST',
@@ -79,34 +79,30 @@ export const voteModel = async (slug, type, dispatch) => {
       'Content-Type': 'application/json; charset=utf-8',
     },
   };
-  const content = await handleApiCall(path, dispatch, params);
+  const content = await handleApiCall(path, params);
   return content;
 };
 
-export const addModelToCollection = async (slug, collectionSlug, dispatch) => {
+export const addModelToCollection = async (slug, collectionSlug) => {
   const path = `models/${slug}/collections/${collectionSlug}`;
-  const content = await handleApiCall(path, dispatch, { method: 'post' });
+  const content = await handleApiCall(path, { method: 'post' });
   return content;
 };
 
-export const removeModelFromCollection = async (
-  slug,
-  collectionSlug,
-  dispatch
-) => {
+export const removeModelFromCollection = async (slug, collectionSlug) => {
   const path = `models/${slug}/collections/${collectionSlug}`;
-  const content = await handleApiCall(path, dispatch, { method: 'delete' });
+  const content = await handleApiCall(path, { method: 'delete' });
   return content;
 };
 
-export const deleteModel = async (slug, dispatch) => {
+export const deleteModel = async (slug) => {
   const path = `models/${slug}`;
-  const content = await handleApiCall(path, dispatch, { method: 'delete' });
+  const content = await handleApiCall(path, { method: 'delete' });
   return content;
 };
 
-export const getModelRecommendations = async (slug, dispatch) => {
+export const getModelRecommendations = async (slug) => {
   const path = `models/${slug}/recommended`;
-  const content = await handleApiCall(path, dispatch);
+  const content = await handleApiCall(path);
   return content;
 };

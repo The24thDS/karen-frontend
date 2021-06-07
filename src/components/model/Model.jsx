@@ -3,10 +3,10 @@ import Rating from 'components/rating/Rating';
 import { formatDistanceToNow, parse } from 'date-fns';
 import React, { useState, useEffect } from 'react';
 import ImageGallery from 'react-image-gallery';
-import { useParams, Link, useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { tw } from 'twind';
 import { TiEye, TiDownload } from 'react-icons/ti';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { getGltfFilePath, getImagePath, getModelFilePath } from 'utils/general';
 import DownloadButton from '../download-button/DownloadButton';
 import useModel from 'hooks/useModel';
@@ -16,7 +16,6 @@ import { voteModel } from 'api/models.api';
 import ModelActionButtons from 'components/model/ModelActionButtons';
 
 const Model = () => {
-  const dispatch = useDispatch();
   const { slug } = useParams();
   const loggedIn = useSelector(selectUserLoggedIn);
   const { model, user, tags } = useModel(slug);
@@ -77,7 +76,7 @@ const Model = () => {
           value: state.value + valueChange,
         }));
       }
-      const response = await voteModel(slug, type, dispatch);
+      const response = await voteModel(slug, type);
       if (response === null) {
         setRatingStatus(backup);
       }
