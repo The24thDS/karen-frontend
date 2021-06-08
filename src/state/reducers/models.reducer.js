@@ -7,6 +7,8 @@ import {
   SEARCH_MODELS_FAILURE,
   SEARCH_MODELS_SUCCESS,
   SET_SELECTED_MODEL,
+  SET_MODELS,
+  SET_MODELS_PAGE,
 } from '../actions/models.actions';
 
 const INITIAL_STATE = Map({
@@ -15,10 +17,26 @@ const INITIAL_STATE = Map({
   error: null,
   searchTerm: null,
   selectedModel: {},
+  index: Map({
+    items: [],
+    page: 0,
+  }),
 });
 
 const modelsReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case SET_MODELS:
+      return state.mergeDeep({
+        index: {
+          items: action.payload,
+        },
+      });
+    case SET_MODELS_PAGE:
+      return state.mergeDeep({
+        index: {
+          page: action.payload,
+        },
+      });
     case SEARCH_MODELS:
       return state.merge({
         loading: true,

@@ -5,6 +5,21 @@ export const SEARCH_MODELS = 'MODELS_SEARCH_REQUESTED';
 export const SEARCH_MODELS_SUCCESS = 'MODELS_SEARCH_SUCCEEDED';
 export const SEARCH_MODELS_FAILURE = 'MODELS_SEARCH_FAILED';
 export const SET_SELECTED_MODEL = 'SET_SELECTED_MODEL';
+export const SET_MODELS = 'SET_MODELS';
+export const SET_MODELS_PAGE = 'SET_MODELS_PAGE';
+
+export function setModels(data) {
+  return {
+    type: SET_MODELS,
+    payload: data,
+  };
+}
+export function setModelsPage(data) {
+  return {
+    type: SET_MODELS_PAGE,
+    payload: data,
+  };
+}
 
 export function fetchModels(pageData) {
   return {
