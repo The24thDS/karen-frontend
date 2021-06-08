@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { tw, css, theme } from 'twind/css';
+import { tw, css } from 'twind/css';
 import WithLoading from 'components/with-loading/WithLoading';
+import { AiFillCloseCircle } from 'react-icons/ai';
 
 const transitionDurationMs = 200;
 
@@ -41,13 +42,13 @@ const Sidepanel = ({ children, opened, onClose }) => {
     >
       <button
         className={tw`${
-          opened ? 'block' : 'none'
+          opened ? 'block ' : 'hidden'
         } fixed cursor-pointer bg-none border-0 text-white z-10 text-xl w-8 h-8 right-[23vw]`}
         onClick={() => {
           onClose();
         }}
       >
-        x
+        <AiFillCloseCircle />
       </button>
       <div
         className={tw(
