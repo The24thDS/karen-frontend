@@ -6,6 +6,10 @@ export const getModelsIndexContainer = createSelector(
   getModelsContainer,
   (container) => container.get('index')
 );
+export const getModelsSearchContainer = createSelector(
+  getModelsContainer,
+  (container) => container.get('search')
+);
 
 export const getSelectedModel = createSelector(
   getModelsContainer,
@@ -22,21 +26,17 @@ export const selectIndexModelsPage = createSelector(
   (container) => container.get('page')
 );
 
-export const selectModels = createSelector(getModelsContainer, (container) =>
-  container.get('items')
+export const selectSearchModels = createSelector(
+  getModelsSearchContainer,
+  (container) => container.get('items')
 );
 
-export const selectModelsLoading = createSelector(
-  getModelsContainer,
-  (container) => container.get('loading')
+export const selectSearchModelsPage = createSelector(
+  getModelsSearchContainer,
+  (container) => container.get('page')
 );
 
-export const selectModelsError = createSelector(
-  getModelsContainer,
-  (container) => container.get('error')
-);
-
-export const selectModelsSearchTerm = createSelector(
-  getModelsContainer,
-  (container) => container.get('searchTerm')
+export const selectSearchModelsTerm = createSelector(
+  getModelsSearchContainer,
+  (container) => container.get('term')
 );

@@ -49,19 +49,11 @@ export const updateModel = async (data, slug) => {
 };
 
 export const searchModels = async (data) => {
-  const res = await fetch(`${API_URL}/models/search`, {
-    method: 'POST',
-    body: JSON.stringify(data),
-    headers: {
-      'Content-Type': 'application/json; charset=utf-8',
-    },
-  });
-  if (res.ok) {
-    const data = await res.json();
-    return data;
-  } else {
-    return new Error('Server did not return OK');
-  }
+  const page = data.page ?? 0;
+  const pageSize = data.pageSize ?? 20;
+  const path = `models/search?q=${data.q}&page=${page}&pageSize=${pageSize}`;
+  const content = await handleApiCall(path);
+  return content;
 };
 
 export const voteModel = async (slug, type) => {

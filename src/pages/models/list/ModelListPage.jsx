@@ -38,7 +38,7 @@ const ModelListPage = () => {
   }, []);
 
   const shouldHideLoading = useMemo(
-    () => !isFetching && (!models.length === 0 || !page === 0),
+    () => !isFetching && (models.length !== 0 || page !== 0),
     [isFetching, models, page]
   );
 

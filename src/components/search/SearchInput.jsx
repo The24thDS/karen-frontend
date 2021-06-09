@@ -1,22 +1,35 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { tw } from 'twind';
 
-import { searchModels } from '../../state/actions/models.actions';
+import {
+  setSearchedModels,
+  setSearchedModelsPage,
+  setSearchedModelsTerm,
+  clearSearchedModels,
+} from 'state/actions/models.actions';
+import { searchModels } from 'api/models.api';
 
 import searchIcon from '../../assets/loupe.svg';
 
-const SearchInput = ({ classNames, searchModels }) => {
+const SearchInput = ({ classNames }) => {
   const history = useHistory();
+  const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState('');
 
-  const onSearch = () => {
-    searchModels(searchTerm);
+  const onSearch = async () => {
+    dispatch(clearSearchedModels());
+    dispatch(setSearchedModelsPage(0));
+    dispatch(setSearchedModelsTerm(searchTerm));
     if (history.location.pathname !== '/search') {
       history.push('/search');
+    }
+    const response = await searchModels({ q: searchTerm });
+    if (response) {
+      dispatch(setSearchedModels(response));
+      dispatch(setSearchedModelsPage(1));
     }
   };
 
@@ -50,8 +63,4 @@ SearchInput.propTypes = {
   }),
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  ...bindActionCreators({ searchModels }, dispatch),
-});
-
-export default connect(null, mapDispatchToProps)(SearchInput);
+export default SearchInput;

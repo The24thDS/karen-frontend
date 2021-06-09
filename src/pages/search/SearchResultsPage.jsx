@@ -1,41 +1,52 @@
+import { useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
+import {
+  setSearchedModels,
+  setSearchedModelsPage,
+} from 'state/actions/models.actions';
+import {
+  selectSearchModels,
+  selectSearchModelsPage,
+  selectSearchModelsTerm,
+} from 'state/selectors/models.selectors';
+import useInfiniteScroll from 'hooks/useInfiniteScroll';
+import { searchModels } from 'api/models.api';
+
 import ModelsGrid from 'components/models-grid/ModelsGrid';
 import WithLoading from 'components/with-loading/WithLoading';
-import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { fetchModels } from '../../state/actions/models.actions';
-import {
-  selectModels,
-  selectModelsError,
-  selectModelsLoading,
-  selectModelsSearchTerm,
-} from '../../state/selectors/models.selectors';
 
-const SearchResultsPage = ({ models, loading, error, searchTerm }) => {
+const SearchResultsPage = () => {
+  const models = useSelector(selectSearchModels);
+  const term = useSelector(selectSearchModelsTerm);
+  const page = useSelector(selectSearchModelsPage);
+  const dispatch = useDispatch();
+
+  const fetchMoreModels = async () => {
+    const response = await searchModels({ q: term, page });
+    if (response) {
+      dispatch(setSearchedModels(response));
+      dispatch(setSearchedModelsPage(page + 1));
+    }
+    setIsFetching(false);
+  };
+
+  const [isFetching, setIsFetching] = useInfiniteScroll(fetchMoreModels);
+
+  const shouldShowModels = useMemo(
+    () => !isFetching && (models.length !== 0 || page !== 0),
+    [isFetching, models, page]
+  );
+
   return (
     <div className="px-20 md:mt-12">
       <h1 className="text-xl font-semibold">
-        Search results for{' '}
-        <span className="italic font-bold">{searchTerm}</span>
+        Search results for <span className="italic font-bold">{term}</span>
       </h1>
-      <WithLoading condition={!loading}>
-        <ModelsGrid models={models} />
-      </WithLoading>
+      <ModelsGrid models={models} />
+      <WithLoading condition={shouldShowModels}> </WithLoading>
     </div>
   );
 };
 
-const mapStateToProps = (state, _ownProps) => {
-  return {
-    models: selectModels(state),
-    loading: selectModelsLoading(state),
-    error: selectModelsError(state),
-    searchTerm: selectModelsSearchTerm(state),
-  };
-};
-
-const mapDispatchToProps = (dispatch) => ({
-  ...bindActionCreators({ fetchModels }, dispatch),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SearchResultsPage);
+export default SearchResultsPage;

@@ -1,12 +1,10 @@
-export const FETCH_MODELS = 'MODELS_FETCH_REQUESTED';
-export const FETCH_MODELS_SUCCESS = 'MODELS_FETCH_SUCCEEDED';
-export const FETCH_MODELS_FAILURE = 'MODELS_FETCH_FAILED';
-export const SEARCH_MODELS = 'MODELS_SEARCH_REQUESTED';
-export const SEARCH_MODELS_SUCCESS = 'MODELS_SEARCH_SUCCEEDED';
-export const SEARCH_MODELS_FAILURE = 'MODELS_SEARCH_FAILED';
 export const SET_SELECTED_MODEL = 'SET_SELECTED_MODEL';
 export const SET_MODELS = 'SET_MODELS';
 export const SET_MODELS_PAGE = 'SET_MODELS_PAGE';
+export const SET_SEARCHED_MODELS = 'SET_SEARCHED_MODELS';
+export const CLEAR_SEARCHED_MODELS = 'CLEAR_SEARCHED_MODELS';
+export const SET_SEARCHED_MODELS_PAGE = 'SET_SEARCHED_MODELS_PAGE';
+export const SET_SEARCHED_MODELS_TERM = 'SET_SEARCHED_MODELS_TERM';
 
 export function setModels(data) {
   return {
@@ -21,17 +19,27 @@ export function setModelsPage(data) {
   };
 }
 
-export function fetchModels(pageData) {
+export function setSearchedModels(data) {
   return {
-    type: FETCH_MODELS,
-    payload: pageData,
+    type: SET_SEARCHED_MODELS,
+    payload: data,
   };
 }
-
-export function searchModels(searchTerm) {
+export function clearSearchedModels() {
   return {
-    type: SEARCH_MODELS,
-    payload: searchTerm,
+    type: CLEAR_SEARCHED_MODELS,
+  };
+}
+export function setSearchedModelsPage(data) {
+  return {
+    type: SET_SEARCHED_MODELS_PAGE,
+    payload: data,
+  };
+}
+export function setSearchedModelsTerm(data) {
+  return {
+    type: SET_SEARCHED_MODELS_TERM,
+    payload: data,
   };
 }
 
