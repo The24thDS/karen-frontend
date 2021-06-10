@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { tw } from 'twind';
 
 const stringToSelectOption = (string) => ({
   name: string,
@@ -13,6 +14,7 @@ const Select = ({
   multiple = false,
   options = [],
   register,
+  selectClassNames,
 }) => {
   const [selectOptions, setSelectOptions] = useState([]);
 
@@ -23,16 +25,20 @@ const Select = ({
   }, [options]);
 
   return (
-    <div className={`p-2 flex flex-col text-left`}>
-      <label htmlFor={id} className={`px-1 text-sm text-gray-600`}>
+    <div className={tw(`p-2 flex flex-col text-left`)}>
+      <label htmlFor={id} className={tw(`px-1 text-sm text-gray-600`)}>
         {label}
       </label>
       <select
         id={id}
         name={name}
         multiple={multiple}
-        className={`text-md block px-3 py-2 rounded-lg w-full
-                bg-white border-2 border-gray-300 placeholder-gray-600 shadow-md focus:placeholder-gray-500 focus:bg-white focus:border-gray-600 focus:outline-none`}
+        className={tw(
+          `text-md block px-3 py-2 rounded-lg w-full
+          bg-white border-2 border-gray-300 placeholder-gray-600 shadow-md 
+          focus:placeholder-gray-500 focus:bg-white focus:border-gray-600 focus:outline-none`,
+          selectClassNames
+        )}
         ref={register}
       >
         {selectOptions.map((o) => (
@@ -54,8 +60,8 @@ Select.propTypes = {
     PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.objectOf({
-        label: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
+        value: PropTypes.string.isRequired,
       }),
     ])
   ).isRequired,

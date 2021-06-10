@@ -49,9 +49,14 @@ export const updateModel = async (data, slug) => {
 };
 
 export const searchModels = async (data) => {
-  const page = data.page ?? 0;
-  const pageSize = data.pageSize ?? 20;
-  const path = `models/search?q=${data.q}&page=${page}&pageSize=${pageSize}`;
+  const {
+    q,
+    page = 0,
+    pageSize = 20,
+    formats = '',
+    triangleCountOption = '',
+  } = data;
+  const path = `models/search?q=${q}&page=${page}&pageSize=${pageSize}&formats=${formats}&triangleCountOption=${triangleCountOption}`;
   const content = await handleApiCall(path);
   return content;
 };
@@ -89,6 +94,12 @@ export const deleteModel = async (slug) => {
 
 export const getModelRecommendations = async (slug) => {
   const path = `models/${slug}/recommended`;
+  const content = await handleApiCall(path);
+  return content;
+};
+
+export const getAvailableModelFormats = async () => {
+  const path = `models/formats`;
   const content = await handleApiCall(path);
   return content;
 };
