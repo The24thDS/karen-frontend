@@ -24,6 +24,9 @@ const Routes = () => {
         <Route exact path="/models">
           <ModelListPage />
         </Route>
+        <Route exact path="/models/user/:username">
+          <ModelListPage />
+        </Route>
         <ProtectedRoute exact path="/models/new" component={ModelUploadPage} />
         <Route exact path="/models/:slug">
           <ModelViewPage />

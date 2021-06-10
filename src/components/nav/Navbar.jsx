@@ -45,9 +45,6 @@ const Navbar = () => {
 
   const brandLink = showBrand && <BrandLink to="/">KAREN</BrandLink>;
   const allModelsLink = <NavLink to="/models">All Models</NavLink>;
-  const modelUploadLink = isLoggedIn && (
-    <NavLink to="/models/new">Upload</NavLink>
-  );
   const searchInput = showSearch && (
     <SearchInput
       classNames={{
@@ -80,7 +77,12 @@ const Navbar = () => {
             <Link to="/models/new" className={tw(dropdownItemStyle)}>
               Upload model
             </Link>
-            <li className={tw(dropdownItemStyle)}>Your models</li>
+            <Link
+              className={tw(dropdownItemStyle)}
+              to={`/models/user/${currentUserData?.username}`}
+            >
+              Your models
+            </Link>
             <Link
               className={tw(dropdownItemStyle)}
               to={`/collections/user/${currentUserData?.username}`}
@@ -109,7 +111,6 @@ const Navbar = () => {
       <ul className="flex">
         {brandLink}
         {allModelsLink}
-        {modelUploadLink}
       </ul>
       {searchInput}
       <ul className="flex">

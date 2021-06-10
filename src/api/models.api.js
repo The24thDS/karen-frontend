@@ -10,6 +10,14 @@ export const fetchModels = async (data) => {
   return content;
 };
 
+export const fetchUserModels = async (data) => {
+  const page = data.page ?? 0;
+  const pageSize = data.pageSize ?? 20;
+  const path = `models/user/${data.username}?page=${page}&pageSize=${pageSize}`;
+  const content = await handleApiCall(path);
+  return content;
+};
+
 export const fetchModel = async (slug) => {
   const path = `models/${slug}`;
   const content = await handleApiCall(path);
