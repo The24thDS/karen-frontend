@@ -1,7 +1,7 @@
 import { setFetchError } from 'state/actions/errors.actions';
 import store from 'store';
 
-const API_URL = process.env.API_URL || 'http://localhost:3001';
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
 
 export const getImagePath = (modelSlug, username, imageName) =>
   encodeURI(`${API_URL}/assets/images/${username}/${modelSlug}/${imageName}`);

@@ -1,13 +1,13 @@
-import { getBearerToken } from "utils/general";
+import { getBearerToken } from 'utils/general';
 
-const API_URL = process.env.API_URL || "http://localhost:3001";
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
 
 export const removeTempFile = async (data) => {
   const res = await fetch(`${API_URL}/assets/temp`, {
-    method: "DELETE",
+    method: 'DELETE',
     body: JSON.stringify(data),
     headers: {
-      "Content-Type": "application/json; charset=utf-8",
+      'Content-Type': 'application/json; charset=utf-8',
       Authorization: getBearerToken(),
     },
   });
@@ -15,7 +15,7 @@ export const removeTempFile = async (data) => {
     const data = await res.json();
     return data;
   } else {
-    return new Error("Server did not return OK");
+    return new Error('Server did not return OK');
   }
 };
 
@@ -23,9 +23,9 @@ export const removeFile = async ({ name, slug, username }, type) => {
   const res = await fetch(
     `${API_URL}/assets/${type}/${username}/${slug}/${name}`,
     {
-      method: "DELETE",
+      method: 'DELETE',
       headers: {
-        "Content-Type": "application/json; charset=utf-8",
+        'Content-Type': 'application/json; charset=utf-8',
         Authorization: getBearerToken(),
       },
     }
@@ -34,6 +34,6 @@ export const removeFile = async ({ name, slug, username }, type) => {
     const data = await res.json();
     return data;
   } else {
-    return new Error("Server did not return OK");
+    return new Error('Server did not return OK');
   }
 };
