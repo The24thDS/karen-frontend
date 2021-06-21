@@ -5,7 +5,7 @@ import { content } from '@twind/content';
 const WithTooltip = ({ text, children }) => {
   const tooltip = tw`before::(${content(
     `"${text}"`
-  )} absolute -left-full -top-full -mt-5 z-50 p-1 text-sm bg-black text-white shadow rounded hidden) hover:(before::block)`;
+  )} absolute -left-full -top-1/2 -mt-5 z-50 p-1 text-sm bg-black text-white shadow rounded hidden w-max) hover:(before::block)`;
   return <span className={tw(tooltip, 'relative')}>{children}</span>;
 };
 
