@@ -1,21 +1,21 @@
-import { removeTempFile } from "api/assets.api";
-import { getBearerToken } from "utils/general";
+import { removeTempFile } from 'api/assets.api';
+import { getBearerToken } from 'utils/general';
 
-const API_URL = process.env.API_URL || "http://localhost:3001";
+const API_URL = process.env.API_URL || 'http://localhost:3001';
 
-const headers = {
+const commonHeaders = () => ({
   Authorization: getBearerToken(),
-};
+});
 
 export const imagesFileInputServerConfig = (getValues) => ({
   process: {
     url: `${API_URL}/assets/images`,
     headers: {
-      ...headers,
+      ...commonHeaders(),
     },
   },
   revert: async (imageId, load, error) => {
-    const uploadedImages = getValues("images");
+    const uploadedImages = getValues('images');
     const { name } = uploadedImages.find((img) => img.id === imageId);
 
     try {
@@ -34,11 +34,11 @@ export const modelsFileInputServerConfig = (getValues, slug, username) => ({
   process: {
     url: `${API_URL}/assets/models`,
     headers: {
-      ...headers,
+      ...commonHeaders(),
     },
   },
   revert: async (fileId, load, error) => {
-    const uploadedFiles = getValues("models");
+    const uploadedFiles = getValues('models');
     const { name } = uploadedFiles.find((file) => file.id === fileId);
 
     try {
@@ -57,11 +57,11 @@ export const gltfFileInputServerConfig = (getValues, slug, username) => ({
   process: {
     url: `${API_URL}/assets/gltf`,
     headers: {
-      ...headers,
+      ...commonHeaders(),
     },
   },
   revert: async (fileId, load, error) => {
-    const uploadedFiles = getValues("gltf");
+    const uploadedFiles = getValues('gltf');
     const { name } = uploadedFiles.find((file) => file.id === fileId);
 
     try {
