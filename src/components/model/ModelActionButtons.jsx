@@ -1,12 +1,20 @@
-import ModelAddToCollectionModal from 'components/model/ModelAddToCollectionModal';
-import ModelDeleteModal from 'components/model/ModelDeleteModal';
-import ModelRemoveFromCollectionModal from 'components/model/ModelRemoveFromCollectionModal';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
+import {
+  BsCollectionFill,
+  TiFolderDelete,
+  AiFillEdit,
+  RiDeleteBin7Fill,
+} from 'react-icons/all';
+
+import ModelAddToCollectionModal from 'components/model/ModelAddToCollectionModal';
+import ModelDeleteModal from 'components/model/ModelDeleteModal';
+import ModelRemoveFromCollectionModal from 'components/model/ModelRemoveFromCollectionModal';
 
 import { selectCurrentUser } from 'state/selectors/users.selectors';
 import { tw } from 'twind';
+import WithTooltip from 'components/with-tooltip/WithTooltip';
 
 const ModelActionButtons = ({ user, slug }) => {
   const loggedInUser = useSelector(selectCurrentUser);
@@ -21,18 +29,22 @@ const ModelActionButtons = ({ user, slug }) => {
     <div className="col-span-3 flex items-center text-sm">
       {loggedInUser !== null && (
         <>
-          <button
-            className={tw('bg-yellow-500 text-white p-1 rounded mr-2')}
-            onClick={() => setCollectionAddModalOpened(true)}
-          >
-            Add to Collection
-          </button>
-          <button
-            className={tw('bg-yellow-200 text-black p-1 rounded mr-2')}
-            onClick={() => setCollectionRemoveModalOpened(true)}
-          >
-            Remove from Collection
-          </button>
+          <WithTooltip text="Add to collection">
+            <button
+              className={tw('bg-blue-200 text-white p-1 rounded mr-2 text-xl')}
+              onClick={() => setCollectionAddModalOpened(true)}
+            >
+              <BsCollectionFill className={tw('text-black')} />
+            </button>
+          </WithTooltip>
+          <WithTooltip text="Remove from collection">
+            <button
+              className={tw('bg-red-200 text-black p-1 rounded mr-2 text-xl')}
+              onClick={() => setCollectionRemoveModalOpened(true)}
+            >
+              <TiFolderDelete className={tw('text-red-600')} />
+            </button>
+          </WithTooltip>
           {collectionAddModalOpened && (
             <ModelAddToCollectionModal
               onClose={() => setCollectionAddModalOpened(false)}
@@ -49,18 +61,24 @@ const ModelActionButtons = ({ user, slug }) => {
       )}
       {loggedInUser?.username === user.username && (
         <>
-          <Link
-            className={tw('bg-blue-500 text-white p-1 rounded mr-2')}
-            to={`${location.pathname}/edit`}
-          >
-            Edit Model
-          </Link>
-          <button
-            className={tw('bg-red-500 text-white p-1 rounded')}
-            onClick={() => setDeleteModalOpened(true)}
-          >
-            Delete Model
-          </button>
+          <WithTooltip text="Edit model">
+            <Link
+              className={tw(
+                'bg-blue-500 text-white p-1 rounded mr-2 text-xl block'
+              )}
+              to={`${location.pathname}/edit`}
+            >
+              <AiFillEdit />
+            </Link>
+          </WithTooltip>
+          <WithTooltip text="Delete model">
+            <button
+              className={tw('bg-red-500 text-white p-1 rounded text-xl')}
+              onClick={() => setDeleteModalOpened(true)}
+            >
+              <RiDeleteBin7Fill />
+            </button>
+          </WithTooltip>
           {deleteModalOpened && (
             <ModelDeleteModal
               onClose={() => setDeleteModalOpened(false)}
