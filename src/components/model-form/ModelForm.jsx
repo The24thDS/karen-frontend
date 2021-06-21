@@ -1,19 +1,19 @@
-import React, { useState } from "react";
-import { Redirect } from "react-router";
-import { tw } from "twind";
+import React, { useState } from 'react';
+import { Redirect } from 'react-router';
+import { tw } from 'twind';
 
-import ModelFormImageAndInformation from "./partials/ModelFormImageAndInformation";
-import ModelForm3dFiles from "./partials/ModelForm3dFiles";
+import ModelFormImageAndInformation from './partials/ModelFormImageAndInformation';
+import ModelForm3dFiles from './partials/ModelForm3dFiles';
+import Error from 'components/error/Error';
 
-import "./model-form.css";
-import Error from "components/error/Error";
+import './model-form.css';
 
 const ModelForm = ({ initialModel, onFormSubmit }) => {
   const [formStatus, setFormStatus] = useState({
     loading: false,
     done: false,
     redirect: false,
-    modelSlug: "",
+    modelSlug: '',
     step: 0,
     data: {},
     serverErrors: [],
@@ -47,7 +47,7 @@ const ModelForm = ({ initialModel, onFormSubmit }) => {
           loading: false,
           done: false,
           serverErrors:
-            typeof resData.message === "string"
+            typeof resData.message === 'string'
               ? [resData.message]
               : resData.message,
         });
@@ -75,12 +75,12 @@ const ModelForm = ({ initialModel, onFormSubmit }) => {
 
   const buttonText = () => {
     if (formStatus.loading) {
-      return "Uploading...";
+      return 'Uploading...';
     }
     if (formStatus.done) {
-      return "Done!";
+      return 'Done!';
     }
-    return "Upload";
+    return 'Upload';
   };
 
   const nextStep = (data) => {

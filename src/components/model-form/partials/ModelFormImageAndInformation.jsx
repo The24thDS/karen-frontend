@@ -111,7 +111,6 @@ const ModelFormImageAndInformation = ({
           }}
           errors={errors.description}
         />
-
         <label>Tags</label>
         <Controller
           options={tagsOptions}

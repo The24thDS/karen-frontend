@@ -1,16 +1,12 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Route, Redirect } from "react-router-dom";
-import { connect } from "react-redux";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Route, Redirect } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-import { selectUserLoggedIn } from "state/selectors/users.selectors";
+import { selectUserLoggedIn } from 'state/selectors/users.selectors';
 
-const ProtectedRoute = ({
-  component: Component,
-  isLoggedIn,
-  reversed,
-  ...rest
-}) => {
+const ProtectedRoute = ({ component: Component, reversed, ...rest }) => {
+  const isLoggedIn = useSelector(selectUserLoggedIn);
   const isAllowed = reversed ? !isLoggedIn : isLoggedIn;
   return (
     <Route
@@ -19,16 +15,12 @@ const ProtectedRoute = ({
         isAllowed ? (
           <Component {...rest} {...props} />
         ) : (
-          <Redirect to={{ pathname: "/", state: { from: props.location } }} />
+          <Redirect to={{ pathname: '/', state: { from: props.location } }} />
         )
       }
     />
   );
 };
-
-const mapStateToProps = (state) => ({
-  isLoggedIn: selectUserLoggedIn(state),
-});
 
 ProtectedRoute.propTypes = {
   component: PropTypes.elementType.isRequired,
@@ -39,4 +31,4 @@ ProtectedRoute.defaultProps = {
   reversed: false,
 };
 
-export default connect(mapStateToProps)(ProtectedRoute);
+export default ProtectedRoute;
